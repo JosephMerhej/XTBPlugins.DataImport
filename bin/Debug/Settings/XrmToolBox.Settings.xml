@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Options xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AllowLogUsage xsi:nil="true" />
+  <CheckUpdateOnStartup>false</CheckUpdateOnStartup>
+  <CloseEachPluginSilently>false</CloseEachPluginSilently>
+  <CloseOpenedPluginsSilently>false</CloseOpenedPluginsSilently>
+  <ClosePluginsSilentlyOnWindowsShutdown>true</ClosePluginsSilentlyOnWindowsShutdown>
+  <DisplayLargeIcons>true</DisplayLargeIcons>
+  <DisplayOrder>Alphabetically</DisplayOrder>
+  <DisplayPluginsStoreOnlyIfUpdates>true</DisplayPluginsStoreOnlyIfUpdates>
+  <DisplayPluginsStoreOnStartup>false</DisplayPluginsStoreOnStartup>
+  <DisplayRecentlyUpdatedFirst>true</DisplayRecentlyUpdatedFirst>
+  <DoNotCheckForUpdates>true</DoNotCheckForUpdates>
+  <DoNotRememberPluginsWithoutConnection>true</DoNotRememberPluginsWithoutConnection>
+  <DoNotShowStartPage>false</DoNotShowStartPage>
+  <HiddenPlugins />
+  <LastAdvertisementDisplay>2019-04-20T11:44:50.1709158+03:00</LastAdvertisementDisplay>
+  <LastConnection>XRMTEST</LastConnection>
+  <LastPlugin />
+  <LastUpdateCheck>2019-04-15T19:41:54.9141548+03:00</LastUpdateCheck>
+  <MergeConnectionFiles>false</MergeConnectionFiles>
+  <MostUsedList>
+    <PluginUseCount>
+      <Count>481</Count>
+      <Name>DataImport.MyPlugin</Name>
+    </PluginUseCount>
+  </MostUsedList>
+  <MruItemsToDisplay>10</MruItemsToDisplay>
+  <PluginsListDocking>Document</PluginsListDocking>
+  <PluginsListIsHidden>false</PluginsListIsHidden>
+  <PluginsStoreShowIncompatible xsi:nil="true" />
+  <PluginsStoreShowInstalled xsi:nil="true" />
+  <PluginsStoreShowNew xsi:nil="true" />
+  <PluginsStoreShowUpdates xsi:nil="true" />
+  <PluginsUpdateSkip />
+  <RememberSession>true</RememberSession>
+  <ReuseConnections>true</ReuseConnections>
+  <ShowPluginUpdatesPanelAtStartup>true</ShowPluginUpdatesPanelAtStartup>
+  <FormSize>
+    <Height>888</Height>
+    <IsMaximized>true</IsMaximized>
+    <Width>1384</Width>
+  </FormSize>
+  <Theme>Light theme</Theme>
+</Options>

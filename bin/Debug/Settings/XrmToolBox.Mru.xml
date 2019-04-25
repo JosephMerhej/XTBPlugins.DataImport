@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfMostRecentlyUsedItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <MostRecentlyUsedItem>
+    <PluginName>Data Import++</PluginName>
+    <ConnectionId>00000000-0000-0000-0000-000000000000</ConnectionId>
+    <Date>2019-04-25T11:31:39.9961191+03:00</Date>
+  </MostRecentlyUsedItem>
+  <MostRecentlyUsedItem>
+    <PluginName>Data Import++</PluginName>
+    <ConnectionId>eb3c33af-84b9-4f1f-b0d2-5866c4e974d6</ConnectionId>
+    <ConnectionName />
+    <Date>2019-04-20T19:41:38.6588177+03:00</Date>
+  </MostRecentlyUsedItem>
+</ArrayOfMostRecentlyUsedItem>
