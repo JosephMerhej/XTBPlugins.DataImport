@@ -1,4 +1,4 @@
-﻿namespace DataImport
+namespace DataImport
 {
     partial class MyPluginControl
     {
@@ -49,7 +49,6 @@
             this.pickedEntity = new System.Windows.Forms.ComboBox();
             this.optionSetVL = new System.Windows.Forms.ComboBox();
             this.crmAction = new System.Windows.Forms.ComboBox();
-            this.labelprogress = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -62,6 +61,7 @@
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.RefreshLogs = new System.Windows.Forms.Button();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -144,7 +144,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 31);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -164,12 +164,13 @@
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.RefreshLogs);
             this.splitContainer2.Panel1.Controls.Add(this.label5);
             this.splitContainer2.Panel1.Controls.Add(this.copyText);
             this.splitContainer2.Panel1.Controls.Add(this.textView);
@@ -185,7 +186,6 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.labelprogress);
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
             this.splitContainer2.Size = new System.Drawing.Size(194, 270);
             this.splitContainer2.SplitterDistance = 200;
@@ -206,7 +206,7 @@
             // copyText
             // 
             this.copyText.Location = new System.Drawing.Point(125, 171);
-            this.copyText.Margin = new System.Windows.Forms.Padding(2);
+            this.copyText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.copyText.Name = "copyText";
             this.copyText.Size = new System.Drawing.Size(50, 23);
             this.copyText.TabIndex = 10;
@@ -226,7 +226,7 @@
             "❌ ERRORS",
             "⚠ WARNINGS"});
             this.textView.Location = new System.Drawing.Point(2, 172);
-            this.textView.Margin = new System.Windows.Forms.Padding(2);
+            this.textView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textView.Name = "textView";
             this.textView.Size = new System.Drawing.Size(121, 21);
             this.textView.TabIndex = 4;
@@ -253,7 +253,7 @@
             "SKIP RECORD WITHOUT IMPORTING IT AT ALL",
             "IMPORT RECORD WITH CLEARED LOOKUP"});
             this.comboBox1.Location = new System.Drawing.Point(2, 133);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(252, 21);
             this.comboBox1.TabIndex = 9;
@@ -299,7 +299,7 @@
             this.pickedEntity.DropDownWidth = 200;
             this.pickedEntity.FormattingEnabled = true;
             this.pickedEntity.Location = new System.Drawing.Point(2, 16);
-            this.pickedEntity.Margin = new System.Windows.Forms.Padding(2);
+            this.pickedEntity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pickedEntity.Name = "pickedEntity";
             this.pickedEntity.Size = new System.Drawing.Size(252, 21);
             this.pickedEntity.Sorted = true;
@@ -315,7 +315,7 @@
             "OPTIONSET VALUES",
             "OPTIONSET LABELS"});
             this.optionSetVL.Location = new System.Drawing.Point(2, 94);
-            this.optionSetVL.Margin = new System.Windows.Forms.Padding(2);
+            this.optionSetVL.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.optionSetVL.Name = "optionSetVL";
             this.optionSetVL.Size = new System.Drawing.Size(252, 21);
             this.optionSetVL.TabIndex = 3;
@@ -333,22 +333,10 @@
             "UPDATE",
             "DELETE"});
             this.crmAction.Location = new System.Drawing.Point(2, 55);
-            this.crmAction.Margin = new System.Windows.Forms.Padding(2);
+            this.crmAction.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.crmAction.Name = "crmAction";
             this.crmAction.Size = new System.Drawing.Size(252, 21);
             this.crmAction.TabIndex = 2;
-            // 
-            // labelprogress
-            // 
-            this.labelprogress.AutoSize = true;
-            this.labelprogress.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.labelprogress.Location = new System.Drawing.Point(0, 55);
-            this.labelprogress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelprogress.Name = "labelprogress";
-            this.labelprogress.Size = new System.Drawing.Size(91, 13);
-            this.labelprogress.TabIndex = 4;
-            this.labelprogress.Text = "Import Progress %";
-            this.labelprogress.Click += new System.EventHandler(this.labelprogress_Click);
             // 
             // richTextBox1
             // 
@@ -377,7 +365,7 @@
             this.OperatorCol});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 33;
             this.dataGridView1.Size = new System.Drawing.Size(364, 270);
@@ -549,6 +537,18 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
             // 
+            // RefreshLogs
+            // 
+            this.RefreshLogs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshLogs.BackgroundImage")));
+            this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RefreshLogs.Location = new System.Drawing.Point(175, 171);
+            this.RefreshLogs.Name = "RefreshLogs";
+            this.RefreshLogs.Size = new System.Drawing.Size(26, 23);
+            this.RefreshLogs.TabIndex = 12;
+            this.RefreshLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.RefreshLogs.UseVisualStyleBackColor = true;
+            this.RefreshLogs.Click += new System.EventHandler(this.Button1_Click_2);
+            // 
             // MyPluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -568,7 +568,6 @@
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -610,6 +609,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
         private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
         private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
-        private System.Windows.Forms.Label labelprogress;
+        private System.Windows.Forms.Button RefreshLogs;
     }
 }
