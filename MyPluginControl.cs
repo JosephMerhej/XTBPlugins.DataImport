@@ -439,8 +439,33 @@ namespace DataImport
                 MessageBox.Show("Please BROWSE EXCEL FILE first and Pick your entity and fields mapping before Lauching the Import to CRM.");
                 return;
             }
+
             dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
-            
+
+            if (crmAction.SelectedIndex != 1)
+            {
+                bool wehavekey = false;
+                foreach (DataGridViewRow dataGridRow in dataGridView1.Rows)
+                {
+                    if (dataGridRow.Cells["isKey"].Value != null &&
+                         (bool)dataGridRow.Cells["isKey"].Value)
+                    {
+                        wehavekey = true;
+                    }
+                }
+                if (!wehavekey)
+                {
+                    DialogResult dialogResult = MessageBox.Show("You did not tick any Excel Column as an 'is Key' field." + Environment.NewLine + "This action will result in Updating/Deleting all of your CRM records for each excel line!" + Environment.NewLine + "We advice to end this request by clicking on 'No'. " + Environment.NewLine + "Do you still wish to go on with the CRM Import?", "Watch Out!", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        //do something
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+            }
             if (IsReadyToImport)
             {
                 ImportExcel();
