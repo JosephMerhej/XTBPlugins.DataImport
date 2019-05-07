@@ -38,6 +38,9 @@ namespace DataImport
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.label6 = new System.Windows.Forms.Label();
+            this.keyRecords = new System.Windows.Forms.ComboBox();
+            this.RefreshLogs = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.copyText = new System.Windows.Forms.Button();
             this.textView = new System.Windows.Forms.ComboBox();
@@ -61,7 +64,6 @@ namespace DataImport
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.RefreshLogs = new System.Windows.Forms.Button();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -86,8 +88,8 @@ namespace DataImport
             this.toolStripButton3});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(560, 31);
+            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            this.toolStripMenu.Size = new System.Drawing.Size(1120, 39);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -95,21 +97,21 @@ namespace DataImport
             // 
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(70, 28);
+            this.tsbClose.Size = new System.Drawing.Size(111, 36);
             this.tsbClose.Text = "CLOSE";
             this.tsbClose.Click += new System.EventHandler(this.TsbClose_Click);
             // 
             // tssSeparator1
             // 
             this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.tssSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
             // BrowseFile
             // 
             this.BrowseFile.Image = ((System.Drawing.Image)(resources.GetObject("BrowseFile.Image")));
             this.BrowseFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BrowseFile.Name = "BrowseFile";
-            this.BrowseFile.Size = new System.Drawing.Size(117, 28);
+            this.BrowseFile.Size = new System.Drawing.Size(206, 36);
             this.BrowseFile.Text = "BROWSE EXCEL";
             this.BrowseFile.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
@@ -118,7 +120,7 @@ namespace DataImport
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(122, 28);
+            this.toolStripButton2.Size = new System.Drawing.Size(219, 36);
             this.toolStripButton2.Text = "PROCESS FIELDS";
             this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
             // 
@@ -127,7 +129,7 @@ namespace DataImport
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(107, 28);
+            this.toolStripButton1.Size = new System.Drawing.Size(186, 36);
             this.toolStripButton1.Text = "IMPORT CRM";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
             // 
@@ -136,15 +138,15 @@ namespace DataImport
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(67, 28);
+            this.toolStripButton3.Size = new System.Drawing.Size(107, 36);
             this.toolStripButton3.Text = "RESET";
             this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 39);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -154,9 +156,8 @@ namespace DataImport
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(560, 270);
-            this.splitContainer1.SplitterDistance = 194;
-            this.splitContainer1.SplitterWidth = 2;
+            this.splitContainer1.Size = new System.Drawing.Size(1120, 540);
+            this.splitContainer1.SplitterDistance = 388;
             this.splitContainer1.TabIndex = 5;
             // 
             // splitContainer2
@@ -164,12 +165,14 @@ namespace DataImport
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.label6);
+            this.splitContainer2.Panel1.Controls.Add(this.keyRecords);
             this.splitContainer2.Panel1.Controls.Add(this.RefreshLogs);
             this.splitContainer2.Panel1.Controls.Add(this.label5);
             this.splitContainer2.Panel1.Controls.Add(this.copyText);
@@ -187,28 +190,61 @@ namespace DataImport
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer2.Size = new System.Drawing.Size(194, 270);
-            this.splitContainer2.SplitterDistance = 200;
-            this.splitContainer2.SplitterWidth = 2;
+            this.splitContainer2.Size = new System.Drawing.Size(388, 540);
+            this.splitContainer2.SplitterDistance = 250;
             this.splitContainer2.TabIndex = 3;
             this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer2_SplitterMoved);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(4, 153);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(293, 25);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Filter on key found > 1 record";
+            // 
+            // keyRecords
+            // 
+            this.keyRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.keyRecords.FormattingEnabled = true;
+            this.keyRecords.Items.AddRange(new object[] {
+            "DO ACTION FOR ALL",
+            "IGNORE EXCEL LINE"});
+            this.keyRecords.Location = new System.Drawing.Point(4, 181);
+            this.keyRecords.Name = "keyRecords";
+            this.keyRecords.Size = new System.Drawing.Size(500, 33);
+            this.keyRecords.TabIndex = 13;
+            // 
+            // RefreshLogs
+            // 
+            this.RefreshLogs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshLogs.BackgroundImage")));
+            this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RefreshLogs.Location = new System.Drawing.Point(350, 409);
+            this.RefreshLogs.Margin = new System.Windows.Forms.Padding(6);
+            this.RefreshLogs.Name = "RefreshLogs";
+            this.RefreshLogs.Size = new System.Drawing.Size(52, 44);
+            this.RefreshLogs.TabIndex = 12;
+            this.RefreshLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.RefreshLogs.UseVisualStyleBackColor = true;
+            this.RefreshLogs.Click += new System.EventHandler(this.Button1_Click_2);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(2, 156);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(4, 380);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 13);
+            this.label5.Size = new System.Drawing.Size(106, 25);
             this.label5.TabIndex = 11;
             this.label5.Text = "Filter logs";
             // 
             // copyText
             // 
-            this.copyText.Location = new System.Drawing.Point(125, 171);
-            this.copyText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.copyText.Location = new System.Drawing.Point(250, 409);
+            this.copyText.Margin = new System.Windows.Forms.Padding(4);
             this.copyText.Name = "copyText";
-            this.copyText.Size = new System.Drawing.Size(50, 23);
+            this.copyText.Size = new System.Drawing.Size(100, 44);
             this.copyText.TabIndex = 10;
             this.copyText.Text = "Copy";
             this.copyText.UseVisualStyleBackColor = true;
@@ -225,10 +261,10 @@ namespace DataImport
             "✓ SUCCESS",
             "❌ ERRORS",
             "⚠ WARNINGS"});
-            this.textView.Location = new System.Drawing.Point(2, 172);
-            this.textView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textView.Location = new System.Drawing.Point(4, 411);
+            this.textView.Margin = new System.Windows.Forms.Padding(4);
             this.textView.Name = "textView";
-            this.textView.Size = new System.Drawing.Size(121, 21);
+            this.textView.Size = new System.Drawing.Size(238, 33);
             this.textView.TabIndex = 4;
             this.textView.SelectedIndexChanged += new System.EventHandler(this.TextView_SelectedIndexChanged);
             this.textView.DropDownClosed += new System.EventHandler(this.TextView_DropDownClosed);
@@ -236,10 +272,10 @@ namespace DataImport
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 78);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(4, 227);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(108, 13);
+            this.label2.Size = new System.Drawing.Size(219, 25);
             this.label2.TabIndex = 6;
             this.label2.Text = "OptionSet field format";
             this.label2.Visible = false;
@@ -252,41 +288,41 @@ namespace DataImport
             "MAP THE FIRST FOUND RECORD TO THE LOOKUP",
             "SKIP RECORD WITHOUT IMPORTING IT AT ALL",
             "IMPORT RECORD WITH CLEARED LOOKUP"});
-            this.comboBox1.Location = new System.Drawing.Point(2, 133);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Location = new System.Drawing.Point(4, 332);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(252, 21);
+            this.comboBox1.Size = new System.Drawing.Size(500, 33);
             this.comboBox1.TabIndex = 9;
             this.comboBox1.Visible = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(2, 117);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(4, 301);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(129, 13);
+            this.label4.Size = new System.Drawing.Size(292, 25);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Lookup found > 2 records";
+            this.label4.Text = "Lookup field found > 1 record";
             this.label4.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(2, 39);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(4, 75);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(115, 13);
+            this.label3.Size = new System.Drawing.Size(230, 25);
             this.label3.TabIndex = 7;
             this.label3.Text = "2. Choose CRM Action";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(4, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
+            this.label1.Size = new System.Drawing.Size(137, 25);
             this.label1.TabIndex = 5;
             this.label1.Text = "1. Pick Entity";
             this.label1.Click += new System.EventHandler(this.Label1_Click);
@@ -298,10 +334,10 @@ namespace DataImport
             this.pickedEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pickedEntity.DropDownWidth = 200;
             this.pickedEntity.FormattingEnabled = true;
-            this.pickedEntity.Location = new System.Drawing.Point(2, 16);
-            this.pickedEntity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pickedEntity.Location = new System.Drawing.Point(4, 31);
+            this.pickedEntity.Margin = new System.Windows.Forms.Padding(4);
             this.pickedEntity.Name = "pickedEntity";
-            this.pickedEntity.Size = new System.Drawing.Size(252, 21);
+            this.pickedEntity.Size = new System.Drawing.Size(500, 33);
             this.pickedEntity.Sorted = true;
             this.pickedEntity.TabIndex = 4;
             this.pickedEntity.SelectedIndexChanged += new System.EventHandler(this.PickedEntity_SelectedIndexChanged);
@@ -314,10 +350,10 @@ namespace DataImport
             this.optionSetVL.Items.AddRange(new object[] {
             "OPTIONSET VALUES",
             "OPTIONSET LABELS"});
-            this.optionSetVL.Location = new System.Drawing.Point(2, 94);
-            this.optionSetVL.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.optionSetVL.Location = new System.Drawing.Point(4, 258);
+            this.optionSetVL.Margin = new System.Windows.Forms.Padding(4);
             this.optionSetVL.Name = "optionSetVL";
-            this.optionSetVL.Size = new System.Drawing.Size(252, 21);
+            this.optionSetVL.Size = new System.Drawing.Size(500, 33);
             this.optionSetVL.TabIndex = 3;
             this.optionSetVL.Visible = false;
             // 
@@ -332,19 +368,21 @@ namespace DataImport
             "CREATE",
             "UPDATE",
             "DELETE"});
-            this.crmAction.Location = new System.Drawing.Point(2, 55);
-            this.crmAction.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.crmAction.Location = new System.Drawing.Point(4, 106);
+            this.crmAction.Margin = new System.Windows.Forms.Padding(4);
             this.crmAction.Name = "crmAction";
-            this.crmAction.Size = new System.Drawing.Size(252, 21);
+            this.crmAction.Size = new System.Drawing.Size(500, 33);
             this.crmAction.TabIndex = 2;
+            this.crmAction.DropDownClosed += new System.EventHandler(this.crmAction_DropDownClosed);
             // 
             // richTextBox1
             // 
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(6);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(194, 68);
+            this.richTextBox1.Size = new System.Drawing.Size(388, 286);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 
@@ -365,10 +403,10 @@ namespace DataImport
             this.OperatorCol});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.Size = new System.Drawing.Size(364, 270);
+            this.dataGridView1.Size = new System.Drawing.Size(728, 540);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
             // 
@@ -537,27 +575,15 @@ namespace DataImport
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
             // 
-            // RefreshLogs
-            // 
-            this.RefreshLogs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshLogs.BackgroundImage")));
-            this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RefreshLogs.Location = new System.Drawing.Point(175, 171);
-            this.RefreshLogs.Name = "RefreshLogs";
-            this.RefreshLogs.Size = new System.Drawing.Size(26, 23);
-            this.RefreshLogs.TabIndex = 12;
-            this.RefreshLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.RefreshLogs.UseVisualStyleBackColor = true;
-            this.RefreshLogs.Click += new System.EventHandler(this.Button1_Click_2);
-            // 
             // MyPluginControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMenu);
-            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "MyPluginControl";
-            this.Size = new System.Drawing.Size(560, 301);
+            this.Size = new System.Drawing.Size(1120, 579);
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
@@ -610,5 +636,7 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
         private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
         private System.Windows.Forms.Button RefreshLogs;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox keyRecords;
     }
 }
