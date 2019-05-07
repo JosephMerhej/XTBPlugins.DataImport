@@ -44,7 +44,6 @@ namespace DataImport
         int iRow, iCol = 1;
         bool flaglookup;
         int lookupscount;
-        string mtextView = "";
         StringBuilder boxall = new StringBuilder();
         StringBuilder boxwarning = new StringBuilder();
         StringBuilder boxerror = new StringBuilder();
@@ -62,6 +61,7 @@ namespace DataImport
             crmAction.SelectedIndex = 0;
             textView.SelectedIndex = 0;
             optionSetVL.SelectedIndex = 0;
+            keyRecords.SelectedIndex = 0;
             ExecuteMethod(InitEntities);
         }
         
@@ -650,6 +650,11 @@ namespace DataImport
             SetTextBox1();
         }
 
+        private void crmAction_DropDownClosed(object sender, EventArgs e)
+        {
+
+        }
+
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
@@ -684,8 +689,8 @@ namespace DataImport
             
             string mcrmAction = crmAction.SelectedItem.ToString();
             string mcomboBox1 = comboBox1.SelectedItem.ToString();
-            string mtextView = textView.SelectedItem.ToString();
             string moptionSetVL = optionSetVL.SelectedItem.ToString();
+            int mkeyRecords = keyRecords.SelectedIndex;
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Importing...",
@@ -1073,20 +1078,28 @@ namespace DataImport
                                 EntityCollection ec = Service.RetrieveMultiple(qe);
                                 if (ec.Entities.Count > 0)
                                 {
-                                    foreach (Entity entity in ec.Entities)
+                                    if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                    { 
+                                        foreach (Entity entity in ec.Entities)
+                                        {
+                                            record.Id = entity.Id;
+                                            try
+                                            {
+                                                Service.Update(record);
+                                                richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                                richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                            }
+                                            catch (FaultException<OrganizationServiceFault> ex)
+                                            {
+                                                richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
+                                                richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
+                                            }
+                                        }
+                                    }
+                                    else
                                     {
-                                        record.Id = entity.Id;
-                                        try
-                                        {
-                                            Service.Update(record);
-                                            richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
-                                            richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
-                                        }
-                                        catch (FaultException<OrganizationServiceFault> ex)
-                                        {
-                                            richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
-                                            richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
-                                        }
+                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
+                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                     }
                                 }
                                 else
@@ -1102,20 +1115,28 @@ namespace DataImport
                                 EntityCollection ec = Service.RetrieveMultiple(qe);
                                 if (ec.Entities.Count > 0)
                                 {
-                                    foreach (Entity entity in ec.Entities)
+                                    if (ec.Entities.Count == 1 || mkeyRecords == 0)
                                     {
-                                        record.Id = entity.Id;
-                                        try
+                                        foreach (Entity entity in ec.Entities)
                                         {
-                                            Service.Update(record);
-                                            richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
-                                            richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                            record.Id = entity.Id;
+                                            try
+                                            {
+                                                Service.Update(record);
+                                                richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                                richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                            }
+                                            catch (FaultException<OrganizationServiceFault> ex)
+                                            {
+                                                richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
+                                                richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
+                                            }
                                         }
-                                        catch (FaultException<OrganizationServiceFault> ex)
-                                        {
-                                            richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
-                                            richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
-                                        }
+                                    }
+                                    else
+                                    {
+                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
+                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                     }
                                 }
                                 else
@@ -1139,20 +1160,28 @@ namespace DataImport
                                 EntityCollection ec = Service.RetrieveMultiple(qe);
                                 if (ec.Entities.Count > 0)
                                 {
-                                    foreach (Entity entity in ec.Entities)
+                                    if (ec.Entities.Count == 1 || mkeyRecords == 0)
                                     {
-                                        record.Id = entity.Id;
-                                        try
+                                        foreach (Entity entity in ec.Entities)
                                         {
-                                            Service.Delete(strentityname, record.Id);
+                                            record.Id = entity.Id;
+                                            try
+                                            {
+                                                Service.Delete(strentityname, record.Id);
+                                            }
+                                            catch (FaultException<OrganizationServiceFault> ex)
+                                            {
+                                                richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
+                                                richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
+                                            }
+                                            richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
+                                            richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
                                         }
-                                        catch (FaultException<OrganizationServiceFault> ex)
-                                        {
-                                            richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
-                                            richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
-                                        }
-                                        richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
-                                        richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
+                                    }
+                                    else
+                                    {
+                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
+                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                     }
                                 }
                                 else
@@ -1161,11 +1190,7 @@ namespace DataImport
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
                                 }
                             }
-                            //SetTextBox1();
-                            //richTextBox1.SelectionStart = richTextBox1.Text.Length;
-                            //richTextBox1.SelectionLength = 0;
-                            //richTextBox1.ScrollToCaret();
-
+                            
                         }
                     }
                     xlWorkBook.Close();
@@ -1180,33 +1205,10 @@ namespace DataImport
                     richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
                     richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
                     
-                    //richTextBox1.SelectionStart = richTextBox1.Text.Length;
-                    //richTextBox1.SelectionLength = 0;
-                    //richTextBox1.ScrollToCaret();
                 },
                 ProgressChanged = e =>
                 {
                     SetWorkingMessage("Import in progress: "+e.ProgressPercentage.ToString()+"% imported.");
-                    
-                   /* //SetTextBox1();
-                    if (mtextView == "")
-                        MessageBox.Show("textView Choice not found");
-                    if (mtextView == "📙 ALL")
-                    {
-                        richTextBox1.Text = richTextBoxAll.Text;
-                    }
-                    else if (mtextView == "✓ SUCCESS")
-                    {
-                        richTextBox1.Text = richTextBoxImported.Text;
-                    }
-                    else if (mtextView == "❌ ERRORS")
-                    {
-                        richTextBox1.Text = richTextBoxErrors.Text;
-                    }
-                    else if (mtextView == "⚠ WARNINGS")
-                    {
-                        richTextBox1.Text = richTextBoxWarning.Text;
-                    }*/
                 },
                 PostWorkCallBack = e =>
                 {
