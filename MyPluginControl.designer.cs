@@ -54,6 +54,7 @@ namespace DataImport
             this.crmAction = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CRMField = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -63,7 +64,6 @@ namespace DataImport
             this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -287,7 +287,7 @@ namespace DataImport
             this.comboBox1.Items.AddRange(new object[] {
             "MAP THE FIRST FOUND RECORD TO THE LOOKUP",
             "SKIP RECORD WITHOUT IMPORTING IT AT ALL",
-            "IMPORT RECORD WITH CLEARED LOOKUP"});
+            "IMPORT CRM RECORD WITH CLEARED LOOKUP"});
             this.comboBox1.Location = new System.Drawing.Point(4, 332);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
@@ -373,7 +373,7 @@ namespace DataImport
             this.crmAction.Name = "crmAction";
             this.crmAction.Size = new System.Drawing.Size(500, 33);
             this.crmAction.TabIndex = 2;
-            this.crmAction.DropDownClosed += new System.EventHandler(this.crmAction_DropDownClosed);
+            this.crmAction.DropDownClosed += new System.EventHandler(this.CrmAction_DropDownClosed);
             // 
             // richTextBox1
             // 
@@ -409,6 +409,11 @@ namespace DataImport
             this.dataGridView1.Size = new System.Drawing.Size(728, 540);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
             // 
             // ExcelColumn
             // 
@@ -570,11 +575,6 @@ namespace DataImport
             this.OperatorCol.Name = "OperatorCol";
             this.OperatorCol.Visible = false;
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
-            // 
             // MyPluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -626,6 +626,9 @@ namespace DataImport
         private System.Windows.Forms.ComboBox textView;
         private System.Windows.Forms.Button copyText;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button RefreshLogs;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox keyRecords;
         private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
         private System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
@@ -635,8 +638,5 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
         private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
         private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
-        private System.Windows.Forms.Button RefreshLogs;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox keyRecords;
     }
 }
