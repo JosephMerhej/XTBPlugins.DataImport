@@ -48,7 +48,11 @@ namespace DataImport
         StringBuilder boxwarning = new StringBuilder();
         StringBuilder boxerror = new StringBuilder();
         StringBuilder boxsuccess = new StringBuilder();
-        //BackgroundWorker _worker;
+        int successnumber = 0;
+        int errornumber = 0;
+        int creatednumber = 0;
+        int updatednumber = 0;
+        int deletednumber = 0;
         private Settings mySettings;
 
         public MyPluginControl()
@@ -376,6 +380,8 @@ namespace DataImport
                             dataGridView1.Rows.Add(xlRange.Cells[1, iCol].value);
                         }
                     }
+                    textRowCount.Text = ((xlRange.Rows.Count)-1).ToString();
+                    
                     xlWorkBook.Close();
                     xlApp.Quit();
                 }
@@ -426,6 +432,12 @@ namespace DataImport
             {
                 richTextBox1.Text = richTextBoxWarning.Text;
             }
+            textBoxSuccess.Text = successnumber.ToString();
+            textBoxError.Text = errornumber.ToString();
+            textCreated.Text = creatednumber.ToString();
+            textUpdated.Text = updatednumber.ToString();
+            textDeleted.Text = deletednumber.ToString();
+
         }
         private void TextView_DropDownClosed(object sender, EventArgs e)
         {
@@ -447,7 +459,11 @@ namespace DataImport
             {
                 richTextBox1.Text = richTextBoxWarning.Text;
             }
-
+            textBoxSuccess.Text = successnumber.ToString();
+            textBoxError.Text = errornumber.ToString();
+            textCreated.Text = creatednumber.ToString();
+            textUpdated.Text = updatednumber.ToString();
+            textDeleted.Text = deletednumber.ToString();
         }
         private void EmptyDataGrid()
         {
@@ -567,6 +583,17 @@ namespace DataImport
             flaglookup = false;
             lookupscount = 0;
             IsReadyToImport = false;
+            textRowCount.Text = "";
+            textBoxSuccess.Text = "";
+            successnumber = 0;
+            textBoxError.Text = "";
+            errornumber = 0;
+            textCreated.Text = "";
+            creatednumber = 0;
+            textUpdated.Text = "";
+            updatednumber = 0;
+            textDeleted.Text = "";
+            deletednumber = 0;
         }
         private void ProcessFields()
         {
@@ -728,6 +755,16 @@ namespace DataImport
             }
         }
 
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
@@ -763,7 +800,17 @@ namespace DataImport
             string mcomboBox1 = comboBox1.SelectedItem.ToString();
             string moptionSetVL = optionSetVL.SelectedItem.ToString();
             int mkeyRecords = keyRecords.SelectedIndex;
-            
+            successnumber = 0;
+            errornumber = 0;
+            creatednumber = 0;
+            updatednumber = 0;
+            deletednumber = 0;
+            textBoxSuccess.Text = successnumber.ToString();
+            textBoxError.Text = errornumber.ToString();
+            textCreated.Text = creatednumber.ToString();
+            textUpdated.Text = updatednumber.ToString();
+            textDeleted.Text = deletednumber.ToString();
+
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Importing...",
@@ -778,9 +825,10 @@ namespace DataImport
                     bool istoimport;
                     
                     richTextBoxErrors.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
-                    richTextBoxImported.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
-                    richTextBoxAll.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxImported.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxAll.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
                     richTextBoxWarning.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
+                    
                     for (iRow = 2; iRow <= xlRange.Rows.Count; iRow++)  // START FROM THE SECOND ROW.
                     {
                         if (wcl.CancellationPending == true)
@@ -799,6 +847,7 @@ namespace DataImport
                             EntityName = strentityname,
                             ColumnSet = new ColumnSet()
                         };
+                        
                         for (iCol = 1; iCol <= xlRange.Columns.Count; iCol++)
                         {
                             if (xlRange[1, iCol].value == null)
@@ -1181,11 +1230,14 @@ namespace DataImport
                                     _recordId = Service.Create(record);
                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
+                                    successnumber++;
+                                    creatednumber++;
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
+                                    errornumber++;
                                 }
                             }
 
@@ -1207,11 +1259,14 @@ namespace DataImport
                                                     Service.Update(record);
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                                    successnumber++;
+                                                    updatednumber++;
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
+                                                    errornumber++;
                                                 }
                                             }
                                         }
@@ -1219,18 +1274,21 @@ namespace DataImport
                                         {
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
+                                            errornumber++;
                                         }
                                     }
                                     else
                                     {
                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO UPDATE";
                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO UPDATE";
+                                        errornumber++;
                                     }
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message;
+                                    errornumber++;
                                 }
                             }
 
@@ -1252,11 +1310,14 @@ namespace DataImport
                                                     Service.Update(record);
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
+                                                    successnumber++;
+                                                    updatednumber++;
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
+                                                    errornumber++;
                                                 }
                                             }
                                         }
@@ -1264,6 +1325,7 @@ namespace DataImport
                                         {
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
+                                            errornumber++;
                                         }
                                     }
                                     else
@@ -1273,11 +1335,14 @@ namespace DataImport
                                             _recordId = Service.Create(record);
                                             richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                             richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
+                                            successnumber++;
+                                            creatednumber++;
                                         }
                                         catch (FaultException<OrganizationServiceFault> ex)
                                         {
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
+                                            errornumber++;
                                         }
 
                                     }
@@ -1286,6 +1351,7 @@ namespace DataImport
                                 {
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message;
+                                    errornumber++;
                                 }
                             }
                             else if (mcrmAction == "DELETE")
@@ -1303,32 +1369,38 @@ namespace DataImport
                                                 try
                                                 {
                                                     Service.Delete(strentityname, record.Id);
+                                                    richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
+                                                    richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
+                                                    successnumber++;
+                                                    deletednumber++;
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
+                                                    errornumber++;
                                                 }
-                                                richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
-                                                richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
                                             }
                                         }
                                         else
                                         {
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
+                                            errornumber++;
                                         }
                                     }
                                     else
                                     {
                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
+                                        errornumber++;
                                     }
                                 }
                                 catch (FaultException < OrganizationServiceFault > ex)
                                 {
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message;
+                                    errornumber++;
                                 }
                             }
                             
@@ -1374,10 +1446,10 @@ namespace DataImport
                     {
                         richTextBox1.Text = richTextBoxWarning.Text;
                     }
+                    textBoxSuccess.Text = successnumber.ToString();
+                    textBoxError.Text = errornumber.ToString();
                 }
             });
-
         }
-
     }
 }
