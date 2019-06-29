@@ -133,8 +133,6 @@ namespace DataImport
                 Message = "Getting entity fields",
                 Work = (worker, args) =>
                 {
-
-
                     Dictionary<string, string> attributesData = new Dictionary<string, string>();
                     RetrieveEntityRequest retrieveEntityRequest = new RetrieveEntityRequest
                     {
@@ -158,8 +156,13 @@ namespace DataImport
                         foreach (object attribute in resultsaved.Attributes)
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
-                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "String" || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier")
+
+                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" ||  (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
+                            /*else if(a.LogicalName.ToString()=="statecode")
+                            { 
+                                    MessageBox.Show(a.LogicalName.ToString()+ " - "+a.AttributeType.ToString());
+                            }*/
                         }
                     }
                 }
@@ -216,70 +219,6 @@ namespace DataImport
                 }
             });
         }
-
-        /*private void GetFieldsResult(string myentity, int thatRow)
-        {
-
-            if (string.IsNullOrEmpty(myentity))
-            {
-                return;
-            }
-            WorkAsync(new WorkAsyncInfo
-            {
-                Message = "Getting entity fields",
-                Work = (worker, args) =>
-                {
-                    Dictionary<string, string> attributesData = new Dictionary<string, string>();
-                    RetrieveEntityRequest retrieveEntityRequest = new RetrieveEntityRequest
-                    {
-                        EntityFilters = EntityFilters.All,
-                        LogicalName = myentity
-                    };
-
-                    // Execute the request
-                    args.Result = (RetrieveEntityResponse)Service.Execute(retrieveEntityRequest);
-                },
-                PostWorkCallBack = (args) =>
-                {
-                    if (args.Error != null)
-                    {
-                        MessageBox.Show(args.Error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    var result = args.Result as RetrieveEntityResponse;
-                    EntityMetadata mlkpresultsaved = result.EntityMetadata;
-                    if (result != null)
-                    {
-                        DataGridViewComboBoxCell stateCell = (DataGridViewComboBoxCell)(dataGridView1.Rows[thatRow].Cells[5]);
-                        foreach (object attribute in mlkpresultsaved.Attributes)
-                        {
-                            AttributeMetadata a = (AttributeMetadata)attribute;
-                            if (a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "String" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money")
-                            {
-
-                            }
-                        }
-                    }
-                }
-            });
-        }*/
-
-
-        /* private void MyPluginControl_Load(object sender, EventArgs e)
-         {
-             //ShowInfoNotification("This is a notification that can lead to XrmToolBox repository", new Uri("https://github.com/MscrmTools/XrmToolBox"));
-             // Loads or creates the settings for the plugin
-             if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
-             {
-                 mySettings = new Settings();
-
-                 LogWarning("Settings not found => a new settings file has been created!");
-             }
-             else
-             {
-                 LogInfo("Settings found and loaded");
-             }
-         }*/
-
 
         private void TsbClose_Click(object sender, EventArgs e)
         {
@@ -472,6 +411,7 @@ namespace DataImport
             dataGridView1.Columns["lkpTargetfield"].Visible = false;
             dataGridView1.Columns["Truevalue"].Visible = false;
             dataGridView1.Columns["Falsevalue"].Visible = false;
+            dataGridView1.Columns["DefaultValue"].Visible = false;
         }
 
         private void GetFile()
@@ -568,10 +508,8 @@ namespace DataImport
             EmptyDataGrid();
             label2.Visible = false;
             optionSetVL.Visible = false;
-            optionSetVL.SelectedItem = null;
             label4.Visible = false;
             comboBox1.Visible = false;
-            comboBox1.SelectedItem = null;
             crmAction.SelectedIndex = 0;
             CRMField.Items.Clear();
             dataGridView1.Refresh();
@@ -594,6 +532,10 @@ namespace DataImport
             updatednumber = 0;
             textDeleted.Text = "";
             deletednumber = 0;
+            comboBox1.SelectedIndex = 0;
+            textView.SelectedIndex = 0;
+            optionSetVL.SelectedIndex = 0;
+            keyRecords.SelectedIndex = 0;
         }
         private void ProcessFields()
         {
@@ -616,7 +558,7 @@ namespace DataImport
                     if (a.LogicalName.ToString() == acrmfield)  //Find the CRM field between the metadata
                     {
                         DataGridViewCheckBoxCell chk = dataGridView1.Rows[dRow].Cells[3] as DataGridViewCheckBoxCell;
-                        if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer") // check if the CRM field is of type Lookup
+                        if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
                         {
                             dataGridView1.Columns["lkpTargetEntity"].Visible = true;
                             dataGridView1.Columns["lkpTargetfield"].Visible = true;
@@ -651,12 +593,16 @@ namespace DataImport
                         {
                             dataGridView1.Columns["Truevalue"].Visible = true;
                             dataGridView1.Columns["Falsevalue"].Visible = true;
+                            dataGridView1.Columns["DefaultValue"].Visible = true;
                             DataGridViewCell databooltrue = dataGridView1.Rows[dRow].Cells[6] as DataGridViewCell;
                             databooltrue.ReadOnly = false;
                             databooltrue.Style.BackColor = Color.LightGray;
                             DataGridViewCell databoolfalse = dataGridView1.Rows[dRow].Cells[7] as DataGridViewCell;
                             databoolfalse.ReadOnly = false;
                             databoolfalse.Style.BackColor = Color.LightGray;
+                            DataGridViewCell databooldefault = dataGridView1.Rows[dRow].Cells[8] as DataGridViewCell;
+                            databooldefault.ReadOnly = false;
+                            databooldefault.Style.BackColor = Color.LightGray;
 
                             //fetch for true and false boolean values
                             RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
@@ -669,10 +615,19 @@ namespace DataImport
                             BooleanAttributeMetadata retrievedBooleanAttributeMetadata = (BooleanAttributeMetadata)retrieveAttributeResponse.AttributeMetadata;
                             string boolTextTrue = retrievedBooleanAttributeMetadata.OptionSet.TrueOption.Label.UserLocalizedLabel.Label;
                             string boolTextFalse = retrievedBooleanAttributeMetadata.OptionSet.FalseOption.Label.UserLocalizedLabel.Label;
+                            bool boolDefault = retrievedBooleanAttributeMetadata.DefaultValue.Value;
+                            string boolTextDefault;
+
+                            if (boolDefault)
+                                boolTextDefault = boolTextTrue;
+                            else
+                                boolTextDefault = boolTextFalse;
+
                             dataGridView1.Rows[dRow].Cells["Truevalue"].Value = boolTextTrue;
                             dataGridView1.Rows[dRow].Cells["Falsevalue"].Value = boolTextFalse;
+                            dataGridView1.Rows[dRow].Cells["DefaultValue"].Value = boolTextDefault;
                         }
-                        if (a.AttributeType.ToString() == "Picklist")
+                        if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
                         {
                             label2.Visible = true;
                             optionSetVL.Visible = true;
@@ -765,6 +720,11 @@ namespace DataImport
 
         }
 
+        private void blogURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.d365tips.com/home/xrmtoolbox-dataimport");
+        }
+
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
@@ -810,7 +770,8 @@ namespace DataImport
             textCreated.Text = creatednumber.ToString();
             textUpdated.Text = updatednumber.ToString();
             textDeleted.Text = deletednumber.ToString();
-
+            toolStripButton1.Enabled = false;
+            toolStripButton2.Enabled = false;
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Importing...",
@@ -850,44 +811,66 @@ namespace DataImport
                         
                         for (iCol = 1; iCol <= xlRange.Columns.Count; iCol++)
                         {
-                            if (xlRange[1, iCol].value == null)
+                            string myfieldlabel = dt.Rows[iCol - 1][2].ToString();  //GET FIELD NAME
+                            if (xlRange[1, iCol].value == null || xlRange[1,iCol].value=="" || string.IsNullOrEmpty(myfieldlabel))
                             {
                                 continue;
                             }
-                            string myfieldlabel = dt.Rows[iCol - 1][2].ToString();  //GET FIELD NAME
-                            if(string.IsNullOrEmpty(myfieldlabel))
-                                break;
+                            //string myfieldlabel = dt.Rows[iCol - 1][2].ToString();  //GET FIELD NAME
+                            //if(string.IsNullOrEmpty(myfieldlabel))
+                            //    break;
                             logicalnm[iCol - 1] = myfieldlabel;
                             string myfieldtype = "";
-                            if (xlRange.Cells[iRow, iCol].value == null)
+                            if (xlRange.Cells[iRow, iCol].value == null || xlRange[1, iCol].value == "")
                             {
-                                foreach (object attribute in resultsaved.Attributes)
+                                if (dt.Rows[iCol - 1][9].ToString() == "Clears CRM value")
                                 {
-                                    AttributeMetadata a = (AttributeMetadata)attribute;
-                                    if (a.LogicalName.ToString() == myfieldlabel)
+                                    foreach (object attribute in resultsaved.Attributes)
                                     {
-                                        myfieldtype = a.AttributeType.ToString();
-                                        break;
+                                        AttributeMetadata a = (AttributeMetadata)attribute;
+                                        if (a.LogicalName.ToString() == myfieldlabel)
+                                        {
+                                            myfieldtype = a.AttributeType.ToString();
+                                            break;
+                                        }
                                     }
-                                }
-                                if (myfieldtype == "String")
-                                {
-                                    record[logicalnm[iCol - 1]] = "";
-                                }
-                                else if (myfieldtype == "Picklist" || myfieldtype == "Boolean" || myfieldtype == "DateTime" || myfieldtype == "Customer" || myfieldtype == "Lookup")
-                                {
-                                    record[logicalnm[iCol - 1]] = null;
-                                }
-                                if (dt.Rows[iCol - 1][1] == null)
-                                    strIsKey = false;
-                                else
-                                    strIsKey = Convert.ToBoolean(dt.Rows[iCol - 1][1]);
+                                    if (myfieldtype == "String" || myfieldtype == "Memo")
+                                    {
+                                        record[logicalnm[iCol - 1]] = "";
+                                    }
+                                    else if (myfieldtype == "Picklist" || myfieldtype == "DateTime" || myfieldtype == "Customer" || myfieldtype == "Lookup" || myfieldtype == "State")
+                                    {
+                                        record[logicalnm[iCol - 1]] = null;
+                                    }
+                                    else if (myfieldtype == "Owner") { }
+                                    else if (myfieldtype == "Boolean")
+                                    {
+                                        if ((dt.Rows[iCol - 1]["DefaultValue"].ToString().ToLower()) == (dt.Rows[iCol - 1]["Truevalue"].ToString().ToLower()))
+                                        {
+                                            record[logicalnm[iCol - 1]] = true;
+                                        }
+                                        else if ((dt.Rows[iCol - 1]["DefaultValue"].ToString().ToLower()) == (dt.Rows[iCol - 1]["Falsevalue"].ToString().ToLower()))
+                                        {
+                                            record[logicalnm[iCol - 1]] = false;
+                                        }
+                                    }
+                                    else if (myfieldtype == "Virtual")
+                                    {
+                                        OptionSetValueCollection multioptionset = new OptionSetValueCollection();
+                                        record[logicalnm[iCol - 1]] = multioptionset;
+                                    }
 
-                                if (strIsKey)
-                                {
-                                    qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Null));
-                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
-                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
+                                    if (dt.Rows[iCol - 1][1] == null)
+                                        strIsKey = false;
+                                    else
+                                        strIsKey = Convert.ToBoolean(dt.Rows[iCol - 1][1]);
+
+                                    if (strIsKey)
+                                    {
+                                        qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Null));
+                                        richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
+                                        richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
+                                    }
                                 }
                             }
                             else //Record not empty
@@ -910,7 +893,12 @@ namespace DataImport
                                                                select new { Value = o.Value, Text = o.Label.UserLocalizedLabel.Label }).ToList();
                                                 try
                                                 {
-                                                    int activeValue = (int)options.Where(o => o.Text == xlRange.Cells[iRow, iCol].value).Select(o => o.Value).FirstOrDefault();
+                                                    string xlvalue;
+                                                    if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
+                                                        xlvalue = xlRange.Cells[iRow, iCol].value;
+                                                    else
+                                                        xlvalue = xlRange.Cells[iRow, iCol].value.ToString();
+                                                    int activeValue = (int)options.Where(o => o.Text == xlvalue).Select(o => o.Value).FirstOrDefault();
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue(activeValue);
                                                 }
                                                 catch (InvalidOperationException ex)
@@ -948,7 +936,34 @@ namespace DataImport
 
                                             ////END OPTIONSET
                                         }
+                                        else if (myfieldtype == "State")
+                                        {
+                                            if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
+                                            {
+                                                // Active
+                                                if (xlRange.Cells[iRow, iCol].value == "0" || xlRange.Cells[iRow, iCol].value.ToLower() == "active" || xlRange.Cells[iRow, iCol].value.ToLower() == "actif")
+                                                {
+                                                    record[logicalnm[iCol - 1]] = new OptionSetValue(0);
+                                                }
 
+                                                // Inactive
+                                                else if (xlRange.Cells[iRow, iCol].value == "1" || xlRange.Cells[iRow, iCol].value.ToLower() == "inactive" || xlRange.Cells[iRow, iCol].value.ToLower() == "inactif")
+                                                {
+                                                    record[logicalnm[iCol - 1]] = new OptionSetValue(1);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (xlRange.Cells[iRow, iCol].value.ToString() == "0" || xlRange.Cells[iRow, iCol].value.ToLower() == "active" || xlRange.Cells[iRow, iCol].value.ToLower() == "actif")
+                                                {
+                                                    record[logicalnm[iCol - 1]] = new OptionSetValue(0);
+                                                }
+                                                else if (xlRange.Cells[iRow, iCol].value.ToString() == "1" || xlRange.Cells[iRow, iCol].value.ToLower() == "inactive" || xlRange.Cells[iRow, iCol].value.ToLower() == "inactif")
+                                                {
+                                                    record[logicalnm[iCol - 1]] = new OptionSetValue(1);
+                                                }
+                                            }
+                                        }
                                         /// if BOOLEAN
                                         else if (myfieldtype == "Boolean")
                                         {
@@ -966,11 +981,45 @@ namespace DataImport
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match boolean value : " + xlRange.Cells[iRow, iCol].value + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString();
                                             }
                                         }
+                                        else if (myfieldtype == "Virtual")
+                                        {
+                                            OptionSetValueCollection multioptionset = new OptionSetValueCollection();
+                                            string authors;
+                                            if (xlRange.Cells[iRow, iCol].Equals(typeof(String)))
+                                                authors = xlRange.Cells[iRow, iCol].value.Replace(" ", "");
+                                            else
+                                                authors = xlRange.Cells[iRow, iCol].value.ToString().Replace(" ", "");
+                                            // Split authors separated by a comma followed by space  
+                                            string[] authorsList = authors.Split(';');
+                                            foreach (string author in authorsList)
+                                            {
+                                                try
+                                                { 
+                                                    multioptionset.Add(new OptionSetValue(Convert.ToInt32(author))); //Swimming
+                                                }
+                                                catch (FormatException)
+                                                {
+                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
+                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
+                                                }
+                                            }
+                                            record[logicalnm[iCol - 1]] = multioptionset;
+                                        }
                                         break;
                                     }
                                 }
-                                if (myfieldtype == "String")
-                                    record[logicalnm[iCol - 1]] = xlRange.Cells[iRow, iCol].value;
+                                if (myfieldtype == "String" || myfieldtype == "Memo")
+                                {
+                                    if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
+                                    {
+                                        record[logicalnm[iCol - 1]] = xlRange.Cells[iRow, iCol].value;
+                                    }
+                                    else
+                                    {
+                                        record[logicalnm[iCol - 1]] = xlRange.Cells[iRow, iCol].value.ToString();
+                                    }
+                                }
+                                    
                                 else if (myfieldtype == "DateTime")
                                 {
                                     if (xlRange.Cells[iRow, iCol].Equals(typeof(DateTime)))
@@ -1046,7 +1095,7 @@ namespace DataImport
                                         record[logicalnm[iCol - 1]] = d;
                                     }
                                 }
-                                else if (myfieldtype == "Lookup" || myfieldtype == "Customer")
+                                else if (myfieldtype == "Lookup" || myfieldtype == "Customer" || myfieldtype == "Owner")
                                 {
                                     flaglookup = true;
                                 }
@@ -1064,7 +1113,7 @@ namespace DataImport
                                         qestr = mymoney.Value.ToString();
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Equal, qestr));
                                     }
-                                    else if (myfieldtype == "Picklist")
+                                    else if (myfieldtype == "Picklist" || myfieldtype == "State")
                                     {
                                         myoptionset = (OptionSetValue)record[logicalnm[iCol - 1]];
                                         qestr = myoptionset.Value.ToString();
@@ -1093,7 +1142,32 @@ namespace DataImport
                                         Guid mgud = new Guid((string)(xlRange.Cells[iRow, iCol].value));
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Equal, mgud));
                                     }
-                                    else if (myfieldtype == "Lookup" || myfieldtype == "Customer")
+                                    else if(myfieldtype=="Virtual")
+                                    {
+                                        OptionSetValueCollection multioptionsetfield = new OptionSetValueCollection();
+                                        string stringItem;
+                                        if (xlRange.Cells[iRow, iCol].Equals(typeof(String)))
+                                            stringItem = xlRange.Cells[iRow, iCol].value.Replace(" ", "");
+                                        else
+                                            stringItem = xlRange.Cells[iRow, iCol].value.ToString().Replace(" ", "");
+
+                                        string[] stringList = stringItem.Split(';');
+                                        int[] intValue = new int[stringList.Length];
+                                        for (int aut=0;aut< stringList.Length;aut++)
+                                        {
+                                            try
+                                            {
+                                                intValue[aut]= (Convert.ToInt32(stringList[aut]));
+                                            }
+                                            catch (FormatException)
+                                            {
+                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
+                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
+                                            }
+                                        }
+                                        qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.In, intValue));
+                                    }
+                                    else if (myfieldtype == "Lookup" || myfieldtype == "Customer" || myfieldtype == "Owner")
                                     {
 
                                     }
@@ -1103,13 +1177,13 @@ namespace DataImport
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Equal, qestr));
                                     }
 
-                                    ///ADD CONDITION FOR KEY
+                                    /*///ADD CONDITION FOR KEY
                                     if (myfieldtype != "Lookup" && myfieldtype != "Customer" && myfieldtype != "Boolean" && myfieldtype != "Uniqueidentifier")
                                     {
                                         //dcc = (DataGridViewComboBoxCell)dataGridView1.Rows[iCol - 1].Cells[2];
                                         //int indexx = dcc.Items.IndexOf(dcc.Value);
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Equal, qestr));
-                                    }
+                                    }*/
                                 }
                             }
                         }
@@ -1429,7 +1503,8 @@ namespace DataImport
                 PostWorkCallBack = e =>
                 {
                     // This code is executed in the main thread
-                    
+                    toolStripButton1.Enabled = true;
+                    toolStripButton2.Enabled = true;
                     if (textView.SelectedItem.ToString() == "📙 ALL")
                     {
                         richTextBox1.Text = richTextBoxAll.Text;
