@@ -3,6 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartArguments>/overridepath:. /connection:"default" /plugin:"Data Import++"</StartArguments>
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Users\Andrew\source\repos\Joseph\XTBPlugins.DataImport\bin\Debug\XrmToolBox.exe</StartProgram>
+    <StartProgram>C:\Users\Andrew\source\repos\XTBPlugins.DataImport\bin\Debug\XrmToolBox.exe</StartProgram>
   </PropertyGroup>
 </Project>
