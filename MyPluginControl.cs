@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using Microsoft.Xrm.Sdk.Query;
@@ -15,8 +14,6 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Messages;
-using System.Xml;
-using System.Collections;
 using System.ServiceModel;
 using System.Runtime.InteropServices;
 

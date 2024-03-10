@@ -55,6 +55,19 @@ namespace DataImport
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textDeleted = new System.Windows.Forms.TextBox();
+            this.textUpdated = new System.Windows.Forms.TextBox();
+            this.textCreated = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textRowCount = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBoxError = new System.Windows.Forms.TextBox();
+            this.textBoxSuccess = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CRMField = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -63,20 +76,8 @@ namespace DataImport
             this.lkpTargetfield = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.textRowCount = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBoxError = new System.Windows.Forms.TextBox();
-            this.textBoxSuccess = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textCreated = new System.Windows.Forms.TextBox();
-            this.textUpdated = new System.Windows.Forms.TextBox();
-            this.textDeleted = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -114,7 +115,7 @@ namespace DataImport
             // 
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(70, 28);
+            this.tsbClose.Size = new System.Drawing.Size(79, 28);
             this.tsbClose.Text = "CLOSE";
             this.tsbClose.Click += new System.EventHandler(this.TsbClose_Click);
             // 
@@ -128,7 +129,7 @@ namespace DataImport
             this.BrowseFile.Image = ((System.Drawing.Image)(resources.GetObject("BrowseFile.Image")));
             this.BrowseFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BrowseFile.Name = "BrowseFile";
-            this.BrowseFile.Size = new System.Drawing.Size(117, 28);
+            this.BrowseFile.Size = new System.Drawing.Size(141, 28);
             this.BrowseFile.Text = "BROWSE EXCEL";
             this.BrowseFile.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
@@ -137,7 +138,7 @@ namespace DataImport
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(122, 28);
+            this.toolStripButton2.Size = new System.Drawing.Size(147, 28);
             this.toolStripButton2.Text = "PROCESS FIELDS";
             this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
             // 
@@ -146,7 +147,7 @@ namespace DataImport
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(107, 28);
+            this.toolStripButton1.Size = new System.Drawing.Size(124, 28);
             this.toolStripButton1.Text = "IMPORT CRM";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
             // 
@@ -155,7 +156,7 @@ namespace DataImport
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(67, 28);
+            this.toolStripButton3.Size = new System.Drawing.Size(78, 28);
             this.toolStripButton3.Text = "RESET";
             this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click);
             // 
@@ -242,7 +243,6 @@ namespace DataImport
             // 
             // RefreshLogs
             // 
-            this.RefreshLogs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshLogs.BackgroundImage")));
             this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.RefreshLogs.Location = new System.Drawing.Point(175, 213);
             this.RefreshLogs.Name = "RefreshLogs";
@@ -452,6 +452,7 @@ namespace DataImport
             this.lkpTargetfield,
             this.Truevalue,
             this.Falsevalue,
+            this.DefaultValue,
             this.OperatorCol});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -461,6 +462,162 @@ namespace DataImport
             this.dataGridView1.Size = new System.Drawing.Size(893, 568);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(362, 40);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(55, 13);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "Deleted:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(203, 40);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(59, 13);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Updated:";
+            // 
+            // textDeleted
+            // 
+            this.textDeleted.BackColor = System.Drawing.Color.PowderBlue;
+            this.textDeleted.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textDeleted.Cursor = System.Windows.Forms.Cursors.No;
+            this.textDeleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textDeleted.ForeColor = System.Drawing.Color.Indigo;
+            this.textDeleted.Location = new System.Drawing.Point(423, 35);
+            this.textDeleted.MaxLength = 100000;
+            this.textDeleted.Name = "textDeleted";
+            this.textDeleted.ReadOnly = true;
+            this.textDeleted.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textDeleted.Size = new System.Drawing.Size(91, 23);
+            this.textDeleted.TabIndex = 22;
+            // 
+            // textUpdated
+            // 
+            this.textUpdated.BackColor = System.Drawing.Color.PowderBlue;
+            this.textUpdated.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textUpdated.Cursor = System.Windows.Forms.Cursors.No;
+            this.textUpdated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textUpdated.ForeColor = System.Drawing.Color.Indigo;
+            this.textUpdated.Location = new System.Drawing.Point(265, 35);
+            this.textUpdated.MaxLength = 100000;
+            this.textUpdated.Name = "textUpdated";
+            this.textUpdated.ReadOnly = true;
+            this.textUpdated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textUpdated.Size = new System.Drawing.Size(91, 23);
+            this.textUpdated.TabIndex = 21;
+            // 
+            // textCreated
+            // 
+            this.textCreated.BackColor = System.Drawing.Color.PowderBlue;
+            this.textCreated.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textCreated.Cursor = System.Windows.Forms.Cursors.No;
+            this.textCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textCreated.ForeColor = System.Drawing.Color.Indigo;
+            this.textCreated.Location = new System.Drawing.Point(116, 35);
+            this.textCreated.MaxLength = 100000;
+            this.textCreated.Name = "textCreated";
+            this.textCreated.ReadOnly = true;
+            this.textCreated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textCreated.Size = new System.Drawing.Size(84, 23);
+            this.textCreated.TabIndex = 20;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(62, 40);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(59, 13);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "Created: ";
+            // 
+            // textRowCount
+            // 
+            this.textRowCount.BackColor = System.Drawing.Color.Thistle;
+            this.textRowCount.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textRowCount.Cursor = System.Windows.Forms.Cursors.No;
+            this.textRowCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textRowCount.ForeColor = System.Drawing.Color.Indigo;
+            this.textRowCount.Location = new System.Drawing.Point(116, 1);
+            this.textRowCount.MaxLength = 100000;
+            this.textRowCount.Name = "textRowCount";
+            this.textRowCount.ReadOnly = true;
+            this.textRowCount.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textRowCount.Size = new System.Drawing.Size(84, 23);
+            this.textRowCount.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(4, 4);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(114, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Excel Rows Count:";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // textBoxError
+            // 
+            this.textBoxError.BackColor = System.Drawing.Color.LightPink;
+            this.textBoxError.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBoxError.Cursor = System.Windows.Forms.Cursors.No;
+            this.textBoxError.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxError.ForeColor = System.Drawing.Color.DarkRed;
+            this.textBoxError.Location = new System.Drawing.Point(423, 1);
+            this.textBoxError.MaxLength = 100000;
+            this.textBoxError.Name = "textBoxError";
+            this.textBoxError.ReadOnly = true;
+            this.textBoxError.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textBoxError.Size = new System.Drawing.Size(91, 23);
+            this.textBoxError.TabIndex = 18;
+            // 
+            // textBoxSuccess
+            // 
+            this.textBoxSuccess.BackColor = System.Drawing.Color.LightGreen;
+            this.textBoxSuccess.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBoxSuccess.Cursor = System.Windows.Forms.Cursors.No;
+            this.textBoxSuccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSuccess.ForeColor = System.Drawing.Color.Green;
+            this.textBoxSuccess.Location = new System.Drawing.Point(265, 1);
+            this.textBoxSuccess.MaxLength = 100000;
+            this.textBoxSuccess.Name = "textBoxSuccess";
+            this.textBoxSuccess.ReadOnly = true;
+            this.textBoxSuccess.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textBoxSuccess.Size = new System.Drawing.Size(91, 23);
+            this.textBoxSuccess.TabIndex = 17;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(377, 6);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(42, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Error: ";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(207, 6);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Sucess: ";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
             // 
             // ExcelColumn
             // 
@@ -525,6 +682,14 @@ namespace DataImport
             this.Falsevalue.ReadOnly = true;
             this.Falsevalue.Visible = false;
             this.Falsevalue.Width = 50;
+            // 
+            // DefaultValue
+            // 
+            this.DefaultValue.HeaderText = "Default Value";
+            this.DefaultValue.Name = "DefaultValue";
+            this.DefaultValue.ReadOnly = true;
+            this.DefaultValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.DefaultValue.Visible = false;
             // 
             // OperatorCol
             // 
@@ -622,162 +787,6 @@ namespace DataImport
             this.OperatorCol.Name = "OperatorCol";
             this.OperatorCol.Visible = false;
             // 
-            // textRowCount
-            // 
-            this.textRowCount.BackColor = System.Drawing.Color.Thistle;
-            this.textRowCount.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textRowCount.Cursor = System.Windows.Forms.Cursors.No;
-            this.textRowCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textRowCount.ForeColor = System.Drawing.Color.Indigo;
-            this.textRowCount.Location = new System.Drawing.Point(116, 1);
-            this.textRowCount.MaxLength = 100000;
-            this.textRowCount.Name = "textRowCount";
-            this.textRowCount.ReadOnly = true;
-            this.textRowCount.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textRowCount.Size = new System.Drawing.Size(84, 23);
-            this.textRowCount.TabIndex = 15;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(4, 4);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 13);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "Excel Rows Count:";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
-            // 
-            // textBoxError
-            // 
-            this.textBoxError.BackColor = System.Drawing.Color.LightPink;
-            this.textBoxError.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxError.Cursor = System.Windows.Forms.Cursors.No;
-            this.textBoxError.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxError.ForeColor = System.Drawing.Color.DarkRed;
-            this.textBoxError.Location = new System.Drawing.Point(423, 1);
-            this.textBoxError.MaxLength = 100000;
-            this.textBoxError.Name = "textBoxError";
-            this.textBoxError.ReadOnly = true;
-            this.textBoxError.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxError.Size = new System.Drawing.Size(91, 23);
-            this.textBoxError.TabIndex = 18;
-            // 
-            // textBoxSuccess
-            // 
-            this.textBoxSuccess.BackColor = System.Drawing.Color.LightGreen;
-            this.textBoxSuccess.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxSuccess.Cursor = System.Windows.Forms.Cursors.No;
-            this.textBoxSuccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSuccess.ForeColor = System.Drawing.Color.Green;
-            this.textBoxSuccess.Location = new System.Drawing.Point(265, 1);
-            this.textBoxSuccess.MaxLength = 100000;
-            this.textBoxSuccess.Name = "textBoxSuccess";
-            this.textBoxSuccess.ReadOnly = true;
-            this.textBoxSuccess.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxSuccess.Size = new System.Drawing.Size(91, 23);
-            this.textBoxSuccess.TabIndex = 17;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(377, 6);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(42, 13);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Error: ";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(207, 6);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(56, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Sucess: ";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(62, 40);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 13);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "Created: ";
-            // 
-            // textCreated
-            // 
-            this.textCreated.BackColor = System.Drawing.Color.PowderBlue;
-            this.textCreated.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textCreated.Cursor = System.Windows.Forms.Cursors.No;
-            this.textCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textCreated.ForeColor = System.Drawing.Color.Indigo;
-            this.textCreated.Location = new System.Drawing.Point(116, 35);
-            this.textCreated.MaxLength = 100000;
-            this.textCreated.Name = "textCreated";
-            this.textCreated.ReadOnly = true;
-            this.textCreated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textCreated.Size = new System.Drawing.Size(84, 23);
-            this.textCreated.TabIndex = 20;
-            // 
-            // textUpdated
-            // 
-            this.textUpdated.BackColor = System.Drawing.Color.PowderBlue;
-            this.textUpdated.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textUpdated.Cursor = System.Windows.Forms.Cursors.No;
-            this.textUpdated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textUpdated.ForeColor = System.Drawing.Color.Indigo;
-            this.textUpdated.Location = new System.Drawing.Point(265, 35);
-            this.textUpdated.MaxLength = 100000;
-            this.textUpdated.Name = "textUpdated";
-            this.textUpdated.ReadOnly = true;
-            this.textUpdated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textUpdated.Size = new System.Drawing.Size(91, 23);
-            this.textUpdated.TabIndex = 21;
-            // 
-            // textDeleted
-            // 
-            this.textDeleted.BackColor = System.Drawing.Color.PowderBlue;
-            this.textDeleted.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textDeleted.Cursor = System.Windows.Forms.Cursors.No;
-            this.textDeleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textDeleted.ForeColor = System.Drawing.Color.Indigo;
-            this.textDeleted.Location = new System.Drawing.Point(423, 35);
-            this.textDeleted.MaxLength = 100000;
-            this.textDeleted.Name = "textDeleted";
-            this.textDeleted.ReadOnly = true;
-            this.textDeleted.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textDeleted.Size = new System.Drawing.Size(91, 23);
-            this.textDeleted.TabIndex = 22;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(203, 40);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(59, 13);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "Updated:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(362, 40);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(55, 13);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "Deleted:";
-            // 
             // MyPluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -837,15 +846,6 @@ namespace DataImport
         private System.Windows.Forms.Button RefreshLogs;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox keyRecords;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
-        private System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLookup;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetEntity;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetfield;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
         private System.Windows.Forms.TextBox textRowCount;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.SplitContainer splitContainer3;
@@ -859,5 +859,15 @@ namespace DataImport
         private System.Windows.Forms.TextBox textUpdated;
         private System.Windows.Forms.TextBox textCreated;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
+        private System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLookup;
+        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetEntity;
+        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetfield;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
+        private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
     }
 }
