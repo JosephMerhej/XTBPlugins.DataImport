@@ -51,6 +51,8 @@ namespace DataImport
         int updatednumber = 0;
         int deletednumber = 0;
         private Settings mySettings;
+        // To store the table logs
+        DataTable tableLogEntries = new DataTable();
 
         public MyPluginControl()
         {
@@ -64,6 +66,13 @@ namespace DataImport
             optionSetVL.SelectedIndex = 0;
             keyRecords.SelectedIndex = 0;
             ExecuteMethod(InitEntities);
+
+            // Initialize the table logs
+            tableLogEntries.Columns.Add("#", typeof(int));
+            tableLogEntries.Columns.Add("Line", typeof(int));
+            tableLogEntries.Columns.Add("Result", typeof(string));
+            tableLogEntries.Columns.Add("GUID", typeof(string));
+            tableLogEntries.Columns.Add("Logs", typeof(string));
         }
         
         public void InitEntities()
@@ -722,6 +731,20 @@ namespace DataImport
             System.Diagnostics.Process.Start("https://www.d365tips.com/home/xrmtoolbox-dataimport");
         }
 
+        private void LogToggle_Click(object sender, EventArgs e)
+        {
+            if (splitContainer4.Panel2Collapsed == true)
+            {
+                splitContainer4.Panel2Collapsed = false;
+                LogToggle.Text = "Hide Logs";
+            }
+            else
+            {
+                splitContainer4.Panel2Collapsed = true;
+                LogToggle.Text = "Show Logs";
+            }
+        }
+
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
@@ -799,6 +822,11 @@ namespace DataImport
                         record = new Entity(strentityname);
                         istoimport = true;
                         flaglookup = false;
+
+                        // Add a row to the log table and set current rows
+                        int rowNumber = tableLogEntries.Rows.Count + 1;
+                        tableLogEntries.Rows.Add(new string[] { rowNumber.ToString(), iRow.ToString(), null, null, null });
+                        DataRow row = tableLogEntries.Rows[rowNumber - 1];
 
                         QueryExpression qe = new QueryExpression
                         {
