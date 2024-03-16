@@ -85,6 +85,7 @@ namespace DataImport
             this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStripMenu.SuspendLayout();
@@ -129,7 +130,7 @@ namespace DataImport
             // 
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(73, 28);
+            this.tsbClose.Size = new System.Drawing.Size(64, 28);
             this.tsbClose.Text = "Close";
             this.tsbClose.Click += new System.EventHandler(this.TsbClose_Click);
             // 
@@ -143,7 +144,7 @@ namespace DataImport
             this.BrowseFile.Image = ((System.Drawing.Image)(resources.GetObject("BrowseFile.Image")));
             this.BrowseFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BrowseFile.Name = "BrowseFile";
-            this.BrowseFile.Size = new System.Drawing.Size(123, 28);
+            this.BrowseFile.Size = new System.Drawing.Size(103, 28);
             this.BrowseFile.Text = "Browse Excel";
             this.BrowseFile.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
@@ -152,7 +153,7 @@ namespace DataImport
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(126, 28);
+            this.toolStripButton2.Size = new System.Drawing.Size(106, 28);
             this.toolStripButton2.Text = "Process fields";
             this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
             // 
@@ -161,7 +162,7 @@ namespace DataImport
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(116, 28);
+            this.toolStripButton1.Size = new System.Drawing.Size(97, 28);
             this.toolStripButton1.Text = "Import data";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
             // 
@@ -170,7 +171,7 @@ namespace DataImport
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(73, 28);
+            this.toolStripButton3.Size = new System.Drawing.Size(63, 28);
             this.toolStripButton3.Text = "Reset";
             this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click);
             // 
@@ -700,6 +701,7 @@ namespace DataImport
             this.Import,
             this.Line,
             this.Result,
+            this.Updates,
             this.GUID,
             this.Logs});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -879,37 +881,56 @@ namespace DataImport
             // 
             // Import
             // 
+            this.Import.DataPropertyName = "Import";
             this.Import.HeaderText = "Import";
             this.Import.Name = "Import";
             this.Import.ReadOnly = true;
+            this.Import.ToolTipText = "The run number for the import.";
             this.Import.Width = 50;
             // 
             // Line
             // 
+            this.Line.DataPropertyName = "Line";
             this.Line.HeaderText = "Line";
             this.Line.Name = "Line";
             this.Line.ReadOnly = true;
+            this.Line.ToolTipText = "The line in the Excel, starting from line 2";
             this.Line.Width = 50;
             // 
             // Result
             // 
+            this.Result.DataPropertyName = "Result";
             this.Result.HeaderText = "Result";
             this.Result.Name = "Result";
             this.Result.ReadOnly = true;
+            this.Result.ToolTipText = "The final result of the process";
             this.Result.Width = 150;
+            // 
+            // Updates
+            // 
+            this.Updates.DataPropertyName = "Updates";
+            this.Updates.HeaderText = "Updates";
+            this.Updates.Name = "Updates";
+            this.Updates.ReadOnly = true;
+            this.Updates.ToolTipText = "The number of records updated in Dataverse";
+            this.Updates.Width = 50;
             // 
             // GUID
             // 
+            this.GUID.DataPropertyName = "GUID";
             this.GUID.HeaderText = "GUID";
             this.GUID.Name = "GUID";
             this.GUID.ReadOnly = true;
+            this.GUID.ToolTipText = "The GUID(s) of each row";
             this.GUID.Width = 250;
             // 
             // Logs
             // 
+            this.Logs.DataPropertyName = "Logs";
             this.Logs.HeaderText = "Logs";
             this.Logs.Name = "Logs";
             this.Logs.ReadOnly = true;
+            this.Logs.ToolTipText = "Any log notes, errors or messages";
             this.Logs.Width = 300;
             // 
             // MyPluginControl
@@ -1008,6 +1029,7 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn Import;
         private System.Windows.Forms.DataGridViewTextBoxColumn Line;
         private System.Windows.Forms.DataGridViewTextBoxColumn Result;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Updates;
         private System.Windows.Forms.DataGridViewTextBoxColumn GUID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Logs;
     }

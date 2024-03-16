@@ -72,6 +72,7 @@ namespace DataImport
             tableLogEntries.Columns.Add("Import", typeof(int));
             tableLogEntries.Columns.Add("Line", typeof(int));
             tableLogEntries.Columns.Add("Result", typeof(string));
+            tableLogEntries.Columns.Add("Updates", typeof(int));
             tableLogEntries.Columns.Add("GUID", typeof(string));
             tableLogEntries.Columns.Add("Logs", typeof(string));
 
@@ -760,37 +761,40 @@ namespace DataImport
             LogToggle.Text = "Hide Log Table";
         }
 
-        private void AddToLogRow(DataRow row, string log = null, string GUID = null, string result = null)
+        private void AddToLogRow(string[] row, string log = null, string GUID = null, string result = null)
         {
             // 0 = #
             // 1 = Line
             // 2 = Result
-            // 3 = GUID
-            // 4 = Logs
+            // 3 = Updates
+            // 4 = GUID
+            // 5 = Logs
 
             // add the GUID to the cell if GUID is not null
             if (GUID != null)
             {
-                if (row["GUID"] == DBNull.Value)
+                if (row[4] == null)
                 {
-                    row["GUID"] = GUID;
+                    row[3] = "1";
+                    row[4] = GUID;
                 }
                 else
                 {
-                    row["GUID"] += " | " + GUID;
+                    row[3] = (int.Parse(row[3]) + 1).ToString();
+                    row[4] += " " + GUID;
                 }
             }
 
             // Add the logs to the log cell
             if (log != null)
             {
-                if (row["Logs"] == DBNull.Value)
+                if (row[5] == null)
                 {
-                    row["Logs"] = log;
+                    row[5] = log;
                 }
                 else
                 {
-                    row["Logs"] += " | " + log;
+                    row[5] += " | " + log;
                 }
             }
             
@@ -800,7 +804,7 @@ namespace DataImport
             { return; }
             else
             {
-                row["Result"] = result;
+                row[2] = result;
             }
         }
 
@@ -887,10 +891,9 @@ namespace DataImport
 
                         // Add a row to the log table and set current rows
                         int rowNumber = tableLogEntries.Rows.Count + 1;
-                        tableLogEntries.Rows.Add(new string[] { importRunNumber.ToString(), iRow.ToString(), null, null, null });
-                        DataRow row = tableLogEntries.Rows[rowNumber - 1];
+                        string[] row = { importRunNumber.ToString(), iRow.ToString(), null, null, null, null };
 
-                        QueryExpression qe = new QueryExpression
+                    QueryExpression qe = new QueryExpression
                         {
                             EntityName = strentityname,
                             ColumnSet = new ColumnSet()
@@ -1628,6 +1631,10 @@ namespace DataImport
                             }
                             
                         }
+                        dataGridViewLogs.BeginInvoke(new Action(() =>
+                        {
+                            tableLogEntries.Rows.Add(row);
+                        }));
                         double perr = (iRow - 1) / (1.0 * (xlRange.Rows.Count - 1)) * 100;
                         int perrr = Convert.ToInt32(perr);
                         wcl.ReportProgress(perrr);
@@ -1672,7 +1679,7 @@ namespace DataImport
                     }
                     textBoxSuccess.Text = successnumber.ToString();
                     textBoxError.Text = errornumber.ToString();
-                    dataGridViewLogs.Refresh();
+                    dataGridViewLogs.ResumeLayout();
                 }
             });
         }
