@@ -50,7 +50,10 @@ namespace DataImport
         int creatednumber = 0;
         int updatednumber = 0;
         int deletednumber = 0;
+        int importRunNumber = 0; // Number of times the Excel Import process has been run
         private Settings mySettings;
+        // To store the table logs
+        DataTable tableLogEntries = new DataTable();
 
         public MyPluginControl()
         {
@@ -64,6 +67,16 @@ namespace DataImport
             optionSetVL.SelectedIndex = 0;
             keyRecords.SelectedIndex = 0;
             ExecuteMethod(InitEntities);
+
+            // Initialize the table logs
+            tableLogEntries.Columns.Add("Import", typeof(int));
+            tableLogEntries.Columns.Add("Line", typeof(int));
+            tableLogEntries.Columns.Add("Result", typeof(string));
+            tableLogEntries.Columns.Add("Updates", typeof(int));
+            tableLogEntries.Columns.Add("GUID", typeof(string));
+            tableLogEntries.Columns.Add("Logs", typeof(string));
+
+            dataGridViewLogs.DataSource = tableLogEntries;
         }
         
         public void InitEntities()
@@ -689,6 +702,7 @@ namespace DataImport
         private void Button1_Click_2(object sender, EventArgs e)
         {
             SetTextBox1();
+            dataGridViewLogs.Refresh();
         }
 
         private void CrmAction_DropDownClosed(object sender, EventArgs e)
@@ -720,6 +734,78 @@ namespace DataImport
         private void blogURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.d365tips.com/home/xrmtoolbox-dataimport");
+        }
+
+        private void LogToggle_Click(object sender, EventArgs e)
+        {
+            if (splitContainer4.Panel2Collapsed == true)
+            {
+                LogTableShow();
+            }
+            else
+            {
+                LogTableHide();
+            }
+        }
+
+        private void LogTableHide()
+        {
+            splitContainer4.Panel2Collapsed = true;
+            LogToggle.Text = "Show Log Table";
+            
+        }
+
+        private void LogTableShow()
+        {
+            splitContainer4.Panel2Collapsed = false;
+            LogToggle.Text = "Hide Log Table";
+        }
+
+        private void AddToLogRow(string[] row, string log = null, string GUID = null, string result = null)
+        {
+            // 0 = #
+            // 1 = Line
+            // 2 = Result
+            // 3 = Updates
+            // 4 = GUID
+            // 5 = Logs
+
+            // add the GUID to the cell if GUID is not null
+            if (GUID != null)
+            {
+                if (row[4] == null)
+                {
+                    row[3] = "1";
+                    row[4] = GUID;
+                }
+                else
+                {
+                    row[3] = (int.Parse(row[3]) + 1).ToString();
+                    row[4] += " " + GUID;
+                }
+            }
+
+            // Add the logs to the log cell
+            if (log != null)
+            {
+                if (row[5] == null)
+                {
+                    row[5] = log;
+                }
+                else
+                {
+                    row[5] += " | " + log;
+                }
+            }
+            
+
+            // If a result is provided, add it to the result cell
+            if (result == null)
+            { return; }
+            else
+            {
+                row[2] = result;
+            }
         }
 
         private void ImportExcel()
@@ -769,6 +855,9 @@ namespace DataImport
             textDeleted.Text = deletednumber.ToString();
             toolStripButton1.Enabled = false;
             toolStripButton2.Enabled = false;
+            LogTableShow();
+            importRunNumber++;
+
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Importing...",
@@ -800,7 +889,11 @@ namespace DataImport
                         istoimport = true;
                         flaglookup = false;
 
-                        QueryExpression qe = new QueryExpression
+                        // Add a row to the log table and set current rows
+                        int rowNumber = tableLogEntries.Rows.Count + 1;
+                        string[] row = { importRunNumber.ToString(), iRow.ToString(), null, null, null, null };
+
+                    QueryExpression qe = new QueryExpression
                         {
                             EntityName = strentityname,
                             ColumnSet = new ColumnSet()
@@ -865,6 +958,8 @@ namespace DataImport
                                     if (strIsKey)
                                     {
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Null));
+                                        // Update Logs
+                                        AddToLogRow(row, "⚠ EXCEL LINE contains an empty key field: " + myfieldlabel);
                                         richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
                                         richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
                                     }
@@ -900,6 +995,8 @@ namespace DataImport
                                                 }
                                                 catch (InvalidOperationException ex)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ Couldnt match Optionset Label : " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2 + " - " + ex.Message.ToString());
                                                     richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + xlRange.Cells[iRow, iCol].value + " - " + ex.Message.ToString();
                                                     richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + xlRange.Cells[iRow, iCol].value + " - " + ex.Message.ToString();
                                                     //SetTextBox1();
@@ -974,6 +1071,8 @@ namespace DataImport
                                             }
                                             else
                                             {
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ Couldnt match boolean value: " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2 + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString());
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match boolean value : " + xlRange.Cells[iRow, iCol].value + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString();
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match boolean value : " + xlRange.Cells[iRow, iCol].value + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString();
                                             }
@@ -996,6 +1095,8 @@ namespace DataImport
                                                 }
                                                 catch (FormatException)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ MultiSelect OptionSet field : " + myfieldlabel + ": " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2.ToString() + " is not valid.");
                                                     richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                                     richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                                 }
@@ -1031,6 +1132,8 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ DateTime field : " + myfieldlabel + ": " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2.ToString() + " is not valid.");
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - DateTime field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - DateTime field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                         }
@@ -1158,6 +1261,8 @@ namespace DataImport
                                             }
                                             catch (FormatException)
                                             {
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ MultiSelect OptionSet field : " + myfieldlabel + ": " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2.ToString() + " is not valid.");
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                             }
@@ -1234,12 +1339,16 @@ namespace DataImport
                                             if (mcomboBox1 == "IMPORT CRM RECORD WITH CLEARED LOOKUP")
                                             {
                                                 record[distcVec[m]] = null;
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                             }
                                             else if (mcomboBox1 == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
                                             {
                                                 record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.");
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
                                                 if (distcKeyVec[m])
@@ -1248,6 +1357,8 @@ namespace DataImport
                                             else if (mcomboBox1 == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
                                             {
                                                 istoimport = false;
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                             }
@@ -1264,17 +1375,23 @@ namespace DataImport
                                         record[distcVec[m]] = null;
                                         if (mcomboBox1 == "IMPORT RECORD WITH CLEARED LOOKUP")
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
                                         else if (mcomboBox1 == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
                                         else if (mcomboBox1 == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
                                         {
                                             istoimport = false;
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.", null, "Not Imported");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
@@ -1282,6 +1399,8 @@ namespace DataImport
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
+                                    // Update Logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString()+".  Record will not be imported.  EXCEPTION MESSAGE: "+ ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message;
                                     istoimport = false;
@@ -1299,6 +1418,8 @@ namespace DataImport
                                 try
                                 {
                                     _recordId = Service.Create(record);
+                                    // Update Logs
+                                    AddToLogRow(row, null, _recordId.ToString(), "Imported");
                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                     successnumber++;
@@ -1306,6 +1427,8 @@ namespace DataImport
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
+                                    // Update Logs
+                                    AddToLogRow(row, "❌ Exception Message for CREATE: " + (ex.Message), null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                     errornumber++;
@@ -1328,6 +1451,8 @@ namespace DataImport
                                                 try
                                                 {
                                                     Service.Update(record);
+                                                    // Update Logs
+                                                    AddToLogRow(row, null, entity.Id.ToString(), "Updated");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     successnumber++;
@@ -1335,6 +1460,8 @@ namespace DataImport
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "❌ Exception Message for UPDATE: " + (ex.Message), null, "Failed");
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     errornumber++;
@@ -1343,6 +1470,8 @@ namespace DataImport
                                         }
                                         else
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "❌ LINE NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.", null, "Failed");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             errornumber++;
@@ -1350,6 +1479,8 @@ namespace DataImport
                                     }
                                     else
                                     {
+                                        // Update Logs
+                                        AddToLogRow(row, "❌ LINE NOT FOUND TO UPDATE", null, "Failed");
                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO UPDATE";
                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO UPDATE";
                                         errornumber++;
@@ -1357,6 +1488,8 @@ namespace DataImport
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
+                                    // Update Logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message;
                                     errornumber++;
@@ -1379,6 +1512,8 @@ namespace DataImport
                                                 try
                                                 {
                                                     Service.Update(record);
+                                                    // Update Logs
+                                                    AddToLogRow(row, null, entity.Id.ToString(), "Updated");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     successnumber++;
@@ -1386,6 +1521,8 @@ namespace DataImport
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "❌ Exception Message for UPDATE: " + (ex.Message), null, "Failed");
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     errornumber++;
@@ -1394,6 +1531,8 @@ namespace DataImport
                                         }
                                         else
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "❌ NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             errornumber++;
@@ -1404,6 +1543,8 @@ namespace DataImport
                                         try
                                         {
                                             _recordId = Service.Create(record);
+                                            // Update Logs
+                                            AddToLogRow(row, null, _recordId.ToString(), "Created");
                                             richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                             richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                             successnumber++;
@@ -1411,6 +1552,8 @@ namespace DataImport
                                         }
                                         catch (FaultException<OrganizationServiceFault> ex)
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "❌ Exception Message for CREATE" + (ex.Message), null, "Failed");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                             errornumber++;
@@ -1420,6 +1563,8 @@ namespace DataImport
                                 }
                                 catch(FaultException < OrganizationServiceFault > ex)
                                 {
+                                    // Update logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message;
                                     errornumber++;
@@ -1440,6 +1585,8 @@ namespace DataImport
                                                 try
                                                 {
                                                     Service.Delete(strentityname, record.Id);
+                                                    // Update logs
+                                                    AddToLogRow(row, null, entity.Id.ToString(), "Deleted");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
                                                     successnumber++;
@@ -1447,6 +1594,8 @@ namespace DataImport
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
+                                                    // Update logs
+                                                    AddToLogRow(row, "❌ Exception Message for DELETE: " + (ex.Message), null, "Failed");
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
                                                     errornumber++;
@@ -1455,6 +1604,8 @@ namespace DataImport
                                         }
                                         else
                                         {
+                                            // Update logs
+                                            AddToLogRow(row, "❌ NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.", null, "Failed");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             errornumber++;
@@ -1462,6 +1613,8 @@ namespace DataImport
                                     }
                                     else
                                     {
+                                        // Update logs
+                                        AddToLogRow(row, "❌ NOT FOUND TO DELETE", null, "Failed");
                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
                                         errornumber++;
@@ -1469,6 +1622,8 @@ namespace DataImport
                                 }
                                 catch (FaultException < OrganizationServiceFault > ex)
                                 {
+                                    // Update logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message;
                                     errornumber++;
@@ -1476,6 +1631,10 @@ namespace DataImport
                             }
                             
                         }
+                        dataGridViewLogs.BeginInvoke(new Action(() =>
+                        {
+                            tableLogEntries.Rows.Add(row);
+                        }));
                         double perr = (iRow - 1) / (1.0 * (xlRange.Rows.Count - 1)) * 100;
                         int perrr = Convert.ToInt32(perr);
                         wcl.ReportProgress(perrr);
@@ -1520,6 +1679,7 @@ namespace DataImport
                     }
                     textBoxSuccess.Text = successnumber.ToString();
                     textBoxError.Text = errornumber.ToString();
+                    dataGridViewLogs.ResumeLayout();
                 }
             });
         }
