@@ -41,23 +41,23 @@ namespace DataImport
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.LogToggle = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.keyRecords = new System.Windows.Forms.ComboBox();
+            this.settingsKeyFoundMultipleRecords = new System.Windows.Forms.ComboBox();
             this.RefreshLogs = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.copyText = new System.Windows.Forms.Button();
             this.textView = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.settingsLookupFoundMultipleRecords = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pickedEntity = new System.Windows.Forms.ComboBox();
-            this.optionSetVL = new System.Windows.Forms.ComboBox();
-            this.crmAction = new System.Windows.Forms.ComboBox();
+            this.settingsEntity = new System.Windows.Forms.ComboBox();
+            this.settingsOptionSetValuesOrLabel = new System.Windows.Forms.ComboBox();
+            this.settingsCrmAction = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewMapping = new System.Windows.Forms.DataGridView();
             this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CRMField = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -105,7 +105,7 @@ namespace DataImport
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).BeginInit();
             this.SuspendLayout();
             // 
@@ -210,19 +210,19 @@ namespace DataImport
             // 
             this.splitContainer2.Panel1.Controls.Add(this.LogToggle);
             this.splitContainer2.Panel1.Controls.Add(this.label6);
-            this.splitContainer2.Panel1.Controls.Add(this.keyRecords);
+            this.splitContainer2.Panel1.Controls.Add(this.settingsKeyFoundMultipleRecords);
             this.splitContainer2.Panel1.Controls.Add(this.RefreshLogs);
             this.splitContainer2.Panel1.Controls.Add(this.label5);
             this.splitContainer2.Panel1.Controls.Add(this.copyText);
             this.splitContainer2.Panel1.Controls.Add(this.textView);
             this.splitContainer2.Panel1.Controls.Add(this.label2);
-            this.splitContainer2.Panel1.Controls.Add(this.comboBox1);
+            this.splitContainer2.Panel1.Controls.Add(this.settingsLookupFoundMultipleRecords);
             this.splitContainer2.Panel1.Controls.Add(this.label4);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
             this.splitContainer2.Panel1.Controls.Add(this.label1);
-            this.splitContainer2.Panel1.Controls.Add(this.pickedEntity);
-            this.splitContainer2.Panel1.Controls.Add(this.optionSetVL);
-            this.splitContainer2.Panel1.Controls.Add(this.crmAction);
+            this.splitContainer2.Panel1.Controls.Add(this.settingsEntity);
+            this.splitContainer2.Panel1.Controls.Add(this.settingsOptionSetValuesOrLabel);
+            this.splitContainer2.Panel1.Controls.Add(this.settingsCrmAction);
             this.splitContainer2.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer2_Panel1_Paint);
             // 
             // splitContainer2.Panel2
@@ -254,18 +254,18 @@ namespace DataImport
             this.label6.TabIndex = 14;
             this.label6.Text = "Filter on key found > 1 record";
             // 
-            // keyRecords
+            // settingsKeyFoundMultipleRecords
             // 
-            this.keyRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.keyRecords.FormattingEnabled = true;
-            this.keyRecords.Items.AddRange(new object[] {
+            this.settingsKeyFoundMultipleRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsKeyFoundMultipleRecords.FormattingEnabled = true;
+            this.settingsKeyFoundMultipleRecords.Items.AddRange(new object[] {
             "DO ACTION FOR ALL",
             "IGNORE EXCEL LINE"});
-            this.keyRecords.Location = new System.Drawing.Point(2, 94);
-            this.keyRecords.Margin = new System.Windows.Forms.Padding(2);
-            this.keyRecords.Name = "keyRecords";
-            this.keyRecords.Size = new System.Drawing.Size(345, 21);
-            this.keyRecords.TabIndex = 13;
+            this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(2, 94);
+            this.settingsKeyFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsKeyFoundMultipleRecords.Name = "settingsKeyFoundMultipleRecords";
+            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(345, 21);
+            this.settingsKeyFoundMultipleRecords.TabIndex = 13;
             // 
             // RefreshLogs
             // 
@@ -329,20 +329,20 @@ namespace DataImport
             this.label2.Text = "OptionSet field format";
             this.label2.Visible = false;
             // 
-            // comboBox1
+            // settingsLookupFoundMultipleRecords
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.settingsLookupFoundMultipleRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsLookupFoundMultipleRecords.FormattingEnabled = true;
+            this.settingsLookupFoundMultipleRecords.Items.AddRange(new object[] {
             "MAP THE FIRST FOUND RECORD TO THE LOOKUP",
             "SKIP RECORD WITHOUT IMPORTING IT AT ALL",
             "IMPORT CRM RECORD WITH CLEARED LOOKUP"});
-            this.comboBox1.Location = new System.Drawing.Point(2, 173);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(345, 21);
-            this.comboBox1.TabIndex = 9;
-            this.comboBox1.Visible = false;
+            this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(2, 173);
+            this.settingsLookupFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsLookupFoundMultipleRecords.Name = "settingsLookupFoundMultipleRecords";
+            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(345, 21);
+            this.settingsLookupFoundMultipleRecords.TabIndex = 9;
+            this.settingsLookupFoundMultipleRecords.Visible = false;
             // 
             // label4
             // 
@@ -376,53 +376,52 @@ namespace DataImport
             this.label1.Text = "1. Pick Entity";
             this.label1.Click += new System.EventHandler(this.Label1_Click);
             // 
-            // pickedEntity
+            // settingsEntity
             // 
-            this.pickedEntity.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.pickedEntity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.pickedEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.pickedEntity.DropDownWidth = 200;
-            this.pickedEntity.FormattingEnabled = true;
-            this.pickedEntity.Location = new System.Drawing.Point(2, 16);
-            this.pickedEntity.Margin = new System.Windows.Forms.Padding(2);
-            this.pickedEntity.Name = "pickedEntity";
-            this.pickedEntity.Size = new System.Drawing.Size(345, 21);
-            this.pickedEntity.Sorted = true;
-            this.pickedEntity.TabIndex = 4;
-            this.pickedEntity.SelectedIndexChanged += new System.EventHandler(this.PickedEntity_SelectedIndexChanged);
-            this.pickedEntity.DropDownClosed += new System.EventHandler(this.PickedEntity_DropDownClosed);
+            this.settingsEntity.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.settingsEntity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.settingsEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsEntity.DropDownWidth = 200;
+            this.settingsEntity.FormattingEnabled = true;
+            this.settingsEntity.Location = new System.Drawing.Point(2, 16);
+            this.settingsEntity.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsEntity.Name = "settingsEntity";
+            this.settingsEntity.Size = new System.Drawing.Size(345, 21);
+            this.settingsEntity.Sorted = true;
+            this.settingsEntity.TabIndex = 4;
+            this.settingsEntity.DropDownClosed += new System.EventHandler(this.settingsEntity_DropDownClosed);
             // 
-            // optionSetVL
+            // settingsOptionSetValuesOrLabel
             // 
-            this.optionSetVL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.optionSetVL.FormattingEnabled = true;
-            this.optionSetVL.Items.AddRange(new object[] {
+            this.settingsOptionSetValuesOrLabel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsOptionSetValuesOrLabel.FormattingEnabled = true;
+            this.settingsOptionSetValuesOrLabel.Items.AddRange(new object[] {
             "OPTIONSET VALUES",
             "OPTIONSET LABELS"});
-            this.optionSetVL.Location = new System.Drawing.Point(2, 134);
-            this.optionSetVL.Margin = new System.Windows.Forms.Padding(2);
-            this.optionSetVL.Name = "optionSetVL";
-            this.optionSetVL.Size = new System.Drawing.Size(345, 21);
-            this.optionSetVL.TabIndex = 3;
-            this.optionSetVL.Visible = false;
+            this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(2, 134);
+            this.settingsOptionSetValuesOrLabel.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsOptionSetValuesOrLabel.Name = "settingsOptionSetValuesOrLabel";
+            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(345, 21);
+            this.settingsOptionSetValuesOrLabel.TabIndex = 3;
+            this.settingsOptionSetValuesOrLabel.Visible = false;
             // 
-            // crmAction
+            // settingsCrmAction
             // 
-            this.crmAction.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.crmAction.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.crmAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.crmAction.FormattingEnabled = true;
-            this.crmAction.Items.AddRange(new object[] {
+            this.settingsCrmAction.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.settingsCrmAction.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.settingsCrmAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsCrmAction.FormattingEnabled = true;
+            this.settingsCrmAction.Items.AddRange(new object[] {
             "UPSERT",
             "CREATE",
             "UPDATE",
             "DELETE"});
-            this.crmAction.Location = new System.Drawing.Point(2, 55);
-            this.crmAction.Margin = new System.Windows.Forms.Padding(2);
-            this.crmAction.Name = "crmAction";
-            this.crmAction.Size = new System.Drawing.Size(345, 21);
-            this.crmAction.TabIndex = 2;
-            this.crmAction.DropDownClosed += new System.EventHandler(this.CrmAction_DropDownClosed);
+            this.settingsCrmAction.Location = new System.Drawing.Point(2, 55);
+            this.settingsCrmAction.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsCrmAction.Name = "settingsCrmAction";
+            this.settingsCrmAction.Size = new System.Drawing.Size(345, 21);
+            this.settingsCrmAction.TabIndex = 2;
+            this.settingsCrmAction.DropDownClosed += new System.EventHandler(this.settingsCrmAction_DropDownClosed);
             // 
             // richTextBox1
             // 
@@ -473,7 +472,7 @@ namespace DataImport
             // 
             // splitContainer4.Panel1
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.dataGridView1);
+            this.splitContainer4.Panel1.Controls.Add(this.dataGridViewMapping);
             this.splitContainer4.Panel1MinSize = 300;
             // 
             // splitContainer4.Panel2
@@ -485,12 +484,12 @@ namespace DataImport
             this.splitContainer4.SplitterDistance = 300;
             this.splitContainer4.TabIndex = 6;
             // 
-            // dataGridView1
+            // dataGridViewMapping
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewMapping.AllowUserToAddRows = false;
+            this.dataGridViewMapping.AllowUserToDeleteRows = false;
+            this.dataGridViewMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMapping.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcelColumn,
             this.isKey,
             this.CRMField,
@@ -501,15 +500,15 @@ namespace DataImport
             this.Falsevalue,
             this.DefaultValue,
             this.OperatorCol});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 30;
-            this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView1.Size = new System.Drawing.Size(893, 611);
-            this.dataGridView1.TabIndex = 1;
+            this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewMapping.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewMapping.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewMapping.Name = "dataGridViewMapping";
+            this.dataGridViewMapping.RowHeadersWidth = 30;
+            this.dataGridViewMapping.RowTemplate.Height = 33;
+            this.dataGridViewMapping.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridViewMapping.Size = new System.Drawing.Size(893, 611);
+            this.dataGridViewMapping.TabIndex = 1;
             // 
             // ExcelColumn
             // 
@@ -963,7 +962,7 @@ namespace DataImport
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -975,12 +974,12 @@ namespace DataImport
         private System.Windows.Forms.ToolStripButton tsbClose;
         private System.Windows.Forms.ToolStripSeparator tssSeparator1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewMapping;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ComboBox crmAction;
-        private System.Windows.Forms.ComboBox optionSetVL;
-        private System.Windows.Forms.ComboBox pickedEntity;
+        private System.Windows.Forms.ComboBox settingsCrmAction;
+        private System.Windows.Forms.ComboBox settingsOptionSetValuesOrLabel;
+        private System.Windows.Forms.ComboBox settingsEntity;
         private System.Windows.Forms.ToolStripButton BrowseFile;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.Label label1;
@@ -989,14 +988,14 @@ namespace DataImport
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox settingsLookupFoundMultipleRecords;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ComboBox textView;
         private System.Windows.Forms.Button copyText;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button RefreshLogs;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox keyRecords;
+        private System.Windows.Forms.ComboBox settingsKeyFoundMultipleRecords;
         private System.Windows.Forms.TextBox textRowCount;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.SplitContainer splitContainer3;

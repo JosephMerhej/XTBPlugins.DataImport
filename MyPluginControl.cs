@@ -61,11 +61,11 @@ namespace DataImport
         }
         public void MyPluginControl_Load(object sender, System.EventArgs e)
         {
-            comboBox1.SelectedIndex = 0;
-            crmAction.SelectedIndex = 0;
+            settingsLookupFoundMultipleRecords.SelectedIndex = 0;
+            settingsCrmAction.SelectedIndex = 0;
             textView.SelectedIndex = 0;
-            optionSetVL.SelectedIndex = 0;
-            keyRecords.SelectedIndex = 0;
+            settingsOptionSetValuesOrLabel.SelectedIndex = 0;
+            settingsKeyFoundMultipleRecords.SelectedIndex = 0;
             ExecuteMethod(InitEntities);
 
             // Initialize the table logs
@@ -105,7 +105,7 @@ namespace DataImport
                     {
                         MessageBox.Show(args.Error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    pickedEntity.Items.Clear();
+                    settingsEntity.Items.Clear();
                     lkpTargetEntity.Items.Clear();
                     var result = args.Result as RetrieveAllEntitiesResponse;
                     if (result != null)
@@ -113,7 +113,7 @@ namespace DataImport
                         var entities = result.EntityMetadata;
                         foreach (EntityMetadata Entity in entities)
                         {
-                            pickedEntity.Items.Add(Entity.LogicalName);
+                            settingsEntity.Items.Add(Entity.LogicalName);
                             lkpTargetEntity.Items.Add(Entity.LogicalName);
                         }
                     }
@@ -129,7 +129,7 @@ namespace DataImport
 
         private void InitEntityFields()
         {
-            if (pickedEntity.SelectedItem == null)
+            if (settingsEntity.SelectedItem == null)
             {
                 //MessageBox.Show("Please load entities first and pick your entity then press this button.");
                 //ExecuteMethod(InitEntities);
@@ -137,7 +137,7 @@ namespace DataImport
             }
             CRMField.Items.Clear();
 
-            strentityname = pickedEntity.SelectedItem.ToString();
+            strentityname = settingsEntity.SelectedItem.ToString();
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Getting entity fields",
@@ -187,7 +187,7 @@ namespace DataImport
                 return;
             }
             //lkpTargetfield.Items.Clear();
-            DataGridViewComboBoxCell datalkpfield = dataGridView1.Rows[thatRow].Cells[5] as DataGridViewComboBoxCell;
+            DataGridViewComboBoxCell datalkpfield = dataGridViewMapping.Rows[thatRow].Cells[5] as DataGridViewComboBoxCell;
             datalkpfield.Value = null;
             datalkpfield.Items.Clear();
             WorkAsync(new WorkAsyncInfo
@@ -215,7 +215,7 @@ namespace DataImport
                     lkpresultsaved = result.EntityMetadata;
                     if (result != null)
                     {
-                        DataGridViewComboBoxCell stateCell = (DataGridViewComboBoxCell)(dataGridView1.Rows[thatRow].Cells[5]);
+                        DataGridViewComboBoxCell stateCell = (DataGridViewComboBoxCell)(dataGridViewMapping.Rows[thatRow].Cells[5]);
                         
                         foreach (object attribute in lkpresultsaved.Attributes)
                         {
@@ -272,12 +272,12 @@ namespace DataImport
 
         }
 
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridViewMapping_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-      /*  private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+      /*  private void dataGridViewMapping_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             //GET OUR COMBO OBJECT
             var combo = e.Control as ComboBox;
@@ -326,7 +326,7 @@ namespace DataImport
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(xlRange.Cells[1, iCol].value);
+                            dataGridViewMapping.Rows.Add(xlRange.Cells[1, iCol].value);
                         }
                     }
                     textRowCount.Text = ((xlRange.Rows.Count)-1).ToString();
@@ -347,18 +347,18 @@ namespace DataImport
 
         }
 
-        private void PickedEntity_DropDownClosed(object sender, EventArgs e)
+        private void settingsEntity_DropDownClosed(object sender, EventArgs e)
         {//SelectedIndexChanged
-            if (pickedEntity.SelectedItem != null)
+            if (settingsEntity.SelectedItem != null)
             {
-                for (int o = 0; o < dataGridView1.RowCount; o++)
+                for (int o = 0; o < dataGridViewMapping.RowCount; o++)
                 {
-                    DataGridViewComboBoxCell data = dataGridView1.Rows[o].Cells[2] as DataGridViewComboBoxCell;
+                    DataGridViewComboBoxCell data = dataGridViewMapping.Rows[o].Cells[2] as DataGridViewComboBoxCell;
                     data.Value = null;
                 }
                 ExecuteMethod(InitEntityFields);
             }
-            else if(pickedEntity.Items.Count ==0)
+            else if(settingsEntity.Items.Count ==0)
             {
                 ExecuteMethod(InitEntities);
             }
@@ -416,12 +416,12 @@ namespace DataImport
         }
         private void EmptyDataGrid()
         {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns["lkpTargetEntity"].Visible = false;
-            dataGridView1.Columns["lkpTargetfield"].Visible = false;
-            dataGridView1.Columns["Truevalue"].Visible = false;
-            dataGridView1.Columns["Falsevalue"].Visible = false;
-            dataGridView1.Columns["DefaultValue"].Visible = false;
+            dataGridViewMapping.Rows.Clear();
+            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = false;
+            dataGridViewMapping.Columns["lkpTargetfield"].Visible = false;
+            dataGridViewMapping.Columns["Truevalue"].Visible = false;
+            dataGridViewMapping.Columns["Falsevalue"].Visible = false;
+            dataGridViewMapping.Columns["DefaultValue"].Visible = false;
         }
 
         private void GetFile()
@@ -461,18 +461,18 @@ namespace DataImport
 
         private void ToolStripButton1_Click_1(object sender, EventArgs e)
         {
-            if (dataGridView1.RowCount == 0)
+            if (dataGridViewMapping.RowCount == 0)
             {
                 MessageBox.Show("Please BROWSE EXCEL FILE first and Pick your entity and fields mapping before Lauching the Import to CRM.");
                 return;
             }
 
-            dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
+            dataGridViewMapping.CurrentCell = dataGridViewMapping.Rows[0].Cells[0];
 
-            if (crmAction.SelectedIndex != 1)
+            if (settingsCrmAction.SelectedIndex != 1)
             {
                 bool wehavekey = false;
-                foreach (DataGridViewRow dataGridRow in dataGridView1.Rows)
+                foreach (DataGridViewRow dataGridRow in dataGridViewMapping.Rows)
                 {
                     if (dataGridRow.Cells["isKey"].Value != null && (bool)dataGridRow.Cells["isKey"].Value)
                     {
@@ -514,15 +514,15 @@ namespace DataImport
             xlWorkSheet = null;
             xlRange = null;
             xlApp = null;
-            pickedEntity.SelectedItem = null;
+            settingsEntity.SelectedItem = null;
             EmptyDataGrid();
             label2.Visible = false;
-            optionSetVL.Visible = false;
+            settingsOptionSetValuesOrLabel.Visible = false;
             label4.Visible = false;
-            comboBox1.Visible = false;
-            crmAction.SelectedIndex = 0;
+            settingsLookupFoundMultipleRecords.Visible = false;
+            settingsCrmAction.SelectedIndex = 0;
             CRMField.Items.Clear();
-            dataGridView1.Refresh();
+            dataGridViewMapping.Refresh();
             richTextBox1.Text = "";
             richTextBoxErrors.Text = "";
             richTextBoxImported.Text = "";
@@ -542,45 +542,45 @@ namespace DataImport
             updatednumber = 0;
             textDeleted.Text = "";
             deletednumber = 0;
-            comboBox1.SelectedIndex = 0;
+            settingsLookupFoundMultipleRecords.SelectedIndex = 0;
             textView.SelectedIndex = 0;
-            optionSetVL.SelectedIndex = 0;
-            keyRecords.SelectedIndex = 0;
+            settingsOptionSetValuesOrLabel.SelectedIndex = 0;
+            settingsKeyFoundMultipleRecords.SelectedIndex = 0;
         }
         private void ProcessFields()
         {
-            if (dataGridView1.RowCount == 0)
+            if (dataGridViewMapping.RowCount == 0)
             {
                 MessageBox.Show("Please BROWSE EXCEL FILE and Pick your entity and fields mapping first.");
                 return;
             }
-            dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
+            dataGridViewMapping.CurrentCell = dataGridViewMapping.Rows[0].Cells[0];
             string acrmfield;
             int dRow;
             lookupscount = 0;
-            for (dRow = 0; dRow < dataGridView1.RowCount; dRow++)
+            for (dRow = 0; dRow < dataGridViewMapping.RowCount; dRow++)
             {
-                string lkpentityname = Convert.ToString((dataGridView1.Rows[dRow].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
-                acrmfield = Convert.ToString((dataGridView1.Rows[dRow].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString());
+                string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
+                acrmfield = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString());
                 foreach (object attribute in resultsaved.Attributes)
                 {
                     AttributeMetadata a = (AttributeMetadata)attribute;
                     if (a.LogicalName.ToString() == acrmfield)  //Find the CRM field between the metadata
                     {
-                        DataGridViewCheckBoxCell chk = dataGridView1.Rows[dRow].Cells[3] as DataGridViewCheckBoxCell;
+                        DataGridViewCheckBoxCell chk = dataGridViewMapping.Rows[dRow].Cells[3] as DataGridViewCheckBoxCell;
                         if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
                         {
-                            dataGridView1.Columns["lkpTargetEntity"].Visible = true;
-                            dataGridView1.Columns["lkpTargetfield"].Visible = true;
+                            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = true;
+                            dataGridViewMapping.Columns["lkpTargetfield"].Visible = true;
                             label4.Visible = true;
-                            comboBox1.Visible = true;
+                            settingsLookupFoundMultipleRecords.Visible = true;
                             //Flag row as lookup
                             lookupscount++;
                             chk.Value = true;
-                            DataGridViewComboBoxCell data1 = dataGridView1.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
+                            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
                             data1.ReadOnly = false;
                             data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
-                            DataGridViewComboBoxCell data2 = dataGridView1.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
+                            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
                             data2.ReadOnly = false;
                             data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
                             InitLookupFields(lkpentityname, dRow);
@@ -590,34 +590,34 @@ namespace DataImport
                             //Décocher la case
                             chk.Value = false;
                             //Bloquer la grille des non lookup
-                            DataGridViewComboBoxCell data1 = dataGridView1.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
+                            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
                             data1.ReadOnly = true;
                             data1.Value = null;
                             data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                            DataGridViewComboBoxCell data2 = dataGridView1.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
+                            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
                             data2.ReadOnly = true;
                             data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
                             data2.Value = null;
                         }
                         if (a.AttributeType.ToString() == "Boolean")
                         {
-                            dataGridView1.Columns["Truevalue"].Visible = true;
-                            dataGridView1.Columns["Falsevalue"].Visible = true;
-                            dataGridView1.Columns["DefaultValue"].Visible = true;
-                            DataGridViewCell databooltrue = dataGridView1.Rows[dRow].Cells[6] as DataGridViewCell;
+                            dataGridViewMapping.Columns["Truevalue"].Visible = true;
+                            dataGridViewMapping.Columns["Falsevalue"].Visible = true;
+                            dataGridViewMapping.Columns["DefaultValue"].Visible = true;
+                            DataGridViewCell databooltrue = dataGridViewMapping.Rows[dRow].Cells[6] as DataGridViewCell;
                             databooltrue.ReadOnly = false;
                             databooltrue.Style.BackColor = Color.LightGray;
-                            DataGridViewCell databoolfalse = dataGridView1.Rows[dRow].Cells[7] as DataGridViewCell;
+                            DataGridViewCell databoolfalse = dataGridViewMapping.Rows[dRow].Cells[7] as DataGridViewCell;
                             databoolfalse.ReadOnly = false;
                             databoolfalse.Style.BackColor = Color.LightGray;
-                            DataGridViewCell databooldefault = dataGridView1.Rows[dRow].Cells[8] as DataGridViewCell;
+                            DataGridViewCell databooldefault = dataGridViewMapping.Rows[dRow].Cells[8] as DataGridViewCell;
                             databooldefault.ReadOnly = false;
                             databooldefault.Style.BackColor = Color.LightGray;
 
                             //fetch for true and false boolean values
                             RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
                             {
-                                EntityLogicalName = pickedEntity.SelectedItem.ToString(),
+                                EntityLogicalName = settingsEntity.SelectedItem.ToString(),
                                 LogicalName = acrmfield,
                                 RetrieveAsIfPublished = true
                             };
@@ -633,15 +633,15 @@ namespace DataImport
                             else
                                 boolTextDefault = boolTextFalse;
 
-                            dataGridView1.Rows[dRow].Cells["Truevalue"].Value = boolTextTrue;
-                            dataGridView1.Rows[dRow].Cells["Falsevalue"].Value = boolTextFalse;
-                            dataGridView1.Rows[dRow].Cells["DefaultValue"].Value = boolTextDefault;
+                            dataGridViewMapping.Rows[dRow].Cells["Truevalue"].Value = boolTextTrue;
+                            dataGridViewMapping.Rows[dRow].Cells["Falsevalue"].Value = boolTextFalse;
+                            dataGridViewMapping.Rows[dRow].Cells["DefaultValue"].Value = boolTextDefault;
                         }
                         if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
                         {
                             label2.Visible = true;
-                            optionSetVL.Visible = true;
-                            optionSetVL.SelectedIndex = 1;
+                            settingsOptionSetValuesOrLabel.Visible = true;
+                            settingsOptionSetValuesOrLabel.SelectedIndex = 1;
                         }
                     }
                 }
@@ -652,35 +652,6 @@ namespace DataImport
         private void ToolStripButton2_Click_1(object sender, EventArgs e)
         {
             ExecuteMethod(ProcessFields);
-        }
-        private void SplitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
-        }
-
-        private void DataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void Lookuprelatedfields_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PickedEntity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ProgressBar1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void CopyText_Click(object sender, EventArgs e)
@@ -694,30 +665,25 @@ namespace DataImport
                 MessageBox.Show("Logs are empty");
         }
 
-        private void Labelprogress_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Button1_Click_2(object sender, EventArgs e)
         {
             SetTextBox1();
             dataGridViewLogs.Refresh();
         }
 
-        private void CrmAction_DropDownClosed(object sender, EventArgs e)
+        private void settingsCrmAction_DropDownClosed(object sender, EventArgs e)
         {
-            if (crmAction.SelectedItem.ToString() == "CREATE")
+            if (settingsCrmAction.SelectedItem.ToString() == "CREATE")
             {
-                keyRecords.Visible = false;
+                settingsKeyFoundMultipleRecords.Visible = false;
                 label6.Visible = false;
-                dataGridView1.Columns[1].Visible = false;
+                dataGridViewMapping.Columns[1].Visible = false;
             }
             else
             {
-                keyRecords.Visible = true;
+                settingsKeyFoundMultipleRecords.Visible = true;
                 label6.Visible = true;
-                dataGridView1.Columns[1].Visible = true;
+                dataGridViewMapping.Columns[1].Visible = true;
             }
         }
 
@@ -811,19 +777,19 @@ namespace DataImport
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
-            if (crmAction.SelectedItem == null)
+            if (settingsCrmAction.SelectedItem == null)
             {
                 //MessageBox.Show("Please choose a CRM action before Importing the file to CRM");
                 return;
             }
             DataTable dt = new DataTable();
 
-            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
             {
                 dt.Columns.Add(col.Name);
             }
 
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in dataGridViewMapping.Rows)
             {
                 DataRow dRow = dt.NewRow();
                 foreach (DataGridViewCell cell in row.Cells)
@@ -839,10 +805,10 @@ namespace DataImport
                 }
                 dt.Rows.Add(dRow);
             }
-            string mcrmAction = crmAction.SelectedItem.ToString();
-            string mcomboBox1 = comboBox1.SelectedItem.ToString();
-            string moptionSetVL = optionSetVL.SelectedItem.ToString();
-            int mkeyRecords = keyRecords.SelectedIndex;
+            string msettingsCrmAction = settingsCrmAction.SelectedItem.ToString();
+            string msettingsLookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+            string msettingsOptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
+            int msettingsKeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedIndex;
             successnumber = 0;
             errornumber = 0;
             creatednumber = 0;
@@ -871,10 +837,10 @@ namespace DataImport
                     Guid _recordId = new Guid();
                     bool istoimport;
                     
-                    richTextBoxErrors.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
-                    richTextBoxImported.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
-                    richTextBoxAll.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
-                    richTextBoxWarning.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxErrors.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxImported.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxAll.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxWarning.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
                     
                     for (iRow = 2; iRow <= xlRange.Rows.Count; iRow++)  // START FROM THE SECOND ROW.
                     {
@@ -977,7 +943,7 @@ namespace DataImport
                                         if (myfieldtype == "Picklist")
                                         {
                                             //// OPTIONSET LABELS
-                                            if (moptionSetVL == "OPTIONSET LABELS")
+                                            if (msettingsOptionSetValuesOrLabel == "OPTIONSET LABELS")
                                             {
 
                                                 var picklistMetadata = (PicklistAttributeMetadata)resultsaved.Attributes.FirstOrDefault(myattribute => String.Equals(myattribute.LogicalName, a.LogicalName, StringComparison.OrdinalIgnoreCase));
@@ -1282,7 +1248,7 @@ namespace DataImport
                                     /*///ADD CONDITION FOR KEY
                                     if (myfieldtype != "Lookup" && myfieldtype != "Customer" && myfieldtype != "Boolean" && myfieldtype != "Uniqueidentifier")
                                     {
-                                        //dcc = (DataGridViewComboBoxCell)dataGridView1.Rows[iCol - 1].Cells[2];
+                                        //dcc = (DataGridViewComboBoxCell)dataGridViewMapping.Rows[iCol - 1].Cells[2];
                                         //int indexx = dcc.Items.IndexOf(dcc.Value);
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Equal, qestr));
                                     }*/
@@ -1290,7 +1256,7 @@ namespace DataImport
                             }
                         }
                         //START/////////////////////////////////////////////////////////////////////////////////////////////
-                        if (flaglookup && mcrmAction != "DELETE")
+                        if (flaglookup && msettingsCrmAction != "DELETE")
                         {
                             QueryExpression lookupquery = new QueryExpression();
                             lookupquery.ColumnSet = new ColumnSet();
@@ -1336,7 +1302,7 @@ namespace DataImport
                                     {
                                         if (mycollect.Entities.Count > 1)
                                         {
-                                            if (mcomboBox1 == "IMPORT CRM RECORD WITH CLEARED LOOKUP")
+                                            if (msettingsLookupFoundMultipleRecords == "IMPORT CRM RECORD WITH CLEARED LOOKUP")
                                             {
                                                 record[distcVec[m]] = null;
                                                 // Update Logs
@@ -1344,7 +1310,7 @@ namespace DataImport
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                             }
-                                            else if (mcomboBox1 == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
+                                            else if (msettingsLookupFoundMultipleRecords == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
                                             {
                                                 record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
                                                 // Update Logs
@@ -1354,7 +1320,7 @@ namespace DataImport
                                                 if (distcKeyVec[m])
                                                     qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
                                             }
-                                            else if (mcomboBox1 == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
+                                            else if (msettingsLookupFoundMultipleRecords == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
                                             {
                                                 istoimport = false;
                                                 // Update Logs
@@ -1373,21 +1339,21 @@ namespace DataImport
                                     else // Didn't find a match
                                     {
                                         record[distcVec[m]] = null;
-                                        if (mcomboBox1 == "IMPORT RECORD WITH CLEARED LOOKUP")
+                                        if (msettingsLookupFoundMultipleRecords == "IMPORT RECORD WITH CLEARED LOOKUP")
                                         {
                                             // Update Logs
                                             AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
-                                        else if (mcomboBox1 == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
+                                        else if (msettingsLookupFoundMultipleRecords == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
                                         {
                                             // Update Logs
                                             AddToLogRow(row, "⚠ CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
-                                        else if (mcomboBox1 == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
+                                        else if (msettingsLookupFoundMultipleRecords == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
                                         {
                                             istoimport = false;
                                             // Update Logs
@@ -1413,7 +1379,7 @@ namespace DataImport
                         {
 
                             //CREATE
-                            if (mcrmAction == "CREATE")
+                            if (msettingsCrmAction == "CREATE")
                             {
                                 try
                                 {
@@ -1436,14 +1402,14 @@ namespace DataImport
                             }
 
                             //UPDATE
-                            else if (mcrmAction == "UPDATE")
+                            else if (msettingsCrmAction == "UPDATE")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                        if (ec.Entities.Count == 1 || msettingsKeyFoundMultipleRecords == 0)
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1497,14 +1463,14 @@ namespace DataImport
                             }
 
                             //UPSERT
-                            else if (mcrmAction == "UPSERT")
+                            else if (msettingsCrmAction == "UPSERT")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                        if (ec.Entities.Count == 1 || msettingsKeyFoundMultipleRecords == 0)
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1570,14 +1536,14 @@ namespace DataImport
                                     errornumber++;
                                 }
                             }
-                            else if (mcrmAction == "DELETE")
+                            else if (msettingsCrmAction == "DELETE")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                        if (ec.Entities.Count == 1 || msettingsKeyFoundMultipleRecords == 0)
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1646,10 +1612,10 @@ namespace DataImport
                     if (xlWorkBook != null) Marshal.ReleaseComObject(xlWorkBook);
                     if (xlApp != null) Marshal.ReleaseComObject(xlApp);
 
-                    richTextBoxImported.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxErrors.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxImported.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxErrors.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
                     
                 },
                 ProgressChanged = e =>
