@@ -16,6 +16,7 @@ using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Messages;
 using System.ServiceModel;
 using System.Runtime.InteropServices;
+using Microsoft.VisualBasic;
 
 namespace DataImport
 {
@@ -34,7 +35,6 @@ namespace DataImport
         RichTextBox richTextBoxWarning = new RichTextBox();
         //DataGridViewComboBoxCell dcc; //??
         string sFileName;
-        string strentityname;
         bool strIsKey;
         bool IsReadyToImport = false;
         string qestr;
@@ -51,7 +51,10 @@ namespace DataImport
         int updatednumber = 0;
         int deletednumber = 0;
         int importRunNumber = 0; // Number of times the Excel Import process has been run
-        private Settings mySettings;
+
+        // The Settings for the import
+        private Settings settings = Settings.Instance;
+
         // To store the table logs
         DataTable tableLogEntries = new DataTable();
 
@@ -137,7 +140,6 @@ namespace DataImport
             }
             CRMField.Items.Clear();
 
-            strentityname = settingsEntity.SelectedItem.ToString();
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Getting entity fields",
@@ -147,7 +149,7 @@ namespace DataImport
                     RetrieveEntityRequest retrieveEntityRequest = new RetrieveEntityRequest
                     {
                         EntityFilters = EntityFilters.All,
-                        LogicalName = strentityname
+                        LogicalName = settings.Entity
                     };
 
                     // Execute the request
@@ -169,10 +171,6 @@ namespace DataImport
 
                             if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" ||  (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
-                            /*else if(a.LogicalName.ToString()=="statecode")
-                            { 
-                                    MessageBox.Show(a.LogicalName.ToString()+ " - "+a.AttributeType.ToString());
-                            }*/
                         }
                     }
                 }
@@ -244,60 +242,10 @@ namespace DataImport
         private void MyPluginControl_OnCloseTool(object sender, EventArgs e)
         {
             // Before leaving, save the settings
-            SettingsManager.Instance.Save(GetType(), mySettings);
-        }
-
-        /// <summary>
-        /// This event occurs when the connection has been updated in XrmToolBox
-        /// </summary>
-        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
-        {
-            base.UpdateConnection(newService, detail, actionName, parameter);
-            if (mySettings != null && detail != null)
-            {
-                mySettings.LastUsedOrganizationWebappUrl = detail.WebApplicationUrl;
-                LogInfo("Connection has changed to: {0}", detail.WebApplicationUrl);
-            }
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-
-
-
+            SettingsManager.Instance.Save(GetType(), settings);
         }
 
         private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void dataGridViewMapping_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-      /*  private void dataGridViewMapping_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            //GET OUR COMBO OBJECT
-            var combo = e.Control as ComboBox;
-            if (combo != null)
-            {
-                // AVOID ATTACHMENT TO MULTIPLE EVENT HANDLERS
-                combo.SelectedIndexChanged -= new EventHandler(Combo_SelectedIndexChanged);
-
-                //THEN NOW ADD
-                combo.SelectedIndexChanged += Combo_SelectedIndexChanged;
-            }
-        }
-
-        private void Combo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selected = (sender as ComboBox).SelectedItem.ToString();
-        }
-        */
-
-        private void Button1_Click_1(object sender, EventArgs e)
         {
 
         }
@@ -333,36 +281,12 @@ namespace DataImport
                     
                     xlWorkBook.Close();
                     xlApp.Quit();
+
+                    processFieldsButton.Enabled = true;
                 }
             });
         }
 
-        private void SplitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void settingsEntity_DropDownClosed(object sender, EventArgs e)
-        {//SelectedIndexChanged
-            if (settingsEntity.SelectedItem != null)
-            {
-                for (int o = 0; o < dataGridViewMapping.RowCount; o++)
-                {
-                    DataGridViewComboBoxCell data = dataGridViewMapping.Rows[o].Cells[2] as DataGridViewComboBoxCell;
-                    data.Value = null;
-                }
-                ExecuteMethod(InitEntityFields);
-            }
-            else if(settingsEntity.Items.Count ==0)
-            {
-                ExecuteMethod(InitEntities);
-            }
-        }
         private void SetTextBox1()
         {
             if (textView.SelectedItem.ToString() == "📙 ALL")
@@ -452,6 +376,7 @@ namespace DataImport
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
             GetFile();
+            loadSettingsButton.Enabled = true;
         }
 
         private void Label1_Click(object sender, EventArgs e)
@@ -510,19 +435,27 @@ namespace DataImport
         private void ToolStripButton3_Click(object sender, EventArgs e)
         {
             ///CLEAR ALL
+            
             xlWorkBook = null;
             xlWorkSheet = null;
             xlRange = null;
             xlApp = null;
+
             settingsEntity.SelectedItem = null;
-            EmptyDataGrid();
+            settingsLookupFoundMultipleRecords.Visible = false;
+            settingsCrmAction.SelectedIndex = 0;
+            settingsLookupFoundMultipleRecords.SelectedIndex = 0;
+            settingsOptionSetValuesOrLabel.SelectedIndex = 0;
+            settingsKeyFoundMultipleRecords.SelectedIndex = 0;
+            settings.Reset();
+
             label2.Visible = false;
             settingsOptionSetValuesOrLabel.Visible = false;
             label4.Visible = false;
-            settingsLookupFoundMultipleRecords.Visible = false;
-            settingsCrmAction.SelectedIndex = 0;
+            
             CRMField.Items.Clear();
             dataGridViewMapping.Refresh();
+            EmptyDataGrid();
             richTextBox1.Text = "";
             richTextBoxErrors.Text = "";
             richTextBoxImported.Text = "";
@@ -542,10 +475,8 @@ namespace DataImport
             updatednumber = 0;
             textDeleted.Text = "";
             deletednumber = 0;
-            settingsLookupFoundMultipleRecords.SelectedIndex = 0;
             textView.SelectedIndex = 0;
-            settingsOptionSetValuesOrLabel.SelectedIndex = 0;
-            settingsKeyFoundMultipleRecords.SelectedIndex = 0;
+            
         }
         private void ProcessFields()
         {
@@ -647,6 +578,7 @@ namespace DataImport
                 }
             }
             IsReadyToImport = true;
+            importDataButton.Enabled = true;
         }
         
         private void ToolStripButton2_Click_1(object sender, EventArgs e)
@@ -671,28 +603,9 @@ namespace DataImport
             dataGridViewLogs.Refresh();
         }
 
-        private void settingsCrmAction_DropDownClosed(object sender, EventArgs e)
-        {
-            if (settingsCrmAction.SelectedItem.ToString() == "CREATE")
-            {
-                settingsKeyFoundMultipleRecords.Visible = false;
-                label6.Visible = false;
-                dataGridViewMapping.Columns[1].Visible = false;
-            }
-            else
-            {
-                settingsKeyFoundMultipleRecords.Visible = true;
-                label6.Visible = true;
-                dataGridViewMapping.Columns[1].Visible = true;
-            }
-        }
+        
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
         {
 
         }
@@ -774,12 +687,106 @@ namespace DataImport
             }
         }
 
+        private void saveSettingsButton_Click(object sender, EventArgs e)
+        {
+            string instructions = "Enter the name of your settings file. \n It will be saved in the default settings location (XRMToolbox\\Settings)";
+            string title = "Save Settings File";
+
+            string settingsFileName = Interaction.InputBox(instructions, title);
+
+            if (!string.IsNullOrEmpty(settingsFileName))
+            {
+                SettingsManager.Instance.Save(GetType(), settings, settingsFileName);
+            }
+        }
+
+        private void loadSettingsButton_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Title = "Settings File";
+            openFileDialog1.FileName = "";
+            openFileDialog1.Filter = "XML File|*.xml";
+            // Set the default directory of the file dialog to be the current working directory / Settings
+            openFileDialog1.InitialDirectory = Path.Combine(Environment.CurrentDirectory, "Settings");
+
+            DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string fileName = openFileDialog1.FileName;
+                try
+                {
+                    if (fileName.Trim() != "")
+                    {
+                        settings.LoadSettingsFromXML(fileName);
+                        MessageBox.Show(settings.Entity);
+                    }
+                }
+                catch (IOException)
+                {
+                }
+            }
+            settingsEntity.SelectedItem = settings.Entity;
+            settingsCrmAction.SelectedItem = settings.CrmAction;
+            settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
+            settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
+            settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
+        }
+
+        private void settingsEntity_DropDownClosed(object sender, EventArgs e)
+        {
+            if (settingsEntity.SelectedItem != null)
+            {
+                settings.Entity = settingsEntity.SelectedItem.ToString();
+                for (int o = 0; o < dataGridViewMapping.RowCount; o++)
+                {
+                    DataGridViewComboBoxCell data = dataGridViewMapping.Rows[o].Cells[2] as DataGridViewComboBoxCell;
+                    data.Value = null;
+                }
+                ExecuteMethod(InitEntityFields);
+            }
+            else if (settingsEntity.Items.Count == 0)
+            {
+                ExecuteMethod(InitEntities);
+            }
+        }
+
+        private void settingsCrmAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.CrmAction = settingsCrmAction.SelectedItem.ToString();
+            if (settings.CrmAction == "Create")
+            {
+                settingsKeyFoundMultipleRecords.Visible = false;
+                label6.Visible = false;
+                dataGridViewMapping.Columns[1].Visible = false;
+            }
+            else
+            {
+                settingsKeyFoundMultipleRecords.Visible = true;
+                label6.Visible = true;
+                dataGridViewMapping.Columns[1].Visible = true;
+            }
+        }
+
+        private void settingsKeyFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
+        }
+
+        private void settingsOptionSetValuesOrLabel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
+        }
+
+        private void settingsLookupFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+        }
+
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
             if (settingsCrmAction.SelectedItem == null)
             {
-                //MessageBox.Show("Please choose a CRM action before Importing the file to CRM");
+                MessageBox.Show("Please choose a CRM action before importing a file to CRM");
                 return;
             }
             DataTable dt = new DataTable();
@@ -805,10 +812,14 @@ namespace DataImport
                 }
                 dt.Rows.Add(dRow);
             }
-            string msettingsCrmAction = settingsCrmAction.SelectedItem.ToString();
-            string msettingsLookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
-            string msettingsOptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
-            int msettingsKeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedIndex;
+
+            // Ensure all visible settings are applied
+            settings.Entity = settingsEntity.SelectedItem.ToString();
+            settings.CrmAction = settingsCrmAction.SelectedItem.ToString();
+            settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+            settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
+            settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
+
             successnumber = 0;
             errornumber = 0;
             creatednumber = 0;
@@ -819,8 +830,8 @@ namespace DataImport
             textCreated.Text = creatednumber.ToString();
             textUpdated.Text = updatednumber.ToString();
             textDeleted.Text = deletednumber.ToString();
-            toolStripButton1.Enabled = false;
-            toolStripButton2.Enabled = false;
+            importDataButton.Enabled = false;
+            processFieldsButton.Enabled = false;
             LogTableShow();
             importRunNumber++;
 
@@ -837,10 +848,10 @@ namespace DataImport
                     Guid _recordId = new Guid();
                     bool istoimport;
                     
-                    richTextBoxErrors.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
-                    richTextBoxImported.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
-                    richTextBoxAll.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
-                    richTextBoxWarning.Text += "STARTING " + msettingsCrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxErrors.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxImported.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxAll.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxWarning.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine;
                     
                     for (iRow = 2; iRow <= xlRange.Rows.Count; iRow++)  // START FROM THE SECOND ROW.
                     {
@@ -851,7 +862,7 @@ namespace DataImport
                         }
 
                         Entity record = null;
-                        record = new Entity(strentityname);
+                        record = new Entity(settings.Entity);
                         istoimport = true;
                         flaglookup = false;
 
@@ -861,7 +872,7 @@ namespace DataImport
 
                     QueryExpression qe = new QueryExpression
                         {
-                            EntityName = strentityname,
+                            EntityName = settings.Entity,
                             ColumnSet = new ColumnSet()
                         };
                         
@@ -943,7 +954,7 @@ namespace DataImport
                                         if (myfieldtype == "Picklist")
                                         {
                                             //// OPTIONSET LABELS
-                                            if (msettingsOptionSetValuesOrLabel == "OPTIONSET LABELS")
+                                            if (settings.OptionSetValuesOrLabel == "Labels")
                                             {
 
                                                 var picklistMetadata = (PicklistAttributeMetadata)resultsaved.Attributes.FirstOrDefault(myattribute => String.Equals(myattribute.LogicalName, a.LogicalName, StringComparison.OrdinalIgnoreCase));
@@ -1256,7 +1267,7 @@ namespace DataImport
                             }
                         }
                         //START/////////////////////////////////////////////////////////////////////////////////////////////
-                        if (flaglookup && msettingsCrmAction != "DELETE")
+                        if (flaglookup && settings.CrmAction != "Delete")
                         {
                             QueryExpression lookupquery = new QueryExpression();
                             lookupquery.ColumnSet = new ColumnSet();
@@ -1302,7 +1313,7 @@ namespace DataImport
                                     {
                                         if (mycollect.Entities.Count > 1)
                                         {
-                                            if (msettingsLookupFoundMultipleRecords == "IMPORT CRM RECORD WITH CLEARED LOOKUP")
+                                            if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
                                             {
                                                 record[distcVec[m]] = null;
                                                 // Update Logs
@@ -1310,7 +1321,7 @@ namespace DataImport
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                             }
-                                            else if (msettingsLookupFoundMultipleRecords == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
+                                            else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
                                             {
                                                 record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
                                                 // Update Logs
@@ -1320,7 +1331,7 @@ namespace DataImport
                                                 if (distcKeyVec[m])
                                                     qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
                                             }
-                                            else if (msettingsLookupFoundMultipleRecords == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
+                                            else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
                                             {
                                                 istoimport = false;
                                                 // Update Logs
@@ -1339,21 +1350,21 @@ namespace DataImport
                                     else // Didn't find a match
                                     {
                                         record[distcVec[m]] = null;
-                                        if (msettingsLookupFoundMultipleRecords == "IMPORT RECORD WITH CLEARED LOOKUP")
+                                        if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
                                         {
                                             // Update Logs
                                             AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
-                                        else if (msettingsLookupFoundMultipleRecords == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
+                                        else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
                                         {
                                             // Update Logs
                                             AddToLogRow(row, "⚠ CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
-                                        else if (msettingsLookupFoundMultipleRecords == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
+                                        else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
                                         {
                                             istoimport = false;
                                             // Update Logs
@@ -1379,7 +1390,7 @@ namespace DataImport
                         {
 
                             //CREATE
-                            if (msettingsCrmAction == "CREATE")
+                            if (settings.CrmAction == "Create")
                             {
                                 try
                                 {
@@ -1402,14 +1413,14 @@ namespace DataImport
                             }
 
                             //UPDATE
-                            else if (msettingsCrmAction == "UPDATE")
+                            else if (settings.CrmAction == "UPDATE")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || msettingsKeyFoundMultipleRecords == 0)
+                                        if (ec.Entities.Count == 1 || settings.KeyFoundMultipleRecords == "Do action for all")
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1463,14 +1474,14 @@ namespace DataImport
                             }
 
                             //UPSERT
-                            else if (msettingsCrmAction == "UPSERT")
+                            else if (settings.CrmAction == "Upsert")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || msettingsKeyFoundMultipleRecords == 0)
+                                        if (ec.Entities.Count == 1 || settings.KeyFoundMultipleRecords == "Do action for all")
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1536,21 +1547,21 @@ namespace DataImport
                                     errornumber++;
                                 }
                             }
-                            else if (msettingsCrmAction == "DELETE")
+                            else if (settings.CrmAction == "Delete")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || msettingsKeyFoundMultipleRecords == 0)
+                                        if (ec.Entities.Count == 1 || settings.KeyFoundMultipleRecords == "Do action for all")
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
                                                 record.Id = entity.Id;
                                                 try
                                                 {
-                                                    Service.Delete(strentityname, record.Id);
+                                                    Service.Delete(settings.Entity, record.Id);
                                                     // Update logs
                                                     AddToLogRow(row, null, entity.Id.ToString(), "Deleted");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
@@ -1612,10 +1623,10 @@ namespace DataImport
                     if (xlWorkBook != null) Marshal.ReleaseComObject(xlWorkBook);
                     if (xlApp != null) Marshal.ReleaseComObject(xlApp);
 
-                    richTextBoxImported.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxErrors.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + msettingsCrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxImported.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxErrors.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
                     
                 },
                 ProgressChanged = e =>
@@ -1625,8 +1636,8 @@ namespace DataImport
                 PostWorkCallBack = e =>
                 {
                     // This code is executed in the main thread
-                    toolStripButton1.Enabled = true;
-                    toolStripButton2.Enabled = true;
+                    importDataButton.Enabled = true;
+                    processFieldsButton.Enabled = true;
                     if (textView.SelectedItem.ToString() == "📙 ALL")
                     {
                         richTextBox1.Text = richTextBoxAll.Text;

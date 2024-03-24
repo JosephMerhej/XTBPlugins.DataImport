@@ -64,6 +64,7 @@
       <HintPath>packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.1.1.45\lib\net462\Microsoft.Rest.ClientRuntime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.2365.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Web.WebView2.1.0.2365.46\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
     </Reference>
@@ -265,6 +266,7 @@
     <None Include="bin\coretools\pacTelemetryUpload.exe.config" />
     <None Include="bin\coretools\SolutionPackager.exe.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Settings.datasource" />
     <None Include="XrmToolBox.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

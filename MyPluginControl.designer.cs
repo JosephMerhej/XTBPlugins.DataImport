@@ -28,15 +28,19 @@ namespace DataImport
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyPluginControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
-            this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.BrowseFile = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.browseFileButton = new System.Windows.Forms.ToolStripButton();
+            this.processFieldsButton = new System.Windows.Forms.ToolStripButton();
+            this.importDataButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveSettingsButton = new System.Windows.Forms.ToolStripButton();
+            this.loadSettingsButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.resetButton = new System.Windows.Forms.ToolStripButton();
+            this.closeButton = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.LogToggle = new System.Windows.Forms.Button();
@@ -69,6 +73,12 @@ namespace DataImport
             this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewLogs = new System.Windows.Forms.DataGridView();
+            this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.textDeleted = new System.Windows.Forms.TextBox();
@@ -82,12 +92,7 @@ namespace DataImport
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -107,18 +112,22 @@ namespace DataImport
             this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripMenu
             // 
             this.toolStripMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbClose,
-            this.tssSeparator1,
-            this.BrowseFile,
-            this.toolStripButton2,
-            this.toolStripButton1,
-            this.toolStripButton3});
+            this.browseFileButton,
+            this.processFieldsButton,
+            this.importDataButton,
+            this.toolStripSeparator1,
+            this.saveSettingsButton,
+            this.loadSettingsButton,
+            this.toolStripSeparator2,
+            this.resetButton,
+            this.closeButton});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
             this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -126,54 +135,81 @@ namespace DataImport
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
-            // tsbClose
+            // browseFileButton
             // 
-            this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
-            this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(64, 28);
-            this.tsbClose.Text = "Close";
-            this.tsbClose.Click += new System.EventHandler(this.TsbClose_Click);
+            this.browseFileButton.Image = ((System.Drawing.Image)(resources.GetObject("browseFileButton.Image")));
+            this.browseFileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.browseFileButton.Name = "browseFileButton";
+            this.browseFileButton.Size = new System.Drawing.Size(103, 28);
+            this.browseFileButton.Text = "Browse Excel";
+            this.browseFileButton.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
-            // tssSeparator1
+            // processFieldsButton
             // 
-            this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.processFieldsButton.Enabled = false;
+            this.processFieldsButton.Image = ((System.Drawing.Image)(resources.GetObject("processFieldsButton.Image")));
+            this.processFieldsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.processFieldsButton.Name = "processFieldsButton";
+            this.processFieldsButton.Size = new System.Drawing.Size(106, 28);
+            this.processFieldsButton.Text = "Process fields";
+            this.processFieldsButton.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
             // 
-            // BrowseFile
+            // importDataButton
             // 
-            this.BrowseFile.Image = ((System.Drawing.Image)(resources.GetObject("BrowseFile.Image")));
-            this.BrowseFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BrowseFile.Name = "BrowseFile";
-            this.BrowseFile.Size = new System.Drawing.Size(103, 28);
-            this.BrowseFile.Text = "Browse Excel";
-            this.BrowseFile.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            this.importDataButton.Enabled = false;
+            this.importDataButton.Image = ((System.Drawing.Image)(resources.GetObject("importDataButton.Image")));
+            this.importDataButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.importDataButton.Name = "importDataButton";
+            this.importDataButton.Size = new System.Drawing.Size(97, 28);
+            this.importDataButton.Text = "Import data";
+            this.importDataButton.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
             // 
-            // toolStripButton2
+            // toolStripSeparator1
             // 
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(106, 28);
-            this.toolStripButton2.Text = "Process fields";
-            this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
             // 
-            // toolStripButton1
+            // saveSettingsButton
             // 
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(97, 28);
-            this.toolStripButton1.Text = "Import data";
-            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
+            this.saveSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("saveSettingsButton.Image")));
+            this.saveSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveSettingsButton.Name = "saveSettingsButton";
+            this.saveSettingsButton.Size = new System.Drawing.Size(103, 28);
+            this.saveSettingsButton.Text = "Save settings";
+            this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
             // 
-            // toolStripButton3
+            // loadSettingsButton
             // 
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(63, 28);
-            this.toolStripButton3.Text = "Reset";
-            this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click);
+            this.loadSettingsButton.Enabled = false;
+            this.loadSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("loadSettingsButton.Image")));
+            this.loadSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.loadSettingsButton.Name = "loadSettingsButton";
+            this.loadSettingsButton.Size = new System.Drawing.Size(105, 28);
+            this.loadSettingsButton.Text = "Load settings";
+            this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
+            this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
+            // 
+            // resetButton
+            // 
+            this.resetButton.Image = ((System.Drawing.Image)(resources.GetObject("resetButton.Image")));
+            this.resetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(63, 28);
+            this.resetButton.Text = "Reset";
+            this.resetButton.Click += new System.EventHandler(this.ToolStripButton3_Click);
+            // 
+            // closeButton
+            // 
+            this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(64, 28);
+            this.closeButton.Text = "Close";
+            this.closeButton.Click += new System.EventHandler(this.TsbClose_Click);
             // 
             // splitContainer1
             // 
@@ -223,7 +259,6 @@ namespace DataImport
             this.splitContainer2.Panel1.Controls.Add(this.settingsEntity);
             this.splitContainer2.Panel1.Controls.Add(this.settingsOptionSetValuesOrLabel);
             this.splitContainer2.Panel1.Controls.Add(this.settingsCrmAction);
-            this.splitContainer2.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer2_Panel1_Paint);
             // 
             // splitContainer2.Panel2
             // 
@@ -259,13 +294,14 @@ namespace DataImport
             this.settingsKeyFoundMultipleRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsKeyFoundMultipleRecords.FormattingEnabled = true;
             this.settingsKeyFoundMultipleRecords.Items.AddRange(new object[] {
-            "DO ACTION FOR ALL",
-            "IGNORE EXCEL LINE"});
+            "Do action for all",
+            "Ignore excel line"});
             this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(2, 94);
             this.settingsKeyFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
             this.settingsKeyFoundMultipleRecords.Name = "settingsKeyFoundMultipleRecords";
             this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(345, 21);
             this.settingsKeyFoundMultipleRecords.TabIndex = 13;
+            this.settingsKeyFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsKeyFoundMultipleRecords_SelectedIndexChanged);
             // 
             // RefreshLogs
             // 
@@ -334,15 +370,16 @@ namespace DataImport
             this.settingsLookupFoundMultipleRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsLookupFoundMultipleRecords.FormattingEnabled = true;
             this.settingsLookupFoundMultipleRecords.Items.AddRange(new object[] {
-            "MAP THE FIRST FOUND RECORD TO THE LOOKUP",
-            "SKIP RECORD WITHOUT IMPORTING IT AT ALL",
-            "IMPORT CRM RECORD WITH CLEARED LOOKUP"});
+            "Map to the first record found by the lookup",
+            "Skip the record and do not import it",
+            "Import the record with the lookup blank"});
             this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(2, 173);
             this.settingsLookupFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
             this.settingsLookupFoundMultipleRecords.Name = "settingsLookupFoundMultipleRecords";
             this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(345, 21);
             this.settingsLookupFoundMultipleRecords.TabIndex = 9;
             this.settingsLookupFoundMultipleRecords.Visible = false;
+            this.settingsLookupFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsLookupFoundMultipleRecords_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -396,14 +433,15 @@ namespace DataImport
             this.settingsOptionSetValuesOrLabel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsOptionSetValuesOrLabel.FormattingEnabled = true;
             this.settingsOptionSetValuesOrLabel.Items.AddRange(new object[] {
-            "OPTIONSET VALUES",
-            "OPTIONSET LABELS"});
+            "Values",
+            "Labels"});
             this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(2, 134);
             this.settingsOptionSetValuesOrLabel.Margin = new System.Windows.Forms.Padding(2);
             this.settingsOptionSetValuesOrLabel.Name = "settingsOptionSetValuesOrLabel";
             this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(345, 21);
             this.settingsOptionSetValuesOrLabel.TabIndex = 3;
             this.settingsOptionSetValuesOrLabel.Visible = false;
+            this.settingsOptionSetValuesOrLabel.SelectedIndexChanged += new System.EventHandler(this.settingsOptionSetValuesOrLabel_SelectedIndexChanged);
             // 
             // settingsCrmAction
             // 
@@ -412,16 +450,16 @@ namespace DataImport
             this.settingsCrmAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsCrmAction.FormattingEnabled = true;
             this.settingsCrmAction.Items.AddRange(new object[] {
-            "UPSERT",
-            "CREATE",
-            "UPDATE",
-            "DELETE"});
+            "Upsert",
+            "Create",
+            "Update",
+            "Delete"});
             this.settingsCrmAction.Location = new System.Drawing.Point(2, 55);
             this.settingsCrmAction.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCrmAction.Name = "settingsCrmAction";
             this.settingsCrmAction.Size = new System.Drawing.Size(345, 21);
             this.settingsCrmAction.TabIndex = 2;
-            this.settingsCrmAction.DropDownClosed += new System.EventHandler(this.settingsCrmAction_DropDownClosed);
+            this.settingsCrmAction.SelectedIndexChanged += new System.EventHandler(this.settingsCrmAction_SelectedIndexChanged);
             // 
             // richTextBox1
             // 
@@ -703,14 +741,14 @@ namespace DataImport
             this.Updates,
             this.GUID,
             this.Logs});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewLogs.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewLogs.Margin = new System.Windows.Forms.Padding(2);
@@ -720,8 +758,62 @@ namespace DataImport
             this.dataGridViewLogs.RowHeadersWidth = 5;
             this.dataGridViewLogs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridViewLogs.RowTemplate.Height = 20;
-            this.dataGridViewLogs.Size = new System.Drawing.Size(893, 307);
+            this.dataGridViewLogs.Size = new System.Drawing.Size(150, 46);
             this.dataGridViewLogs.TabIndex = 4;
+            // 
+            // Import
+            // 
+            this.Import.DataPropertyName = "Import";
+            this.Import.HeaderText = "Import";
+            this.Import.Name = "Import";
+            this.Import.ReadOnly = true;
+            this.Import.ToolTipText = "The run number for the import.";
+            this.Import.Width = 50;
+            // 
+            // Line
+            // 
+            this.Line.DataPropertyName = "Line";
+            this.Line.HeaderText = "Line";
+            this.Line.Name = "Line";
+            this.Line.ReadOnly = true;
+            this.Line.ToolTipText = "The line in the Excel, starting from line 2";
+            this.Line.Width = 50;
+            // 
+            // Result
+            // 
+            this.Result.DataPropertyName = "Result";
+            this.Result.HeaderText = "Result";
+            this.Result.Name = "Result";
+            this.Result.ReadOnly = true;
+            this.Result.ToolTipText = "The final result of the process";
+            this.Result.Width = 150;
+            // 
+            // Updates
+            // 
+            this.Updates.DataPropertyName = "Updates";
+            this.Updates.HeaderText = "Updates";
+            this.Updates.Name = "Updates";
+            this.Updates.ReadOnly = true;
+            this.Updates.ToolTipText = "The number of records updated in Dataverse";
+            this.Updates.Width = 50;
+            // 
+            // GUID
+            // 
+            this.GUID.DataPropertyName = "GUID";
+            this.GUID.HeaderText = "GUID";
+            this.GUID.Name = "GUID";
+            this.GUID.ReadOnly = true;
+            this.GUID.ToolTipText = "The GUID(s) of each row";
+            this.GUID.Width = 250;
+            // 
+            // Logs
+            // 
+            this.Logs.DataPropertyName = "Logs";
+            this.Logs.HeaderText = "Logs";
+            this.Logs.Name = "Logs";
+            this.Logs.ReadOnly = true;
+            this.Logs.ToolTipText = "Any log notes, errors or messages";
+            this.Logs.Width = 300;
             // 
             // label12
             // 
@@ -878,59 +970,9 @@ namespace DataImport
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
             // 
-            // Import
+            // settingsBindingSource
             // 
-            this.Import.DataPropertyName = "Import";
-            this.Import.HeaderText = "Import";
-            this.Import.Name = "Import";
-            this.Import.ReadOnly = true;
-            this.Import.ToolTipText = "The run number for the import.";
-            this.Import.Width = 50;
-            // 
-            // Line
-            // 
-            this.Line.DataPropertyName = "Line";
-            this.Line.HeaderText = "Line";
-            this.Line.Name = "Line";
-            this.Line.ReadOnly = true;
-            this.Line.ToolTipText = "The line in the Excel, starting from line 2";
-            this.Line.Width = 50;
-            // 
-            // Result
-            // 
-            this.Result.DataPropertyName = "Result";
-            this.Result.HeaderText = "Result";
-            this.Result.Name = "Result";
-            this.Result.ReadOnly = true;
-            this.Result.ToolTipText = "The final result of the process";
-            this.Result.Width = 150;
-            // 
-            // Updates
-            // 
-            this.Updates.DataPropertyName = "Updates";
-            this.Updates.HeaderText = "Updates";
-            this.Updates.Name = "Updates";
-            this.Updates.ReadOnly = true;
-            this.Updates.ToolTipText = "The number of records updated in Dataverse";
-            this.Updates.Width = 50;
-            // 
-            // GUID
-            // 
-            this.GUID.DataPropertyName = "GUID";
-            this.GUID.HeaderText = "GUID";
-            this.GUID.Name = "GUID";
-            this.GUID.ReadOnly = true;
-            this.GUID.ToolTipText = "The GUID(s) of each row";
-            this.GUID.Width = 250;
-            // 
-            // Logs
-            // 
-            this.Logs.DataPropertyName = "Logs";
-            this.Logs.HeaderText = "Logs";
-            this.Logs.Name = "Logs";
-            this.Logs.ReadOnly = true;
-            this.Logs.ToolTipText = "Any log notes, errors or messages";
-            this.Logs.Width = 300;
+            this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
             // 
             // MyPluginControl
             // 
@@ -964,6 +1006,7 @@ namespace DataImport
             this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -971,8 +1014,7 @@ namespace DataImport
 
         #endregion
         private System.Windows.Forms.ToolStrip toolStripMenu;
-        private System.Windows.Forms.ToolStripButton tsbClose;
-        private System.Windows.Forms.ToolStripSeparator tssSeparator1;
+        private System.Windows.Forms.ToolStripButton closeButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dataGridViewMapping;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
@@ -980,16 +1022,16 @@ namespace DataImport
         private System.Windows.Forms.ComboBox settingsCrmAction;
         private System.Windows.Forms.ComboBox settingsOptionSetValuesOrLabel;
         private System.Windows.Forms.ComboBox settingsEntity;
-        private System.Windows.Forms.ToolStripButton BrowseFile;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton browseFileButton;
+        private System.Windows.Forms.ToolStripButton importDataButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton resetButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox settingsLookupFoundMultipleRecords;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton processFieldsButton;
         private System.Windows.Forms.ComboBox textView;
         private System.Windows.Forms.Button copyText;
         private System.Windows.Forms.Label label5;
@@ -1031,5 +1073,10 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn Updates;
         private System.Windows.Forms.DataGridViewTextBoxColumn GUID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Logs;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton saveSettingsButton;
+        private System.Windows.Forms.ToolStripButton loadSettingsButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.BindingSource settingsBindingSource;
     }
 }
