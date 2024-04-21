@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+using System.Data;
 using System.Xml;
 using McTools.Xrm.Connection;
 
@@ -37,11 +33,12 @@ namespace DataImport
             }
         }
 
-        public string Entity { get; set; }
-        public string CrmAction { get; set; }
-        public string OptionSetValuesOrLabel { get; set; }
-        public string LookupFoundMultipleRecords { get; set; }
-        public string KeyFoundMultipleRecords { get; set; }
+        public string Entity { get; set; } // The entity that is being loaded to
+        public string CrmAction { get; set; } // The action being run
+        public string OptionSetValuesOrLabel { get; set; } // Whether option sets are values or labels
+        public string LookupFoundMultipleRecords { get; set; } // What to do if multiple records are found in a lookup
+        public string KeyFoundMultipleRecords { get; set; } // What to do if multiple records are found for the updated or deleted record
+        public SerializableDataTable XMLTableMapping { get; set; } // An XML serializable version of the mapping table between the source and the destination
         public void LoadSettingsFromXML(string filePath)
         {
             // Load settings from file

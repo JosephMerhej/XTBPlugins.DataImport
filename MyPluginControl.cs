@@ -17,6 +17,7 @@ using Microsoft.Xrm.Sdk.Messages;
 using System.ServiceModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
+using System.Xml;
 
 namespace DataImport
 {
@@ -58,6 +59,9 @@ namespace DataImport
         // To store the table logs
         DataTable tableLogEntries = new DataTable();
 
+        // To store the Excel Mapping once ready for import
+        DataTable tableMapping = new DataTable();
+
         public MyPluginControl()
         {
             InitializeComponent();
@@ -71,7 +75,7 @@ namespace DataImport
             settingsKeyFoundMultipleRecords.SelectedIndex = 0;
             ExecuteMethod(InitEntities);
 
-            // Initialize the table logs
+            // Initialise the table logs
             tableLogEntries.Columns.Add("Import", typeof(int));
             tableLogEntries.Columns.Add("Line", typeof(int));
             tableLogEntries.Columns.Add("Result", typeof(string));
@@ -80,6 +84,20 @@ namespace DataImport
             tableLogEntries.Columns.Add("Logs", typeof(string));
 
             dataGridViewLogs.DataSource = tableLogEntries;
+
+            tableMapping.TableName = "TableMapping";
+
+            /* Initialise the table mapping
+            tableMapping.Columns.Add("ExcelColumn", typeof(string));
+            tableMapping.Columns.Add("IsKey", typeof(bool));
+            tableMapping.Columns.Add("CRMField", typeof(string));
+            tableMapping.Columns.Add("IsLookup", typeof(bool));
+            tableMapping.Columns.Add("LkpTargetEntity", typeof(string));
+            tableMapping.Columns.Add("LkpTargetField", typeof(string));
+            tableMapping.Columns.Add("TrueValue", typeof(string));
+            tableMapping.Columns.Add("FalseValue", typeof(string));
+            tableMapping.Columns.Add("DefaultValue", typeof(string));
+            tableMapping.Columns.Add("BlankBehaviour", typeof(string));*/
         }
         
         public void InitEntities()
@@ -130,7 +148,7 @@ namespace DataImport
             //labelprogress.Text = "Import Progress "+perr.ToString("F") + "%";
         }
 
-        private void InitEntityFields()
+private void InitEntityFields()
         {
             if (settingsEntity.SelectedItem == null)
             {
@@ -186,7 +204,6 @@ namespace DataImport
             }
             //lkpTargetfield.Items.Clear();
             DataGridViewComboBoxCell datalkpfield = dataGridViewMapping.Rows[thatRow].Cells[5] as DataGridViewComboBoxCell;
-            datalkpfield.Value = null;
             datalkpfield.Items.Clear();
             WorkAsync(new WorkAsyncInfo
             {
@@ -373,7 +390,7 @@ namespace DataImport
                 }
             }
         }
-        private void ToolStripButton1_Click(object sender, EventArgs e)
+        private void BrowseFileButton_Click(object sender, EventArgs e)
         {
             GetFile();
             loadSettingsButton.Enabled = true;
@@ -384,7 +401,7 @@ namespace DataImport
 
         }
 
-        private void ToolStripButton1_Click_1(object sender, EventArgs e)
+        private void ImportDataButton_Click(object sender, EventArgs e)
         {
             if (dataGridViewMapping.RowCount == 0)
             {
@@ -402,6 +419,7 @@ namespace DataImport
                     if (dataGridRow.Cells["isKey"].Value != null && (bool)dataGridRow.Cells["isKey"].Value)
                     {
                         wehavekey = true;
+                        break;
                     }
                 }
                 if (!wehavekey)
@@ -427,10 +445,6 @@ namespace DataImport
             }
         }
 
-        private void ToolStripButton2_Click(object sender, EventArgs e)
-        {
-            ExecuteMethod(InitEntityFields);
-        }
 
         private void ToolStripButton3_Click(object sender, EventArgs e)
         {
@@ -452,7 +466,7 @@ namespace DataImport
             label2.Visible = false;
             settingsOptionSetValuesOrLabel.Visible = false;
             label4.Visible = false;
-            
+
             CRMField.Items.Clear();
             dataGridViewMapping.Refresh();
             EmptyDataGrid();
@@ -581,9 +595,10 @@ namespace DataImport
             importDataButton.Enabled = true;
         }
         
-        private void ToolStripButton2_Click_1(object sender, EventArgs e)
+        private void ProcessFieldsButton_Click(object sender, EventArgs e)
         {
             ExecuteMethod(ProcessFields);
+            SetMappingTableFromDataGridView();
         }
 
         private void CopyText_Click(object sender, EventArgs e)
@@ -781,24 +796,18 @@ namespace DataImport
             settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
         }
 
-        private void ImportExcel()
+        private void SetMappingTableFromDataGridView()
         {
-            //Verification que L'action CRM est bien choisie
-            if (settingsCrmAction.SelectedItem == null)
-            {
-                MessageBox.Show("Please choose a CRM action before importing a file to CRM");
-                return;
-            }
-            DataTable dt = new DataTable();
-
+   
             foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
             {
-                dt.Columns.Add(col.Name);
+                tableMapping.Columns.Add(col.Name);
             }
+           
 
             foreach (DataGridViewRow row in dataGridViewMapping.Rows)
             {
-                DataRow dRow = dt.NewRow();
+                DataRow dRow = tableMapping.NewRow();
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     dRow[cell.ColumnIndex] = cell.Value;
@@ -807,11 +816,33 @@ namespace DataImport
                         if (cell.ColumnIndex == 1 || cell.ColumnIndex == 3)
                             dRow[cell.ColumnIndex] = false;
                         else
-                        dRow[cell.ColumnIndex] = "";
+                            dRow[cell.ColumnIndex] = "";
                     }
                 }
-                dt.Rows.Add(dRow);
+                tableMapping.Rows.Add(dRow);
             }
+
+            // Write the table to the settings entity
+            StringWriter writer = new StringWriter();
+            XmlWriter xmlWriter = XmlWriter.Create(writer);
+            tableMapping.WriteXml(xmlWriter);
+            xmlWriter.Close();
+            SerializableDataTable serializableMappingTable = new SerializableDataTable(tableMapping);
+            settings.XMLTableMapping = serializableMappingTable;
+        }
+
+        private void ImportExcel()
+        {
+            //Verification que L'action CRM est bien choisie
+            if (settingsCrmAction.SelectedItem == null)
+            {
+                MessageBox.Show("Please choose a CRM action before importing a file to CRM");
+                return;
+            }
+
+            SetMappingTableFromDataGridView();
+            DataTable dt = tableMapping;
+
 
             // Ensure all visible settings are applied
             settings.Entity = settingsEntity.SelectedItem.ToString();

@@ -257,6 +257,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SerializableDataTable.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

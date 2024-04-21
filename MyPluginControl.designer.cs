@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DataImport
 {
     partial class MyPluginControl
@@ -142,7 +144,7 @@ namespace DataImport
             this.browseFileButton.Name = "browseFileButton";
             this.browseFileButton.Size = new System.Drawing.Size(103, 28);
             this.browseFileButton.Text = "Browse Excel";
-            this.browseFileButton.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            this.browseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
             // 
             // processFieldsButton
             // 
@@ -152,7 +154,7 @@ namespace DataImport
             this.processFieldsButton.Name = "processFieldsButton";
             this.processFieldsButton.Size = new System.Drawing.Size(106, 28);
             this.processFieldsButton.Text = "Process fields";
-            this.processFieldsButton.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
+            this.processFieldsButton.Click += new System.EventHandler(this.ProcessFieldsButton_Click);
             // 
             // importDataButton
             // 
@@ -162,7 +164,7 @@ namespace DataImport
             this.importDataButton.Name = "importDataButton";
             this.importDataButton.Size = new System.Drawing.Size(97, 28);
             this.importDataButton.Text = "Import data";
-            this.importDataButton.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
+            this.importDataButton.Click += new System.EventHandler(this.ImportDataButton_Click);
             // 
             // toolStripSeparator1
             // 
@@ -550,6 +552,7 @@ namespace DataImport
             // 
             // ExcelColumn
             // 
+            this.ExcelColumn.DataPropertyName = "ExcelColumn";
             this.ExcelColumn.HeaderText = "Excel Column";
             this.ExcelColumn.MinimumWidth = 9;
             this.ExcelColumn.Name = "ExcelColumn";
@@ -558,6 +561,7 @@ namespace DataImport
             // 
             // isKey
             // 
+            this.isKey.DataPropertyName = "IsKey";
             this.isKey.HeaderText = "is Key";
             this.isKey.MinimumWidth = 9;
             this.isKey.Name = "isKey";
@@ -566,16 +570,21 @@ namespace DataImport
             // 
             // CRMField
             // 
+            this.CRMField.DataPropertyName = "CRMField";
+            this.CRMField.DropDownWidth = 150;
             this.CRMField.HeaderText = "CRM Field";
+            this.CRMField.Items.AddRange(new object[] {
+            "One",
+            "Two"});
+            this.CRMField.MaxDropDownItems = 20;
             this.CRMField.MinimumWidth = 9;
             this.CRMField.Name = "CRMField";
             this.CRMField.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CRMField.Sorted = true;
-            this.CRMField.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.CRMField.Width = 150;
             // 
             // IsLookup
             // 
+            this.IsLookup.DataPropertyName = "IsLookup";
             this.IsLookup.HeaderText = "Is Lookup";
             this.IsLookup.MinimumWidth = 9;
             this.IsLookup.Name = "IsLookup";
@@ -584,6 +593,7 @@ namespace DataImport
             // 
             // lkpTargetEntity
             // 
+            this.lkpTargetEntity.DataPropertyName = "LkpTargetEntity";
             this.lkpTargetEntity.HeaderText = "[Lookup] Entity Name";
             this.lkpTargetEntity.MinimumWidth = 9;
             this.lkpTargetEntity.Name = "lkpTargetEntity";
@@ -595,6 +605,7 @@ namespace DataImport
             // 
             // lkpTargetfield
             // 
+            this.lkpTargetfield.DataPropertyName = "LkpTargetField";
             this.lkpTargetfield.HeaderText = "[Lookup] Field Name";
             this.lkpTargetfield.MinimumWidth = 9;
             this.lkpTargetfield.Name = "lkpTargetfield";
@@ -606,6 +617,7 @@ namespace DataImport
             // 
             // Truevalue
             // 
+            this.Truevalue.DataPropertyName = "TrueValue";
             this.Truevalue.HeaderText = "True Label";
             this.Truevalue.MinimumWidth = 9;
             this.Truevalue.Name = "Truevalue";
@@ -615,6 +627,7 @@ namespace DataImport
             // 
             // Falsevalue
             // 
+            this.Falsevalue.DataPropertyName = "FalseValue";
             this.Falsevalue.HeaderText = "False Label";
             this.Falsevalue.MinimumWidth = 9;
             this.Falsevalue.Name = "Falsevalue";
@@ -624,6 +637,7 @@ namespace DataImport
             // 
             // DefaultValue
             // 
+            this.DefaultValue.DataPropertyName = "DefaultValue";
             this.DefaultValue.HeaderText = "Default Value";
             this.DefaultValue.Name = "DefaultValue";
             this.DefaultValue.ReadOnly = true;
@@ -631,100 +645,13 @@ namespace DataImport
             // 
             // OperatorCol
             // 
-            this.OperatorCol.HeaderText = "Operator";
+            this.OperatorCol.DataPropertyName = "BlankBehaviour";
+            this.OperatorCol.HeaderText = "Blank behaviour";
             this.OperatorCol.Items.AddRange(new object[] {
-            "Equal",
-            "NotEqual",
-            "GreaterThan",
-            "LessThan",
-            "GreaterEqual",
-            "LessEqual",
-            "Like",
-            "NotLike",
-            "In",
-            "NotIn",
-            "Between",
-            "NotBetween",
-            "Null",
-            "NotNull",
-            "Yesterday",
-            "Today",
-            "Tomorrow",
-            "Last7Days",
-            "Next7Days",
-            "LastWeek",
-            "ThisWeek",
-            "NextWeek",
-            "LastMonth",
-            "ThisMonth",
-            "NextMonth",
-            "On",
-            "OnOrBefore",
-            "OnOrAfter",
-            "LastYear",
-            "ThisYear",
-            "NextYear",
-            "LastXHours",
-            "NextXHours",
-            "LastXDays",
-            "NextXDays",
-            "LastXWeeks",
-            "NextXWeeks",
-            "LastXMonths",
-            "NextXMonths",
-            "LastXYears",
-            "NextXYears",
-            "EqualUserId",
-            "NotEqualUserId",
-            "EqualBusinessId",
-            "NotEqualBusinessId",
-            "ChildOf",
-            "Mask",
-            "NotMask",
-            "MasksSelect",
-            "Contains",
-            "DoesNotContain",
-            "EqualUserLanguage",
-            "NotOn",
-            "OlderThanXMonths",
-            "BeginsWith",
-            "DoesNotBeginWith",
-            "EndsWith",
-            "DoesNotEndWith",
-            "ThisFiscalYear",
-            "ThisFiscalPeriod",
-            "NextFiscalYear",
-            "NextFiscalPeriod",
-            "LastFiscalYear",
-            "LastFiscalPeriod",
-            "LastXFiscalYears",
-            "LastXFiscalPeriods",
-            "NextXFiscalYears",
-            "NextXFiscalPeriods",
-            "InFiscalYear",
-            "InFiscalPeriod",
-            "InFiscalPeriodAndYear",
-            "InOrBeforeFiscalPeriodAndYear",
-            "InOrAfterFiscalPeriodAndYear",
-            "EqualUserTeams",
-            "EqualUserOrUserTeams",
-            "Under",
-            "NotUnder",
-            "UnderOrEqual",
-            "Above",
-            "AboveOrEqual",
-            "EqualUserOrUserHierarchy",
-            "EqualUserOrUserHierarchyAndTeams",
-            "OlderThanXYears",
-            "OlderThanXWeeks",
-            "OlderThanXDays",
-            "OlderThanXHours",
-            "OlderThanXMinutes",
-            "ContainValues",
-            "DoesNotContainValues"});
+            "Clears CRM value",
+            "Keeps CRM value"});
             this.OperatorCol.MinimumWidth = 9;
             this.OperatorCol.Name = "OperatorCol";
-            this.OperatorCol.Visible = false;
             this.OperatorCol.Width = 175;
             // 
             // dataGridViewLogs
@@ -1057,16 +984,6 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Button LogToggle;
         private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
-        private System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLookup;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetEntity;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetfield;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn Import;
         private System.Windows.Forms.DataGridViewTextBoxColumn Line;
         private System.Windows.Forms.DataGridViewTextBoxColumn Result;
@@ -1078,5 +995,15 @@ namespace DataImport
         private System.Windows.Forms.ToolStripButton loadSettingsButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.BindingSource settingsBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLookup;
+        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetEntity;
+        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetfield;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
+        private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
+        internal System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
     }
 }
