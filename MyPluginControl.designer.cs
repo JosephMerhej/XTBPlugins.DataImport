@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace DataImport
 {
@@ -73,7 +75,7 @@ namespace DataImport
             this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.BlankBehaviour = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewLogs = new System.Windows.Forms.DataGridView();
             this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -539,7 +541,7 @@ namespace DataImport
             this.Truevalue,
             this.Falsevalue,
             this.DefaultValue,
-            this.OperatorCol});
+            this.BlankBehaviour});
             this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMapping.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewMapping.Margin = new System.Windows.Forms.Padding(2);
@@ -549,6 +551,7 @@ namespace DataImport
             this.dataGridViewMapping.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridViewMapping.Size = new System.Drawing.Size(893, 611);
             this.dataGridViewMapping.TabIndex = 1;
+            this.dataGridViewMapping.DataError += new DataGridViewDataErrorEventHandler(dataGridView1_DataError);        
             // 
             // ExcelColumn
             // 
@@ -643,16 +646,16 @@ namespace DataImport
             this.DefaultValue.ReadOnly = true;
             this.DefaultValue.Visible = false;
             // 
-            // OperatorCol
+            // BlankBehaviour
             // 
-            this.OperatorCol.DataPropertyName = "BlankBehaviour";
-            this.OperatorCol.HeaderText = "Blank behaviour";
-            this.OperatorCol.Items.AddRange(new object[] {
+            this.BlankBehaviour.DataPropertyName = "BlankBehaviour";
+            this.BlankBehaviour.HeaderText = "Blank behaviour";
+            this.BlankBehaviour.Items.AddRange(new object[] {
             "Clears CRM value",
             "Keeps CRM value"});
-            this.OperatorCol.MinimumWidth = 9;
-            this.OperatorCol.Name = "OperatorCol";
-            this.OperatorCol.Width = 175;
+            this.BlankBehaviour.MinimumWidth = 9;
+            this.BlankBehaviour.Name = "BlankBehaviour";
+            this.BlankBehaviour.Width = 175;
             // 
             // dataGridViewLogs
             // 
@@ -1003,7 +1006,7 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
         private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
+        private System.Windows.Forms.DataGridViewComboBoxColumn BlankBehaviour;
         internal System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
     }
 }

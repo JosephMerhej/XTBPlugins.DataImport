@@ -87,19 +87,21 @@ namespace DataImport
 
             tableMapping.TableName = "TableMapping";
 
-            /* Initialise the table mapping
-            tableMapping.Columns.Add("ExcelColumn", typeof(string));
-            tableMapping.Columns.Add("IsKey", typeof(bool));
-            tableMapping.Columns.Add("CRMField", typeof(string));
-            tableMapping.Columns.Add("IsLookup", typeof(bool));
-            tableMapping.Columns.Add("LkpTargetEntity", typeof(string));
-            tableMapping.Columns.Add("LkpTargetField", typeof(string));
-            tableMapping.Columns.Add("TrueValue", typeof(string));
-            tableMapping.Columns.Add("FalseValue", typeof(string));
-            tableMapping.Columns.Add("DefaultValue", typeof(string));
-            tableMapping.Columns.Add("BlankBehaviour", typeof(string));*/
+            // Initialise the table mapping
+            tableMapping.Columns.Add("ExcelColumn");
+            tableMapping.Columns.Add("isKey", typeof(bool));
+            tableMapping.Columns.Add("CRMField");
+            tableMapping.Columns.Add("IsLookup");
+            tableMapping.Columns.Add("lkpTargetEntity");
+            tableMapping.Columns.Add("lkpTargetfield");
+            tableMapping.Columns.Add("Truevalue");
+            tableMapping.Columns.Add("Falsevalue");
+            tableMapping.Columns.Add("DefaultValue");
+            tableMapping.Columns.Add("BlankBehaviour");
+
+            this.dataGridViewMapping.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMapping_CellValueChanged);
         }
-        
+
         public void InitEntities()
         {
             WorkAsync(new WorkAsyncInfo
@@ -143,12 +145,12 @@ namespace DataImport
         }
         private void StartBackgroundWork(int i)
         {
-            double perr = (i-1)/(1.0 * (xlRange.Rows.Count - 1)) * 100;
+            double perr = (i - 1) / (1.0 * (xlRange.Rows.Count - 1)) * 100;
 
             //labelprogress.Text = "Import Progress "+perr.ToString("F") + "%";
         }
 
-private void InitEntityFields()
+        private void InitEntityFields()
         {
             if (settingsEntity.SelectedItem == null)
             {
@@ -187,7 +189,7 @@ private void InitEntityFields()
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
 
-                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" ||  (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
+                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
                         }
                     }
@@ -197,8 +199,8 @@ private void InitEntityFields()
 
         private void InitLookupFields(string myentity, int thatRow)
         {
-            
-            if ( myentity == null || myentity == "")
+
+            if (myentity == null || myentity == "")
             {
                 return;
             }
@@ -231,7 +233,7 @@ private void InitEntityFields()
                     if (result != null)
                     {
                         DataGridViewComboBoxCell stateCell = (DataGridViewComboBoxCell)(dataGridViewMapping.Rows[thatRow].Cells[5]);
-                        
+
                         foreach (object attribute in lkpresultsaved.Attributes)
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
@@ -239,7 +241,7 @@ private void InitEntityFields()
                             {
                                 stateCell.Items.Add(a.LogicalName.ToString());
                             }
-                        }                        
+                        }
                     }
                 }
             });
@@ -294,8 +296,8 @@ private void InitEntityFields()
                             dataGridViewMapping.Rows.Add(xlRange.Cells[1, iCol].value);
                         }
                     }
-                    textRowCount.Text = ((xlRange.Rows.Count)-1).ToString();
-                    
+                    textRowCount.Text = ((xlRange.Rows.Count) - 1).ToString();
+
                     xlWorkBook.Close();
                     xlApp.Quit();
 
@@ -332,7 +334,7 @@ private void InitEntityFields()
         private void TextView_DropDownClosed(object sender, EventArgs e)
         {
             //SetTextBox1();
-            
+
             if (textView.SelectedItem.ToString() == "📙 ALL")
             {
                 richTextBox1.Text = richTextBoxAll.Text;
@@ -449,7 +451,7 @@ private void InitEntityFields()
         private void ToolStripButton3_Click(object sender, EventArgs e)
         {
             ///CLEAR ALL
-            
+
             xlWorkBook = null;
             xlWorkSheet = null;
             xlRange = null;
@@ -467,31 +469,139 @@ private void InitEntityFields()
             settingsOptionSetValuesOrLabel.Visible = false;
             label4.Visible = false;
 
-            CRMField.Items.Clear();
-            dataGridViewMapping.Refresh();
             EmptyDataGrid();
-            richTextBox1.Text = "";
-            richTextBoxErrors.Text = "";
-            richTextBoxImported.Text = "";
-            richTextBoxAll.Text = "";
-            richTextBoxWarning.Text = "";
-            flaglookup = false;
-            lookupscount = 0;
-            IsReadyToImport = false;
-            textRowCount.Text = "";
-            textBoxSuccess.Text = "";
-            successnumber = 0;
-            textBoxError.Text = "";
-            errornumber = 0;
-            textCreated.Text = "";
-            creatednumber = 0;
-            textUpdated.Text = "";
-            updatednumber = 0;
-            textDeleted.Text = "";
-            deletednumber = 0;
-            textView.SelectedIndex = 0;
-            
+            CRMField.Items.Clear();
         }
+
+        private void dataGridViewMapping_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+            switch (e.ColumnIndex)
+            {
+                // If the user changes the CRM Field, check if it is a lookup and process it
+                case 2:
+                    foreach (object attribute in resultsaved.Attributes)
+                    {
+                        AttributeMetadata a = (AttributeMetadata)attribute;
+                        if (a.LogicalName.ToString() == dataGridViewMapping.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString())  //Find the CRM field between the metadata
+                        {
+                            if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
+                            {
+                                processLookupEntity(e.RowIndex);
+                            }
+                            else
+                            {
+                                processNonLookupEntity(e.RowIndex);
+                            }
+                            if (a.AttributeType.ToString() == "Boolean")
+                            {
+                                processBoolean(e.RowIndex);
+                            }
+                            if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
+                            {
+                                processChoice();
+                            }
+                        }
+                    }
+                    break;
+
+                case 4:
+                    dataGridViewMapping.Rows[e.RowIndex].Cells["lkpTargetfield"].Value = null;
+                    processLookupField(e.RowIndex);
+                    break;
+
+
+            }
+        }
+
+        private void processLookupEntity(int row)
+        {
+            // make the lookup columns visible
+            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = true;
+            dataGridViewMapping.Columns["lkpTargetfield"].Visible = true;
+            label4.Visible = true;
+            settingsLookupFoundMultipleRecords.Visible = true;
+            
+            //Flag row as lookup
+            lookupscount++;
+            dataGridViewMapping.Rows[row].Cells["IsLookup"].Value = true;
+
+            // Unlock the lookup fields
+            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell;
+            data1.ReadOnly = false;
+            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[row].Cells[5] as DataGridViewComboBoxCell;
+            data2.ReadOnly = false;
+            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+        }
+
+        private void processLookupField(int row)
+        {
+            string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
+            InitLookupFields(lkpentityname, row);
+        }
+
+        private void processNonLookupEntity(int row)
+        {
+            // set is Lookup to false
+            dataGridViewMapping.Rows[row].Cells["IsLookup"].Value = false;
+
+            // Lock the lookup fields
+            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell;
+            data1.ReadOnly = true;
+            data1.Value = null;
+            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
+            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[row].Cells[5] as DataGridViewComboBoxCell;
+            data2.ReadOnly = true;
+            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
+            data2.Value = null;
+        }
+
+        private void processBoolean(int row)
+        {
+            dataGridViewMapping.Columns["Truevalue"].Visible = true;
+            dataGridViewMapping.Columns["Falsevalue"].Visible = true;
+            dataGridViewMapping.Columns["DefaultValue"].Visible = true;
+            DataGridViewCell databooltrue = dataGridViewMapping.Rows[row].Cells["Truevalue"] as DataGridViewCell;
+            databooltrue.ReadOnly = false;
+            databooltrue.Style.BackColor = Color.LightGray;
+            DataGridViewCell databoolfalse = dataGridViewMapping.Rows[row].Cells["Falsevalue"] as DataGridViewCell;
+            databoolfalse.ReadOnly = false;
+            databoolfalse.Style.BackColor = Color.LightGray;
+            DataGridViewCell databooldefault = dataGridViewMapping.Rows[row].Cells["DefaultValue"] as DataGridViewCell;
+            databooldefault.ReadOnly = false;
+            databooldefault.Style.BackColor = Color.LightGray;
+
+            //fetch for true and false boolean values
+            RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
+            {
+                EntityLogicalName = settingsEntity.SelectedItem.ToString(),
+                LogicalName = Convert.ToString((dataGridViewMapping.Rows[row].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString()),
+                RetrieveAsIfPublished = true
+            };
+            RetrieveAttributeResponse retrieveAttributeResponse = (RetrieveAttributeResponse)Service.Execute(retrieveAttributeRequest);
+            BooleanAttributeMetadata retrievedBooleanAttributeMetadata = (BooleanAttributeMetadata)retrieveAttributeResponse.AttributeMetadata;
+            string boolTextTrue = retrievedBooleanAttributeMetadata.OptionSet.TrueOption.Label.UserLocalizedLabel.Label;
+            string boolTextFalse = retrievedBooleanAttributeMetadata.OptionSet.FalseOption.Label.UserLocalizedLabel.Label;
+            bool boolDefault = retrievedBooleanAttributeMetadata.DefaultValue.Value;
+            string boolTextDefault;
+
+            if (boolDefault)
+                boolTextDefault = boolTextTrue;
+            else
+                boolTextDefault = boolTextFalse;
+
+            dataGridViewMapping.Rows[row].Cells["Truevalue"].Value = boolTextTrue;
+            dataGridViewMapping.Rows[row].Cells["Falsevalue"].Value = boolTextFalse;
+            dataGridViewMapping.Rows[row].Cells["DefaultValue"].Value = boolTextDefault;
+        }
+
+        private void processChoice()
+        {
+            label2.Visible = true;
+            settingsOptionSetValuesOrLabel.Visible = true;
+        }
+
         private void ProcessFields()
         {
             if (dataGridViewMapping.RowCount == 0)
@@ -512,81 +622,22 @@ private void InitEntityFields()
                     AttributeMetadata a = (AttributeMetadata)attribute;
                     if (a.LogicalName.ToString() == acrmfield)  //Find the CRM field between the metadata
                     {
-                        DataGridViewCheckBoxCell chk = dataGridViewMapping.Rows[dRow].Cells[3] as DataGridViewCheckBoxCell;
                         if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
                         {
-                            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = true;
-                            dataGridViewMapping.Columns["lkpTargetfield"].Visible = true;
-                            label4.Visible = true;
-                            settingsLookupFoundMultipleRecords.Visible = true;
-                            //Flag row as lookup
-                            lookupscount++;
-                            chk.Value = true;
-                            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
-                            data1.ReadOnly = false;
-                            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
-                            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
-                            data2.ReadOnly = false;
-                            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
-                            InitLookupFields(lkpentityname, dRow);
+                            processLookupEntity(dRow);
+                            processLookupField(dRow);
                         }
                         else
                         {
-                            //Décocher la case
-                            chk.Value = false;
-                            //Bloquer la grille des non lookup
-                            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
-                            data1.ReadOnly = true;
-                            data1.Value = null;
-                            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
-                            data2.ReadOnly = true;
-                            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                            data2.Value = null;
+                            processNonLookupEntity(dRow);
                         }
                         if (a.AttributeType.ToString() == "Boolean")
                         {
-                            dataGridViewMapping.Columns["Truevalue"].Visible = true;
-                            dataGridViewMapping.Columns["Falsevalue"].Visible = true;
-                            dataGridViewMapping.Columns["DefaultValue"].Visible = true;
-                            DataGridViewCell databooltrue = dataGridViewMapping.Rows[dRow].Cells[6] as DataGridViewCell;
-                            databooltrue.ReadOnly = false;
-                            databooltrue.Style.BackColor = Color.LightGray;
-                            DataGridViewCell databoolfalse = dataGridViewMapping.Rows[dRow].Cells[7] as DataGridViewCell;
-                            databoolfalse.ReadOnly = false;
-                            databoolfalse.Style.BackColor = Color.LightGray;
-                            DataGridViewCell databooldefault = dataGridViewMapping.Rows[dRow].Cells[8] as DataGridViewCell;
-                            databooldefault.ReadOnly = false;
-                            databooldefault.Style.BackColor = Color.LightGray;
-
-                            //fetch for true and false boolean values
-                            RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
-                            {
-                                EntityLogicalName = settingsEntity.SelectedItem.ToString(),
-                                LogicalName = acrmfield,
-                                RetrieveAsIfPublished = true
-                            };
-                            RetrieveAttributeResponse retrieveAttributeResponse = (RetrieveAttributeResponse)Service.Execute(retrieveAttributeRequest);
-                            BooleanAttributeMetadata retrievedBooleanAttributeMetadata = (BooleanAttributeMetadata)retrieveAttributeResponse.AttributeMetadata;
-                            string boolTextTrue = retrievedBooleanAttributeMetadata.OptionSet.TrueOption.Label.UserLocalizedLabel.Label;
-                            string boolTextFalse = retrievedBooleanAttributeMetadata.OptionSet.FalseOption.Label.UserLocalizedLabel.Label;
-                            bool boolDefault = retrievedBooleanAttributeMetadata.DefaultValue.Value;
-                            string boolTextDefault;
-
-                            if (boolDefault)
-                                boolTextDefault = boolTextTrue;
-                            else
-                                boolTextDefault = boolTextFalse;
-
-                            dataGridViewMapping.Rows[dRow].Cells["Truevalue"].Value = boolTextTrue;
-                            dataGridViewMapping.Rows[dRow].Cells["Falsevalue"].Value = boolTextFalse;
-                            dataGridViewMapping.Rows[dRow].Cells["DefaultValue"].Value = boolTextDefault;
+                            processBoolean(dRow);
                         }
                         if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
                         {
-                            label2.Visible = true;
-                            settingsOptionSetValuesOrLabel.Visible = true;
-                            settingsOptionSetValuesOrLabel.SelectedIndex = 1;
+                            processChoice();
                         }
                     }
                 }
@@ -598,7 +649,6 @@ private void InitEntityFields()
         private void ProcessFieldsButton_Click(object sender, EventArgs e)
         {
             ExecuteMethod(ProcessFields);
-            SetMappingTableFromDataGridView();
         }
 
         private void CopyText_Click(object sender, EventArgs e)
@@ -704,11 +754,14 @@ private void InitEntityFields()
 
         private void saveSettingsButton_Click(object sender, EventArgs e)
         {
+            // Ensure that the mapping table in Settings reflects the current state of the table.
+            SetMappingTableFromDataGridView();
+
             string instructions = "Enter the name of your settings file. \n It will be saved in the default settings location (XRMToolbox\\Settings)";
             string title = "Save Settings File";
 
             string settingsFileName = Interaction.InputBox(instructions, title);
-
+             
             if (!string.IsNullOrEmpty(settingsFileName))
             {
                 SettingsManager.Instance.Save(GetType(), settings, settingsFileName);
@@ -732,7 +785,6 @@ private void InitEntityFields()
                     if (fileName.Trim() != "")
                     {
                         settings.LoadSettingsFromXML(fileName);
-                        MessageBox.Show(settings.Entity);
                     }
                 }
                 catch (IOException)
@@ -744,6 +796,26 @@ private void InitEntityFields()
             settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
             settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
             settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
+            ExecuteMethod(InitEntityFields);
+            dataGridViewMapping.Rows.Clear();
+            
+            // Add rows
+            foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
+            {
+                int rowIndex = dataGridViewMapping.Rows.Add(row.ItemArray);
+                foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
+                {
+                    if (col is DataGridViewComboBoxColumn)
+                    {
+                        DataGridViewComboBoxColumn comboCol = col as DataGridViewComboBoxColumn;
+                        if (!comboCol.Items.Contains(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value))
+                        {
+                            comboCol.Items.Add(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value);
+                        }
+                    }
+                }
+            }
+            ExecuteMethod(ProcessFields);
         }
 
         private void settingsEntity_DropDownClosed(object sender, EventArgs e)
@@ -798,12 +870,40 @@ private void InitEntityFields()
 
         private void SetMappingTableFromDataGridView()
         {
-   
-            foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
+
+            tableMapping.Clear();
+
+            foreach (DataGridViewRow row in dataGridViewMapping.Rows)
             {
-                tableMapping.Columns.Add(col.Name);
+                DataRow dRow = tableMapping.NewRow();
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value == null)
+                    {
+                        if (cell.ColumnIndex == 1 || cell.ColumnIndex == 3)
+                        {
+                            dRow[cell.ColumnIndex] = false;
+                        }
+                        else
+                        {
+                            dRow[cell.ColumnIndex] = DBNull.Value;
+                        }
+                    }
+                    else
+                    {
+                        dRow[cell.ColumnIndex] = cell.Value;
+                    }
+                }
+                tableMapping.Rows.Add(dRow);
             }
-           
+
+            SerializableDataTable serializableMappingTable = new SerializableDataTable(tableMapping);
+            settings.XMLTableMapping = serializableMappingTable;
+        }
+
+        private void prepareMappingTableForImport()
+        {
+            tableMapping.Clear();
 
             foreach (DataGridViewRow row in dataGridViewMapping.Rows)
             {
@@ -811,24 +911,21 @@ private void InitEntityFields()
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     dRow[cell.ColumnIndex] = cell.Value;
-                    if (dRow[cell.ColumnIndex] == DBNull.Value)
-                    {
-                        if (cell.ColumnIndex == 1 || cell.ColumnIndex == 3)
-                            dRow[cell.ColumnIndex] = false;
-                        else
-                            dRow[cell.ColumnIndex] = "";
-                    }
                 }
                 tableMapping.Rows.Add(dRow);
             }
+        }
 
-            // Write the table to the settings entity
-            StringWriter writer = new StringWriter();
-            XmlWriter xmlWriter = XmlWriter.Create(writer);
-            tableMapping.WriteXml(xmlWriter);
-            xmlWriter.Close();
-            SerializableDataTable serializableMappingTable = new SerializableDataTable(tableMapping);
-            settings.XMLTableMapping = serializableMappingTable;
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.Exception is ArgumentException && e.Context == DataGridViewDataErrorContexts.Commit)
+            {
+                DataGridView view = (DataGridView)sender;
+                DataGridViewComboBoxColumn column = (DataGridViewComboBoxColumn)view.Columns[e.ColumnIndex];
+                string value = view.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                MessageBox.Show($"Error in column '{column.Name}' at row {e.RowIndex + 1}. Value '{value}' is not valid.");
+            }
         }
 
         private void ImportExcel()
@@ -840,9 +937,8 @@ private void InitEntityFields()
                 return;
             }
 
-            SetMappingTableFromDataGridView();
+            prepareMappingTableForImport();
             DataTable dt = tableMapping;
-
 
             // Ensure all visible settings are applied
             settings.Entity = settingsEntity.SelectedItem.ToString();

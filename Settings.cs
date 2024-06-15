@@ -53,6 +53,7 @@ namespace DataImport
                 Instance.OptionSetValuesOrLabel = tempSettings.OptionSetValuesOrLabel;
                 Instance.LookupFoundMultipleRecords = tempSettings.LookupFoundMultipleRecords;
                 Instance.KeyFoundMultipleRecords = tempSettings.KeyFoundMultipleRecords;
+                Instance.XMLTableMapping = tempSettings.XMLTableMapping;
             }
             catch (Exception innerException)
             {
