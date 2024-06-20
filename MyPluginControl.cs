@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk;
-using McTools.Xrm.Connection;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using Microsoft.Xrm.Sdk.Metadata;
@@ -17,7 +16,7 @@ using Microsoft.Xrm.Sdk.Messages;
 using System.ServiceModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
-using System.Xml;
+using McTools.Xrm.Connection;
 
 namespace DataImport
 {
@@ -785,37 +784,38 @@ namespace DataImport
                     if (fileName.Trim() != "")
                     {
                         settings.LoadSettingsFromXML(fileName);
+                        settingsEntity.SelectedItem = settings.Entity;
+                        settingsCrmAction.SelectedItem = settings.CrmAction;
+                        settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
+                        settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
+                        settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
+                        InitEntityFields();
+                        dataGridViewMapping.Rows.Clear();
+
+                        // Add rows
+                        foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
+                        {
+                            int rowIndex = dataGridViewMapping.Rows.Add(row.ItemArray);
+                            foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
+                            {
+                                if (col is DataGridViewComboBoxColumn)
+                                {
+                                    DataGridViewComboBoxColumn comboCol = col as DataGridViewComboBoxColumn;
+                                    if (!comboCol.Items.Contains(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value))
+                                    {
+                                        comboCol.Items.Add(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value);
+                                    }
+                                }
+                            }
+                        }
+                        ExecuteMethod(ProcessFields);
                     }
                 }
                 catch (IOException)
                 {
                 }
             }
-            settingsEntity.SelectedItem = settings.Entity;
-            settingsCrmAction.SelectedItem = settings.CrmAction;
-            settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
-            settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
-            settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
-            ExecuteMethod(InitEntityFields);
-            dataGridViewMapping.Rows.Clear();
             
-            // Add rows
-            foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
-            {
-                int rowIndex = dataGridViewMapping.Rows.Add(row.ItemArray);
-                foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
-                {
-                    if (col is DataGridViewComboBoxColumn)
-                    {
-                        DataGridViewComboBoxColumn comboCol = col as DataGridViewComboBoxColumn;
-                        if (!comboCol.Items.Contains(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value))
-                        {
-                            comboCol.Items.Add(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value);
-                        }
-                    }
-                }
-            }
-            ExecuteMethod(ProcessFields);
         }
 
         private void settingsEntity_DropDownClosed(object sender, EventArgs e)
@@ -901,20 +901,6 @@ namespace DataImport
             settings.XMLTableMapping = serializableMappingTable;
         }
 
-        private void prepareMappingTableForImport()
-        {
-            tableMapping.Clear();
-
-            foreach (DataGridViewRow row in dataGridViewMapping.Rows)
-            {
-                DataRow dRow = tableMapping.NewRow();
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    dRow[cell.ColumnIndex] = cell.Value;
-                }
-                tableMapping.Rows.Add(dRow);
-            }
-        }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -937,7 +923,7 @@ namespace DataImport
                 return;
             }
 
-            prepareMappingTableForImport();
+            SetMappingTableFromDataGridView();
             DataTable dt = tableMapping;
 
             // Ensure all visible settings are applied
@@ -1540,7 +1526,7 @@ namespace DataImport
                             }
 
                             //UPDATE
-                            else if (settings.CrmAction == "UPDATE")
+                            else if (settings.CrmAction == "Update")
                             {
                                 try
                                 {
