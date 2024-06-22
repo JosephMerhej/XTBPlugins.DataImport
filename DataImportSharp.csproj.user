@@ -8,6 +8,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Users\Andrew_Howes\Repos\XTBPlugins.DataImport\bin\Release\XrmToolBox.exe</StartProgram>
-    <StartArguments>/overridepath:. /connection:"[Connection Name]" /plugin:"Data Import ##"</StartArguments>
+    <StartArguments>/connection:"[Connection Name]" /plugin:"Data Import ##"</StartArguments>
   </PropertyGroup>
 </Project>
