@@ -6,5 +6,4 @@
 /.vs/*
 /packages
 /.vs
-/Properties/DataSources
-/DataImportSharp.csproj.user
+
