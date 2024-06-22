@@ -319,8 +319,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF NOT EXIST Plugins mkdir Plugins
-move /Y $(TargetFileName) Plugins</PostBuildEvent>
+    <PostBuildEvent>IF NOT EXIST C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins mkdir C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins
+move /Y $(TargetFileName) C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
