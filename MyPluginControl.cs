@@ -65,6 +65,14 @@ namespace DataImport
         {
             InitializeComponent();
         }
+
+        // If the connection is updated and another environment is chosen.
+        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
+        {
+            base.UpdateConnection(newService, detail, actionName, parameter);
+            InitEntities();
+        }
+
         public void MyPluginControl_Load(object sender, System.EventArgs e)
         {
             settingsLookupFoundMultipleRecords.SelectedIndex = 0;
