@@ -192,6 +192,7 @@ namespace DataImport
                     resultsaved = result.EntityMetadata;
                     if (result != null)
                     {
+                        CRMField.Items.Add("");
                         foreach (object attribute in resultsaved.Attributes)
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
@@ -199,6 +200,7 @@ namespace DataImport
                             if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
                         }
+                        
                     }
                 }
             });
@@ -303,7 +305,14 @@ namespace DataImport
                             dataGridViewMapping.Rows.Add(xlRange.Cells[1, iCol].value);
                         }
                     }
+
+                    // Set the labels and row values to the correct values.
                     textRowCount.Text = ((xlRange.Rows.Count) - 1).ToString();
+                    rowEndNum.Maximum = xlRange.Rows.Count;
+                    rowEndNum.Minimum = 2;
+                    rowEndNum.Value = xlRange.Rows.Count;
+                    rowStartNum.Maximum = xlRange.Rows.Count;
+                    rowStartNum.Value = 2;
 
                     xlWorkBook.Close();
                     xlApp.Quit();
@@ -393,9 +402,9 @@ namespace DataImport
                         ReadExcel(sFileName);
                     }
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-
+                    MessageBox.Show("Failed to load Excel file correctly:" + ex.Message.ToString());
                 }
             }
         }
@@ -405,8 +414,20 @@ namespace DataImport
             loadSettingsButton.Enabled = true;
         }
 
-        private void Label1_Click(object sender, EventArgs e)
+        private void rowStartNum_ValueChanged(object sender, EventArgs e)
         {
+            // Set row end equal to start if start is after end
+            if (rowEndNum.Value <= rowStartNum.Value) {
+                rowEndNum.Value = rowStartNum.Value;
+            }
+            // Make the minimum equal to the new start
+            rowEndNum.Minimum = new decimal(new int[] {
+                        (int) rowStartNum.Value,
+                        0,
+                        0,
+                        0
+            });
+
 
         }
 
@@ -819,8 +840,9 @@ namespace DataImport
                         ExecuteMethod(ProcessFields);
                     }
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
+                    MessageBox.Show("Failed to load Excel file correctly:" + ex.Message.ToString());
                 }
             }
             
@@ -974,7 +996,7 @@ namespace DataImport
                     richTextBoxAll.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
                     richTextBoxWarning.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine;
                     
-                    for (iRow = 2; iRow <= xlRange.Rows.Count; iRow++)  // START FROM THE SECOND ROW.
+                    for (iRow = (int) rowStartNum.Value; iRow <= (int) rowEndNum.Value; iRow++)  // Iterate over the selected rows
                     {
                         if (wcl.CancellationPending == true)
                         {
@@ -1115,7 +1137,7 @@ namespace DataImport
                                                     }
                                                     catch (FormatException)
                                                     {
-                                                        MessageBox.Show("NOT A VALID INTEGER FOR AN OPTIONSETVALUE FIELD TYPE");
+                                                        MessageBox.Show("Not a valid integer for an option set value field type");
                                                     }
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue();
                                                 }
@@ -1778,6 +1800,12 @@ namespace DataImport
                     textBoxSuccess.Text = successnumber.ToString();
                     textBoxError.Text = errornumber.ToString();
                     dataGridViewLogs.ResumeLayout();
+
+                    // Ensure that we have released the Excel spreadsheet
+                    if (xlRange != null) Marshal.ReleaseComObject(xlRange);
+                    if (xlWorkSheet != null) Marshal.ReleaseComObject(xlWorkSheet);
+                    if (xlWorkBook != null) Marshal.ReleaseComObject(xlWorkBook);
+                    if (xlApp != null) Marshal.ReleaseComObject(xlApp);
                 }
             });
         }
