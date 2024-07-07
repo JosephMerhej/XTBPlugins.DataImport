@@ -47,6 +47,11 @@ namespace DataImport
             this.closeButton = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.rowEndNum = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.rowStartNum = new System.Windows.Forms.NumericUpDown();
             this.LogToggle = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.settingsKeyFoundMultipleRecords = new System.Windows.Forms.ComboBox();
@@ -106,6 +111,8 @@ namespace DataImport
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -134,8 +141,8 @@ namespace DataImport
             this.closeButton});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(1868, 38);
+            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripMenu.Size = new System.Drawing.Size(1245, 31);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -144,7 +151,7 @@ namespace DataImport
             this.browseFileButton.Image = ((System.Drawing.Image)(resources.GetObject("browseFileButton.Image")));
             this.browseFileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.browseFileButton.Name = "browseFileButton";
-            this.browseFileButton.Size = new System.Drawing.Size(140, 33);
+            this.browseFileButton.Size = new System.Drawing.Size(103, 28);
             this.browseFileButton.Text = "Browse Excel";
             this.browseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
             // 
@@ -154,7 +161,7 @@ namespace DataImport
             this.processFieldsButton.Image = ((System.Drawing.Image)(resources.GetObject("processFieldsButton.Image")));
             this.processFieldsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.processFieldsButton.Name = "processFieldsButton";
-            this.processFieldsButton.Size = new System.Drawing.Size(147, 33);
+            this.processFieldsButton.Size = new System.Drawing.Size(106, 28);
             this.processFieldsButton.Text = "Process fields";
             this.processFieldsButton.Click += new System.EventHandler(this.ProcessFieldsButton_Click);
             // 
@@ -164,21 +171,21 @@ namespace DataImport
             this.importDataButton.Image = ((System.Drawing.Image)(resources.GetObject("importDataButton.Image")));
             this.importDataButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.importDataButton.Name = "importDataButton";
-            this.importDataButton.Size = new System.Drawing.Size(135, 33);
+            this.importDataButton.Size = new System.Drawing.Size(97, 28);
             this.importDataButton.Text = "Import data";
             this.importDataButton.Click += new System.EventHandler(this.ImportDataButton_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
             // 
             // saveSettingsButton
             // 
             this.saveSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("saveSettingsButton.Image")));
             this.saveSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveSettingsButton.Name = "saveSettingsButton";
-            this.saveSettingsButton.Size = new System.Drawing.Size(144, 33);
+            this.saveSettingsButton.Size = new System.Drawing.Size(103, 28);
             this.saveSettingsButton.Text = "Save settings";
             this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
             // 
@@ -188,7 +195,7 @@ namespace DataImport
             this.loadSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("loadSettingsButton.Image")));
             this.loadSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.loadSettingsButton.Name = "loadSettingsButton";
-            this.loadSettingsButton.Size = new System.Drawing.Size(146, 33);
+            this.loadSettingsButton.Size = new System.Drawing.Size(105, 28);
             this.loadSettingsButton.Text = "Load settings";
             this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
             this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
@@ -196,14 +203,14 @@ namespace DataImport
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // resetButton
             // 
             this.resetButton.Image = ((System.Drawing.Image)(resources.GetObject("resetButton.Image")));
             this.resetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(82, 33);
+            this.resetButton.Size = new System.Drawing.Size(63, 28);
             this.resetButton.Text = "Reset";
             this.resetButton.Click += new System.EventHandler(this.ToolStripButton3_Click);
             // 
@@ -211,7 +218,7 @@ namespace DataImport
             // 
             this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(83, 33);
+            this.closeButton.Size = new System.Drawing.Size(64, 28);
             this.closeButton.Text = "Close";
             this.closeButton.Click += new System.EventHandler(this.TsbClose_Click);
             // 
@@ -220,7 +227,8 @@ namespace DataImport
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 38);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -230,9 +238,9 @@ namespace DataImport
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1868, 994);
+            this.splitContainer1.Size = new System.Drawing.Size(1245, 640);
             this.splitContainer1.SplitterDistance = 350;
-            this.splitContainer1.SplitterWidth = 3;
+            this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 5;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
@@ -240,12 +248,19 @@ namespace DataImport
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.label15);
+            this.splitContainer2.Panel1.Controls.Add(this.label14);
+            this.splitContainer2.Panel1.Controls.Add(this.rowEndNum);
+            this.splitContainer2.Panel1.Controls.Add(this.label13);
+            this.splitContainer2.Panel1.Controls.Add(this.rowStartNum);
             this.splitContainer2.Panel1.Controls.Add(this.LogToggle);
             this.splitContainer2.Panel1.Controls.Add(this.label6);
             this.splitContainer2.Panel1.Controls.Add(this.settingsKeyFoundMultipleRecords);
@@ -265,16 +280,95 @@ namespace DataImport
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer2.Size = new System.Drawing.Size(350, 994);
-            this.splitContainer2.SplitterDistance = 241;
-            this.splitContainer2.SplitterWidth = 3;
+            this.splitContainer2.Size = new System.Drawing.Size(350, 640);
+            this.splitContainer2.SplitterDistance = 300;
+            this.splitContainer2.SplitterWidth = 2;
             this.splitContainer2.TabIndex = 3;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(174, 107);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(93, 13);
+            this.label15.TabIndex = 29;
+            this.label15.Text = "Last row to import:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 107);
+            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(92, 13);
+            this.label14.TabIndex = 28;
+            this.label14.Text = "First row to import:";
+            // 
+            // rowEndNum
+            // 
+            this.rowEndNum.AccessibleDescription = "The Excel line that the import should import to. By default is the last row in th" +
+    "e spreadsheet.";
+            this.rowEndNum.AccessibleName = "Import Excel to row number";
+            this.rowEndNum.BackColor = System.Drawing.Color.White;
+            this.rowEndNum.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rowEndNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rowEndNum.ForeColor = System.Drawing.Color.Black;
+            this.rowEndNum.Location = new System.Drawing.Point(272, 103);
+            this.rowEndNum.Name = "rowEndNum";
+            this.rowEndNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.rowEndNum.Size = new System.Drawing.Size(71, 20);
+            this.rowEndNum.TabIndex = 27;
+            this.rowEndNum.ThousandsSeparator = true;
+            this.rowEndNum.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(2, 84);
+            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(213, 13);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "3. Choose rows in the spreadsheet to import";
+            // 
+            // rowStartNum
+            // 
+            this.rowStartNum.AccessibleDescription = "The Excel line that the import should start from. By default is set to row 2, whi" +
+    "ch excludes the header.";
+            this.rowStartNum.AccessibleName = "Import Excel from row number";
+            this.rowStartNum.BackColor = System.Drawing.Color.White;
+            this.rowStartNum.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rowStartNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rowStartNum.ForeColor = System.Drawing.Color.Black;
+            this.rowStartNum.Location = new System.Drawing.Point(101, 102);
+            this.rowStartNum.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.rowStartNum.Name = "rowStartNum";
+            this.rowStartNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.rowStartNum.Size = new System.Drawing.Size(60, 20);
+            this.rowStartNum.TabIndex = 25;
+            this.rowStartNum.ThousandsSeparator = true;
+            this.rowStartNum.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.rowStartNum.ValueChanged += new System.EventHandler(this.rowStartNum_ValueChanged);
             // 
             // LogToggle
             // 
-            this.LogToggle.Location = new System.Drawing.Point(351, 328);
+            this.LogToggle.Location = new System.Drawing.Point(234, 265);
+            this.LogToggle.Margin = new System.Windows.Forms.Padding(2);
             this.LogToggle.Name = "LogToggle";
-            this.LogToggle.Size = new System.Drawing.Size(170, 35);
+            this.LogToggle.Size = new System.Drawing.Size(113, 23);
             this.LogToggle.TabIndex = 15;
             this.LogToggle.Text = "Show Log Table";
             this.LogToggle.UseVisualStyleBackColor = true;
@@ -283,9 +377,10 @@ namespace DataImport
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 123);
+            this.label6.Location = new System.Drawing.Point(2, 132);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(214, 20);
+            this.label6.Size = new System.Drawing.Size(145, 13);
             this.label6.TabIndex = 14;
             this.label6.Text = "Filter on key found > 1 record";
             // 
@@ -296,9 +391,10 @@ namespace DataImport
             this.settingsKeyFoundMultipleRecords.Items.AddRange(new object[] {
             "Do action for all",
             "Ignore excel line"});
-            this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(3, 145);
+            this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(2, 146);
+            this.settingsKeyFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
             this.settingsKeyFoundMultipleRecords.Name = "settingsKeyFoundMultipleRecords";
-            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(516, 28);
+            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(345, 21);
             this.settingsKeyFoundMultipleRecords.TabIndex = 13;
             this.settingsKeyFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsKeyFoundMultipleRecords_SelectedIndexChanged);
             // 
@@ -306,10 +402,9 @@ namespace DataImport
             // 
             this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.RefreshLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.RefreshLogs.Location = new System.Drawing.Point(270, 328);
-            this.RefreshLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.RefreshLogs.Location = new System.Drawing.Point(180, 265);
             this.RefreshLogs.Name = "RefreshLogs";
-            this.RefreshLogs.Size = new System.Drawing.Size(74, 35);
+            this.RefreshLogs.Size = new System.Drawing.Size(49, 23);
             this.RefreshLogs.TabIndex = 12;
             this.RefreshLogs.Text = "↻";
             this.RefreshLogs.UseVisualStyleBackColor = true;
@@ -318,17 +413,19 @@ namespace DataImport
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 305);
+            this.label5.Location = new System.Drawing.Point(2, 250);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 20);
+            this.label5.Size = new System.Drawing.Size(51, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "Filter logs";
             // 
             // copyText
             // 
-            this.copyText.Location = new System.Drawing.Point(190, 328);
+            this.copyText.Location = new System.Drawing.Point(127, 265);
+            this.copyText.Margin = new System.Windows.Forms.Padding(2);
             this.copyText.Name = "copyText";
-            this.copyText.Size = new System.Drawing.Size(75, 35);
+            this.copyText.Size = new System.Drawing.Size(50, 23);
             this.copyText.TabIndex = 10;
             this.copyText.Text = "Copy";
             this.copyText.UseVisualStyleBackColor = true;
@@ -345,18 +442,20 @@ namespace DataImport
             "✓ SUCCESS",
             "❌ ERRORS",
             "⚠ WARNINGS"});
-            this.textView.Location = new System.Drawing.Point(3, 329);
+            this.textView.Location = new System.Drawing.Point(2, 266);
+            this.textView.Margin = new System.Windows.Forms.Padding(2);
             this.textView.Name = "textView";
-            this.textView.Size = new System.Drawing.Size(180, 28);
+            this.textView.Size = new System.Drawing.Size(121, 21);
             this.textView.TabIndex = 4;
             this.textView.DropDownClosed += new System.EventHandler(this.TextView_DropDownClosed);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 182);
+            this.label2.Location = new System.Drawing.Point(2, 170);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(164, 20);
+            this.label2.Size = new System.Drawing.Size(108, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "OptionSet field format";
             this.label2.Visible = false;
@@ -369,9 +468,10 @@ namespace DataImport
             "Map to the first record found by the lookup",
             "Skip the record and do not import it",
             "Import the record with the lookup blank"});
-            this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(3, 266);
+            this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(2, 225);
+            this.settingsLookupFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
             this.settingsLookupFoundMultipleRecords.Name = "settingsLookupFoundMultipleRecords";
-            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(516, 28);
+            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(345, 21);
             this.settingsLookupFoundMultipleRecords.TabIndex = 9;
             this.settingsLookupFoundMultipleRecords.Visible = false;
             this.settingsLookupFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsLookupFoundMultipleRecords_SelectedIndexChanged);
@@ -379,9 +479,10 @@ namespace DataImport
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 242);
+            this.label4.Location = new System.Drawing.Point(2, 209);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(215, 20);
+            this.label4.Size = new System.Drawing.Size(146, 13);
             this.label4.TabIndex = 8;
             this.label4.Text = "Lookup field found > 1 record";
             this.label4.Visible = false;
@@ -389,21 +490,22 @@ namespace DataImport
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 60);
+            this.label3.Location = new System.Drawing.Point(2, 42);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(170, 20);
+            this.label3.Size = new System.Drawing.Size(115, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "2. Choose CRM Action";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Location = new System.Drawing.Point(2, 3);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 20);
+            this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 5;
             this.label1.Text = "1. Pick Entity";
-            this.label1.Click += new System.EventHandler(this.Label1_Click);
             // 
             // settingsEntity
             // 
@@ -412,9 +514,10 @@ namespace DataImport
             this.settingsEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsEntity.DropDownWidth = 200;
             this.settingsEntity.FormattingEnabled = true;
-            this.settingsEntity.Location = new System.Drawing.Point(3, 25);
+            this.settingsEntity.Location = new System.Drawing.Point(2, 19);
+            this.settingsEntity.Margin = new System.Windows.Forms.Padding(2);
             this.settingsEntity.Name = "settingsEntity";
-            this.settingsEntity.Size = new System.Drawing.Size(516, 28);
+            this.settingsEntity.Size = new System.Drawing.Size(345, 21);
             this.settingsEntity.Sorted = true;
             this.settingsEntity.TabIndex = 4;
             this.settingsEntity.DropDownClosed += new System.EventHandler(this.settingsEntity_DropDownClosed);
@@ -426,9 +529,10 @@ namespace DataImport
             this.settingsOptionSetValuesOrLabel.Items.AddRange(new object[] {
             "Values",
             "Labels"});
-            this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(3, 206);
+            this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(2, 186);
+            this.settingsOptionSetValuesOrLabel.Margin = new System.Windows.Forms.Padding(2);
             this.settingsOptionSetValuesOrLabel.Name = "settingsOptionSetValuesOrLabel";
-            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(516, 28);
+            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(345, 21);
             this.settingsOptionSetValuesOrLabel.TabIndex = 3;
             this.settingsOptionSetValuesOrLabel.Visible = false;
             this.settingsOptionSetValuesOrLabel.SelectedIndexChanged += new System.EventHandler(this.settingsOptionSetValuesOrLabel_SelectedIndexChanged);
@@ -444,9 +548,10 @@ namespace DataImport
             "Create",
             "Update",
             "Delete"});
-            this.settingsCrmAction.Location = new System.Drawing.Point(3, 85);
+            this.settingsCrmAction.Location = new System.Drawing.Point(2, 58);
+            this.settingsCrmAction.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCrmAction.Name = "settingsCrmAction";
-            this.settingsCrmAction.Size = new System.Drawing.Size(516, 28);
+            this.settingsCrmAction.Size = new System.Drawing.Size(345, 21);
             this.settingsCrmAction.TabIndex = 2;
             this.settingsCrmAction.SelectedIndexChanged += new System.EventHandler(this.settingsCrmAction_SelectedIndexChanged);
             // 
@@ -454,10 +559,9 @@ namespace DataImport
             // 
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(350, 750);
+            this.richTextBox1.Size = new System.Drawing.Size(350, 338);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 
@@ -465,7 +569,6 @@ namespace DataImport
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -488,16 +591,14 @@ namespace DataImport
             this.splitContainer3.Panel2.Controls.Add(this.textBoxSuccess);
             this.splitContainer3.Panel2.Controls.Add(this.label9);
             this.splitContainer3.Panel2.Controls.Add(this.label8);
-            this.splitContainer3.Size = new System.Drawing.Size(1515, 994);
-            this.splitContainer3.SplitterDistance = 947;
-            this.splitContainer3.SplitterWidth = 6;
+            this.splitContainer3.Size = new System.Drawing.Size(893, 640);
+            this.splitContainer3.SplitterDistance = 608;
             this.splitContainer3.TabIndex = 0;
             // 
             // splitContainer4
             // 
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -511,9 +612,8 @@ namespace DataImport
             this.splitContainer4.Panel2.Controls.Add(this.dataGridViewLogs);
             this.splitContainer4.Panel2Collapsed = true;
             this.splitContainer4.Panel2MinSize = 200;
-            this.splitContainer4.Size = new System.Drawing.Size(1515, 947);
+            this.splitContainer4.Size = new System.Drawing.Size(893, 608);
             this.splitContainer4.SplitterDistance = 300;
-            this.splitContainer4.SplitterWidth = 6;
             this.splitContainer4.TabIndex = 6;
             // 
             // dataGridViewMapping
@@ -534,10 +634,11 @@ namespace DataImport
             this.BlankBehaviour});
             this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMapping.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewMapping.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewMapping.Name = "dataGridViewMapping";
             this.dataGridViewMapping.RowHeadersWidth = 30;
             this.dataGridViewMapping.RowTemplate.Height = 33;
-            this.dataGridViewMapping.Size = new System.Drawing.Size(1515, 947);
+            this.dataGridViewMapping.Size = new System.Drawing.Size(893, 608);
             this.dataGridViewMapping.TabIndex = 1;
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
@@ -671,6 +772,7 @@ namespace DataImport
             this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewLogs.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewLogs.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewLogs.Name = "dataGridViewLogs";
             this.dataGridViewLogs.ReadOnly = true;
             this.dataGridViewLogs.RowHeadersVisible = false;
@@ -744,10 +846,9 @@ namespace DataImport
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(1260, 9);
-            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Location = new System.Drawing.Point(840, 6);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(80, 20);
+            this.label12.Size = new System.Drawing.Size(55, 13);
             this.label12.TabIndex = 24;
             this.label12.Text = "Deleted:";
             // 
@@ -755,10 +856,9 @@ namespace DataImport
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(1022, 9);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Location = new System.Drawing.Point(681, 6);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(84, 20);
+            this.label11.Size = new System.Drawing.Size(59, 13);
             this.label11.TabIndex = 23;
             this.label11.Text = "Updated:";
             // 
@@ -769,13 +869,12 @@ namespace DataImport
             this.textDeleted.Cursor = System.Windows.Forms.Cursors.No;
             this.textDeleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textDeleted.ForeColor = System.Drawing.Color.Indigo;
-            this.textDeleted.Location = new System.Drawing.Point(1352, 2);
-            this.textDeleted.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textDeleted.Location = new System.Drawing.Point(901, 1);
             this.textDeleted.MaxLength = 100000;
             this.textDeleted.Name = "textDeleted";
             this.textDeleted.ReadOnly = true;
             this.textDeleted.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textDeleted.Size = new System.Drawing.Size(134, 30);
+            this.textDeleted.Size = new System.Drawing.Size(91, 23);
             this.textDeleted.TabIndex = 22;
             // 
             // textUpdated
@@ -785,13 +884,12 @@ namespace DataImport
             this.textUpdated.Cursor = System.Windows.Forms.Cursors.No;
             this.textUpdated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textUpdated.ForeColor = System.Drawing.Color.Indigo;
-            this.textUpdated.Location = new System.Drawing.Point(1114, 2);
-            this.textUpdated.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textUpdated.Location = new System.Drawing.Point(743, 1);
             this.textUpdated.MaxLength = 100000;
             this.textUpdated.Name = "textUpdated";
             this.textUpdated.ReadOnly = true;
             this.textUpdated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textUpdated.Size = new System.Drawing.Size(134, 30);
+            this.textUpdated.Size = new System.Drawing.Size(91, 23);
             this.textUpdated.TabIndex = 21;
             // 
             // textCreated
@@ -801,23 +899,21 @@ namespace DataImport
             this.textCreated.Cursor = System.Windows.Forms.Cursors.No;
             this.textCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textCreated.ForeColor = System.Drawing.Color.Indigo;
-            this.textCreated.Location = new System.Drawing.Point(878, 2);
-            this.textCreated.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textCreated.Location = new System.Drawing.Point(585, 1);
             this.textCreated.MaxLength = 100000;
             this.textCreated.Name = "textCreated";
             this.textCreated.ReadOnly = true;
             this.textCreated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textCreated.Size = new System.Drawing.Size(124, 30);
+            this.textCreated.Size = new System.Drawing.Size(84, 23);
             this.textCreated.TabIndex = 20;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(780, 9);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Location = new System.Drawing.Point(520, 6);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(87, 20);
+            this.label10.Size = new System.Drawing.Size(59, 13);
             this.label10.TabIndex = 19;
             this.label10.Text = "Created: ";
             // 
@@ -828,23 +924,21 @@ namespace DataImport
             this.textRowCount.Cursor = System.Windows.Forms.Cursors.No;
             this.textRowCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textRowCount.ForeColor = System.Drawing.Color.Indigo;
-            this.textRowCount.Location = new System.Drawing.Point(174, 2);
-            this.textRowCount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textRowCount.Location = new System.Drawing.Point(116, 1);
             this.textRowCount.MaxLength = 100000;
             this.textRowCount.Name = "textRowCount";
             this.textRowCount.ReadOnly = true;
             this.textRowCount.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textRowCount.Size = new System.Drawing.Size(124, 30);
+            this.textRowCount.Size = new System.Drawing.Size(84, 23);
             this.textRowCount.TabIndex = 15;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(6, 6);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(4, 4);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(168, 20);
+            this.label7.Size = new System.Drawing.Size(114, 13);
             this.label7.TabIndex = 16;
             this.label7.Text = "Excel Rows Count:";
             // 
@@ -855,13 +949,12 @@ namespace DataImport
             this.textBoxError.Cursor = System.Windows.Forms.Cursors.No;
             this.textBoxError.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxError.ForeColor = System.Drawing.Color.DarkRed;
-            this.textBoxError.Location = new System.Drawing.Point(634, 2);
-            this.textBoxError.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBoxError.Location = new System.Drawing.Point(423, 1);
             this.textBoxError.MaxLength = 100000;
             this.textBoxError.Name = "textBoxError";
             this.textBoxError.ReadOnly = true;
             this.textBoxError.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxError.Size = new System.Drawing.Size(134, 30);
+            this.textBoxError.Size = new System.Drawing.Size(93, 23);
             this.textBoxError.TabIndex = 18;
             // 
             // textBoxSuccess
@@ -871,23 +964,21 @@ namespace DataImport
             this.textBoxSuccess.Cursor = System.Windows.Forms.Cursors.No;
             this.textBoxSuccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxSuccess.ForeColor = System.Drawing.Color.Green;
-            this.textBoxSuccess.Location = new System.Drawing.Point(398, 2);
-            this.textBoxSuccess.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBoxSuccess.Location = new System.Drawing.Point(265, 1);
             this.textBoxSuccess.MaxLength = 100000;
             this.textBoxSuccess.Name = "textBoxSuccess";
             this.textBoxSuccess.ReadOnly = true;
             this.textBoxSuccess.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxSuccess.Size = new System.Drawing.Size(134, 30);
+            this.textBoxSuccess.Size = new System.Drawing.Size(91, 23);
             this.textBoxSuccess.TabIndex = 17;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(566, 9);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(377, 6);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(64, 20);
+            this.label9.Size = new System.Drawing.Size(42, 13);
             this.label9.TabIndex = 1;
             this.label9.Text = "Error: ";
             // 
@@ -895,10 +986,9 @@ namespace DataImport
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(310, 9);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(207, 6);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(83, 20);
+            this.label8.Size = new System.Drawing.Size(56, 13);
             this.label8.TabIndex = 0;
             this.label8.Text = "Sucess: ";
             // 
@@ -913,14 +1003,14 @@ namespace DataImport
             // 
             // MyPluginControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMenu);
-            this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "MyPluginControl";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(1868, 1032);
+            this.Size = new System.Drawing.Size(1245, 671);
             this.TabIcon = global::DataImport.Properties.Resources.DataImportSharpSharp;
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
@@ -934,6 +1024,8 @@ namespace DataImport
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).EndInit();
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.Panel2.PerformLayout();
@@ -1017,5 +1109,10 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
         private System.Windows.Forms.DataGridViewComboBoxColumn BlankBehaviour;
         internal System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
+        private NumericUpDown rowStartNum;
+        private Label label13;
+        private NumericUpDown rowEndNum;
+        private Label label15;
+        private Label label14;
     }
 }
