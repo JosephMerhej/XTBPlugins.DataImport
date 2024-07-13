@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Xml;
 using McTools.Xrm.Connection;
 
