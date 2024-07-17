@@ -202,6 +202,7 @@ namespace DataImport
                         }
                         
                     }
+                    ProcessFields();
                 }
             });
         }
@@ -645,6 +646,8 @@ namespace DataImport
             {
                 string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
                 acrmfield = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString());
+                if (resultsaved is null) 
+                    { return; }
                 foreach (object attribute in resultsaved.Attributes)
                 {
                     AttributeMetadata a = (AttributeMetadata)attribute;
@@ -668,7 +671,7 @@ namespace DataImport
                             processChoice();
                         }
                     }
-                }
+                } 
             }
             IsReadyToImport = true;
             importDataButton.Enabled = true;
@@ -814,12 +817,13 @@ namespace DataImport
                     {
                         settings.LoadSettingsFromXML(fileName);
                         settingsEntity.SelectedItem = settings.Entity;
+                        InitEntityFields();
                         settingsCrmAction.SelectedItem = settings.CrmAction;
                         settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
                         settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
                         settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
-                        InitEntityFields();
                         dataGridViewMapping.Rows.Clear();
+                        
 
                         // Add rows
                         foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
@@ -837,7 +841,6 @@ namespace DataImport
                                 }
                             }
                         }
-                        ExecuteMethod(ProcessFields);
                     }
                 }
                 catch (IOException ex)
@@ -1031,8 +1034,12 @@ namespace DataImport
                             //    break;
                             logicalnm[iCol - 1] = myfieldlabel;
                             string myfieldtype = "";
-                            if (xlRange.Cells[iRow, iCol].value == null || xlRange[1, iCol].value == "")
+                            dynamic cellValue = xlRange.Cells[iRow, iCol].value;
+
+                            // If the cell is blank, or header is blanked
+                            if (cellValue == null || xlRange[1, iCol].value == "")
                             {
+                                // If we should clear CRM value then set the value to clear in the record
                                 if (dt.Rows[iCol - 1][9].ToString() == "Clears CRM value")
                                 {
                                     foreach (object attribute in resultsaved.Attributes)
@@ -1087,7 +1094,8 @@ namespace DataImport
                             }
                             else //Record not empty
                             {
-                                //SET UP FIELDS OF THE ENTITY
+                                //SET UP FIELDS OF THE ENTITY --
+                                // TODO: this iterates through each attribute until it finds the matching one. Must be better way of doing that
                                 foreach (object attribute in resultsaved.Attributes)
                                 {
                                     AttributeMetadata a = (AttributeMetadata)attribute;
@@ -1106,10 +1114,10 @@ namespace DataImport
                                                 try
                                                 {
                                                     string xlvalue;
-                                                    if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
-                                                        xlvalue = xlRange.Cells[iRow, iCol].value;
+                                                    if (cellValue.Equals(typeof(String)))
+                                                        xlvalue = cellValue;
                                                     else
-                                                        xlvalue = xlRange.Cells[iRow, iCol].value.ToString();
+                                                        xlvalue = cellValue.ToString();
                                                     int activeValue = (int)options.Where(o => o.Text == xlvalue).Select(o => o.Value).FirstOrDefault();
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue(activeValue);
                                                 }
@@ -1117,8 +1125,8 @@ namespace DataImport
                                                 {
                                                     // Update Logs
                                                     AddToLogRow(row, "⚠ Couldnt match Optionset Label : " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2 + " - " + ex.Message.ToString());
-                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + xlRange.Cells[iRow, iCol].value + " - " + ex.Message.ToString();
-                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + xlRange.Cells[iRow, iCol].value + " - " + ex.Message.ToString();
+                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + cellValue + " - " + ex.Message.ToString();
+                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + cellValue + " - " + ex.Message.ToString();
                                                     //SetTextBox1();
                                                 }
 
@@ -1127,23 +1135,27 @@ namespace DataImport
                                             }
                                             else //OPTIONSET VALUES
                                             {
-                                                if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
+                                                if (cellValue is String)
                                                 {
                                                     int intvaluecell = 0;
                                                     try
                                                     {
-                                                        intvaluecell = System.Convert.ToInt32(xlRange.Cells[iRow, iCol].value);
+                                                        intvaluecell = System.Convert.ToInt32(cellValue);
                                                         record[logicalnm[iCol - 1]] = new OptionSetValue(intvaluecell);
                                                     }
                                                     catch (FormatException)
                                                     {
-                                                        MessageBox.Show("Not a valid integer for an option set value field type");
+                                                        // Update Logs
+                                                        AddToLogRow(row, "❌ Couldnt match cell to Option Set value: " + cellValue);
+                                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
+                                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
                                                     }
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue();
                                                 }
                                                 else
                                                 {
-                                                    int avalue = (int)xlRange.Cells[iRow, iCol].value;
+
+                                                    int avalue = (int)cellValue;
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue(avalue);
                                                 }
                                             }
@@ -1272,7 +1284,10 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show("NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE");
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE: " + xlRange.Cells[iRow, iCol].value.ToString());
+                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE: " + xlRange.Cells[iRow, iCol].value.ToString();
                                         }
                                     }
                                     else
@@ -1291,8 +1306,11 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show("NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE");
-                                        }
+                                        // Update Logs
+                                        AddToLogRow(row, "⚠ NOT A VALID DECIMAL: " + xlRange.Cells[iRow, iCol].value.ToString());
+                                        richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                        richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                    }
                                 }
                                 else if (myfieldtype == "Integer")
                                 {
@@ -1306,7 +1324,10 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show("NOT A VALID Integer FOR A CURRENCY FIELD TYPE");
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ NOT A VALID INTEGER: " + xlRange.Cells[iRow, iCol].value.ToString());
+                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID INTEGER: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID INTEGER: " + xlRange.Cells[iRow, iCol].value.ToString();
                                         }
                                     }
                                     else
