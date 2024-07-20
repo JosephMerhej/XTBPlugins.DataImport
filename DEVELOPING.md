@@ -19,6 +19,9 @@ This provides a brief guide to getting started with developing for Data Import +
 IF NOT EXIST Plugins mkdir Plugins
 move /Y $(TargetFileName) Plugins
 ```
-
+9. Make sure you have Excel installed on your device. Otherwise you may see an error like this when you try to run the program:
+```
+An error occured when trying to display this tool: Retrieving the COM class factory for component with CLSID {00024500-0000-0000-C000-000000000046) failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).
+```
 Happy developing!
 
