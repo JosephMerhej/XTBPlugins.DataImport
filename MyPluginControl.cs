@@ -304,6 +304,8 @@ namespace DataImport
                         else
                         {
                             dataGridViewMapping.Rows.Add(xlRange.Cells[1, iCol].value);
+                            // Set default for load to CRM to Keeps CRM Value
+                            dataGridViewMapping.Rows[iCol-1].Cells[9].Value = "Keeps CRM value";
                         }
                     }
 
