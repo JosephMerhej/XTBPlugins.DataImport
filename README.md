@@ -1,7 +1,7 @@
 # XTBPlugins.DataImport
 Data Import ++ is a tool that allows you to accomplish the following actions in Dynamics 365: CREATE, UPDATE, UPSERT or DELETE records based on an Excel data sheet as input
 
-Complete guide : https://d365tips.com/home/xrmtoolbox-dataimport
+Complete guide : https://dynamics365tips.wixsite.com/home/post/xrmtoolbox-dataimport
 
 STEPS:
 
