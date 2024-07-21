@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Data Import ##")]
-[assembly: AssemblyDescription("BETA - V2 of Data Import++: Use Excel to create, update, upsert or delete records in CRM now with mapping saving, better logging and faster data entry.")]
+[assembly: AssemblyTitle("Data Import ++ BETA")]
+[assembly: AssemblyDescription("BETA V2 of Data Import++: Use Excel to create, update, upsert or delete records in CRM now with mapping saving, better logging and faster data entry.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Joseph Merhej and Andrew Howes")]
-[assembly: AssemblyProduct("Data Import ##")]
-[assembly: AssemblyCopyright("Copyright ©  2019 Joseph Merhej")]
+[assembly: AssemblyProduct("Data Import ++")]
+[assembly: AssemblyCopyright("GNU GPL3")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2024.0.01")]
-[assembly: AssemblyFileVersion("1.2024.0.01")]
+[assembly: AssemblyVersion("1.2024.0.3")]
+[assembly: AssemblyFileVersion("1.2024.0.3")]

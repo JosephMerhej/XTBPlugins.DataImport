@@ -17,10 +17,11 @@ using System.ServiceModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 using McTools.Xrm.Connection;
+using XrmToolBox.Extensibility.Interfaces;
 
 namespace DataImport
 {
-    public partial class MyPluginControl : PluginControlBase
+    public partial class MyPluginControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
         // CREATE EXCEL OBJECTS.
         Excel.Application xlApp = new Excel.Application();
@@ -60,6 +61,20 @@ namespace DataImport
 
         // To store the Excel Mapping once ready for import
         DataTable tableMapping = new DataTable();
+
+        #region IGitHubPlugin implementation
+
+        public string RepositoryName => "XTBPlugins.DataImport";
+
+        public string UserName => "YesWeCandrew";
+
+        #endregion IGitHubPlugin implementation
+
+        #region IHelpPlugin implementation
+
+        public string HelpUrl => "https://github.com/YesWeCandrew/XTBPlugins.DataImport/blob/master/README.md";
+
+        #endregion IHelpPlugin implementation
 
         public MyPluginControl()
         {

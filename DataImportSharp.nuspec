@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>AndrewHowes.DataImportSharp</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">GPL-3.0-only</license>
+    <readme>README.md</readme>
+    <icon>Resources\DataImportSharpSharp.png</icon>
+    <projectUrl>https://github.com/YesWeCandrew/XTBPlugins.DataImport</projectUrl>
+    <description>$description$</description>
+    <releaseNotes>Creates new BETA version with map saving, improved logging and bug fixes</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>XrmToolBox</tags>
+  </metadata>
+  <files>
+    <file src="README.md" target="" />
+    <file src="Resources\DataImportSharpSharp.png" target="Resources\DataImportSharpSharp.png" />
+  </files>
+</package>
