@@ -59,6 +59,19 @@ namespace DataImport
                 throw new Exception("Error attempting to process setting file \"" + filePath + "\"", innerException);
             }
         }
+        
+        public void SaveSettingsToXML(string filePath)
+        {
+            try
+            {
+                // Save settings to an XML file
+                XmlSerializerHelper.SerializeToFile(Instance, filePath);
+            }
+            catch (Exception innerException)
+            {
+                throw new Exception("Error attempting to save file to \"" + filePath + "\"", innerException);
+            }
+        }
 
         public void Reset()
         {

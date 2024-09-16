@@ -34,7 +34,7 @@ namespace DataImport
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyPluginControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.browseFileButton = new System.Windows.Forms.ToolStripButton();
             this.processFieldsButton = new System.Windows.Forms.ToolStripButton();
@@ -100,7 +100,8 @@ namespace DataImport
             this.textBoxSuccess = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -151,8 +152,9 @@ namespace DataImport
             this.browseFileButton.Image = ((System.Drawing.Image)(resources.GetObject("browseFileButton.Image")));
             this.browseFileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.browseFileButton.Name = "browseFileButton";
-            this.browseFileButton.Size = new System.Drawing.Size(103, 28);
-            this.browseFileButton.Text = "Browse Excel";
+            this.browseFileButton.Size = new System.Drawing.Size(94, 28);
+            this.browseFileButton.Text = "Open Excel";
+            this.browseFileButton.ToolTipText = "Choose the Excel file you want to import";
             this.browseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
             // 
             // processFieldsButton
@@ -182,6 +184,7 @@ namespace DataImport
             // 
             // saveSettingsButton
             // 
+            this.saveSettingsButton.Enabled = false;
             this.saveSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("saveSettingsButton.Image")));
             this.saveSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveSettingsButton.Name = "saveSettingsButton";
@@ -199,6 +202,17 @@ namespace DataImport
             this.loadSettingsButton.Text = "Load settings";
             this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
             this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
+            //
+            // saveFileDialog
+            //
+            this.saveFileDialog.FileName = "DataImportSettingsFile.xml";
+            this.saveFileDialog.Title = "Settings File";
+            this.saveFileDialog.Filter = "XML File|*.xml";
+            this.saveFileDialog.RestoreDirectory = true;
+            //
+            // openFileDialog
+            //
+            this.openFileDialog.RestoreDirectory = true;
             // 
             // toolStripSeparator2
             // 
@@ -212,7 +226,7 @@ namespace DataImport
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(63, 28);
             this.resetButton.Text = "Reset";
-            this.resetButton.Click += new System.EventHandler(this.ToolStripButton3_Click);
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // closeButton
             // 
@@ -242,7 +256,6 @@ namespace DataImport
             this.splitContainer1.SplitterDistance = 350;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 5;
-            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // splitContainer2
             // 
@@ -408,7 +421,7 @@ namespace DataImport
             this.RefreshLogs.TabIndex = 12;
             this.RefreshLogs.Text = "↻";
             this.RefreshLogs.UseVisualStyleBackColor = true;
-            this.RefreshLogs.Click += new System.EventHandler(this.Button1_Click_2);
+            this.RefreshLogs.Click += new System.EventHandler(this.RefreshLogs_Click_2);
             // 
             // label5
             // 
@@ -513,6 +526,7 @@ namespace DataImport
             this.settingsEntity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.settingsEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsEntity.DropDownWidth = 200;
+            this.settingsEntity.Enabled = false;
             this.settingsEntity.FormattingEnabled = true;
             this.settingsEntity.Location = new System.Drawing.Point(2, 19);
             this.settingsEntity.Margin = new System.Windows.Forms.Padding(2);
@@ -592,7 +606,7 @@ namespace DataImport
             this.splitContainer3.Panel2.Controls.Add(this.label9);
             this.splitContainer3.Panel2.Controls.Add(this.label8);
             this.splitContainer3.Size = new System.Drawing.Size(893, 640);
-            this.splitContainer3.SplitterDistance = 608;
+            this.splitContainer3.SplitterDistance = 607;
             this.splitContainer3.TabIndex = 0;
             // 
             // splitContainer4
@@ -612,7 +626,7 @@ namespace DataImport
             this.splitContainer4.Panel2.Controls.Add(this.dataGridViewLogs);
             this.splitContainer4.Panel2Collapsed = true;
             this.splitContainer4.Panel2MinSize = 200;
-            this.splitContainer4.Size = new System.Drawing.Size(893, 608);
+            this.splitContainer4.Size = new System.Drawing.Size(893, 607);
             this.splitContainer4.SplitterDistance = 300;
             this.splitContainer4.TabIndex = 6;
             // 
@@ -638,7 +652,7 @@ namespace DataImport
             this.dataGridViewMapping.Name = "dataGridViewMapping";
             this.dataGridViewMapping.RowHeadersWidth = 30;
             this.dataGridViewMapping.RowTemplate.Height = 33;
-            this.dataGridViewMapping.Size = new System.Drawing.Size(893, 608);
+            this.dataGridViewMapping.Size = new System.Drawing.Size(893, 607);
             this.dataGridViewMapping.TabIndex = 1;
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
@@ -762,14 +776,14 @@ namespace DataImport
             this.Updates,
             this.GUID,
             this.Logs});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewLogs.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewLogs.Margin = new System.Windows.Forms.Padding(2);
@@ -992,11 +1006,6 @@ namespace DataImport
             this.label8.TabIndex = 0;
             this.label8.Text = "Sucess: ";
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
-            // 
             // settingsBindingSource
             // 
             this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
@@ -1048,7 +1057,8 @@ namespace DataImport
         private System.Windows.Forms.ToolStripButton closeButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dataGridViewMapping;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ComboBox settingsCrmAction;
         private System.Windows.Forms.ComboBox settingsOptionSetValuesOrLabel;
