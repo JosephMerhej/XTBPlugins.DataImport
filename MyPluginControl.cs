@@ -71,7 +71,7 @@ namespace DataImport
 
         public void MyPluginControl_Load(object sender, System.EventArgs e)
         {
-            splitContainer1.Panel1Collapsed = true;
+            splitContainerSideBarAndMapping.Panel1Collapsed = true;
             settingsLookupFoundMultipleRecords.SelectedIndex = 0;
             settingsCrmAction.SelectedIndex = 0;
             textView.SelectedIndex = 0;
@@ -309,7 +309,7 @@ namespace DataImport
                     if (sFileName.Trim() != "")
                     {
                         ReadExcel(sFileName);
-                        splitContainer1.Panel1Collapsed = false;
+                        splitContainerSideBarAndMapping.Panel1Collapsed = false;
                         loadSettingsButton.Enabled = true;
                         saveSettingsButton.Enabled = true;
                     }
@@ -441,7 +441,7 @@ namespace DataImport
 
         private void LogToggle_Click(object sender, EventArgs e)
         {
-            if (splitContainer4.Panel2Collapsed == true)
+            if (splitContainerMappingAndLogging.Panel2Collapsed == true)
             {
                 LogTableShow();
             }
@@ -452,14 +452,14 @@ namespace DataImport
         }
         private void LogTableHide()
         {
-            splitContainer4.Panel2Collapsed = true;
+            splitContainerMappingAndLogging.Panel2Collapsed = true;
             LogToggle.Text = "Show Log Table";
 
         }
 
         private void LogTableShow()
         {
-            splitContainer4.Panel2Collapsed = false;
+            splitContainerMappingAndLogging.Panel2Collapsed = false;
             LogToggle.Text = "Hide Log Table";
         }
 
@@ -541,8 +541,9 @@ namespace DataImport
             settingsOptionSetValuesOrLabel.Visible = false;
             label4.Visible = false;
 
-            splitContainer1.Panel1Collapsed = true;
+            splitContainerSideBarAndMapping.Panel1Collapsed = true;
             saveSettingsButton.Enabled = false;
+            loadSettingsButton.Enabled = false;
 
             EmptyDataGrid();
             CRMField.Items.Clear();
@@ -977,6 +978,11 @@ namespace DataImport
             {
                 MessageBox.Show("WARNING: Action will not be launched. Please press the button 'PROCESS FIELDS' before importing to CRM.");
             }
+        }
+
+        private void dataGridViewMapping_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
         private void ImportExcel()

@@ -45,7 +45,7 @@ namespace DataImport
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.resetButton = new System.Windows.Forms.ToolStripButton();
             this.closeButton = new System.Windows.Forms.ToolStripButton();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainerSideBarAndMapping = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -68,8 +68,7 @@ namespace DataImport
             this.settingsOptionSetValuesOrLabel = new System.Windows.Forms.ComboBox();
             this.settingsCrmAction = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.splitContainerMappingAndLogging = new System.Windows.Forms.SplitContainer();
             this.dataGridViewMapping = new System.Windows.Forms.DataGridView();
             this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -88,6 +87,7 @@ namespace DataImport
             this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.textDeleted = new System.Windows.Forms.TextBox();
@@ -103,28 +103,31 @@ namespace DataImport
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.splitContainerMainAppAndProgressInfo = new System.Windows.Forms.SplitContainer();
             this.toolStripMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerSideBarAndMapping)).BeginInit();
+            this.splitContainerSideBarAndMapping.Panel1.SuspendLayout();
+            this.splitContainerSideBarAndMapping.Panel2.SuspendLayout();
+            this.splitContainerSideBarAndMapping.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMappingAndLogging)).BeginInit();
+            this.splitContainerMappingAndLogging.Panel1.SuspendLayout();
+            this.splitContainerMappingAndLogging.Panel2.SuspendLayout();
+            this.splitContainerMappingAndLogging.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMainAppAndProgressInfo)).BeginInit();
+            this.splitContainerMainAppAndProgressInfo.Panel1.SuspendLayout();
+            this.splitContainerMainAppAndProgressInfo.Panel2.SuspendLayout();
+            this.splitContainerMainAppAndProgressInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripMenu
@@ -143,7 +146,7 @@ namespace DataImport
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
             this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(1245, 31);
+            this.toolStripMenu.Size = new System.Drawing.Size(1280, 31);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -202,17 +205,6 @@ namespace DataImport
             this.loadSettingsButton.Text = "Load settings";
             this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
             this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
-            //
-            // saveFileDialog
-            //
-            this.saveFileDialog.FileName = "DataImportSettingsFile.xml";
-            this.saveFileDialog.Title = "Settings File";
-            this.saveFileDialog.Filter = "XML File|*.xml";
-            this.saveFileDialog.RestoreDirectory = true;
-            //
-            // openFileDialog
-            //
-            this.openFileDialog.RestoreDirectory = true;
             // 
             // toolStripSeparator2
             // 
@@ -236,26 +228,26 @@ namespace DataImport
             this.closeButton.Text = "Close";
             this.closeButton.Click += new System.EventHandler(this.TsbClose_Click);
             // 
-            // splitContainer1
+            // splitContainerSideBarAndMapping
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
-            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainerSideBarAndMapping.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerSideBarAndMapping.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainerSideBarAndMapping.IsSplitterFixed = true;
+            this.splitContainerSideBarAndMapping.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerSideBarAndMapping.Margin = new System.Windows.Forms.Padding(2);
+            this.splitContainerSideBarAndMapping.Name = "splitContainerSideBarAndMapping";
             // 
-            // splitContainer1.Panel1
+            // splitContainerSideBarAndMapping.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.splitContainerSideBarAndMapping.Panel1.Controls.Add(this.splitContainer2);
             // 
-            // splitContainer1.Panel2
+            // splitContainerSideBarAndMapping.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1245, 640);
-            this.splitContainer1.SplitterDistance = 350;
-            this.splitContainer1.SplitterWidth = 2;
-            this.splitContainer1.TabIndex = 5;
+            this.splitContainerSideBarAndMapping.Panel2.Controls.Add(this.splitContainerMappingAndLogging);
+            this.splitContainerSideBarAndMapping.Size = new System.Drawing.Size(1280, 681);
+            this.splitContainerSideBarAndMapping.SplitterDistance = 350;
+            this.splitContainerSideBarAndMapping.SplitterWidth = 2;
+            this.splitContainerSideBarAndMapping.TabIndex = 5;
             // 
             // splitContainer2
             // 
@@ -293,7 +285,7 @@ namespace DataImport
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer2.Size = new System.Drawing.Size(350, 640);
+            this.splitContainer2.Size = new System.Drawing.Size(350, 681);
             this.splitContainer2.SplitterDistance = 300;
             this.splitContainer2.SplitterWidth = 2;
             this.splitContainer2.TabIndex = 3;
@@ -526,7 +518,6 @@ namespace DataImport
             this.settingsEntity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.settingsEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsEntity.DropDownWidth = 200;
-            this.settingsEntity.Enabled = false;
             this.settingsEntity.FormattingEnabled = true;
             this.settingsEntity.Location = new System.Drawing.Point(2, 19);
             this.settingsEntity.Margin = new System.Windows.Forms.Padding(2);
@@ -575,65 +566,37 @@ namespace DataImport
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(350, 338);
+            this.richTextBox1.Size = new System.Drawing.Size(350, 379);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 
-            // splitContainer3
+            // splitContainerMappingAndLogging
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainerMappingAndLogging.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerMappingAndLogging.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerMappingAndLogging.Name = "splitContainerMappingAndLogging";
+            this.splitContainerMappingAndLogging.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer3.Panel1
+            // splitContainerMappingAndLogging.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.splitContainer4);
+            this.splitContainerMappingAndLogging.Panel1.AutoScroll = true;
+            this.splitContainerMappingAndLogging.Panel1.Controls.Add(this.dataGridViewMapping);
             // 
-            // splitContainer3.Panel2
+            // splitContainerMappingAndLogging.Panel2
             // 
-            this.splitContainer3.Panel2.BackColor = System.Drawing.Color.Thistle;
-            this.splitContainer3.Panel2.Controls.Add(this.label12);
-            this.splitContainer3.Panel2.Controls.Add(this.label11);
-            this.splitContainer3.Panel2.Controls.Add(this.textDeleted);
-            this.splitContainer3.Panel2.Controls.Add(this.textUpdated);
-            this.splitContainer3.Panel2.Controls.Add(this.textCreated);
-            this.splitContainer3.Panel2.Controls.Add(this.label10);
-            this.splitContainer3.Panel2.Controls.Add(this.textRowCount);
-            this.splitContainer3.Panel2.Controls.Add(this.label7);
-            this.splitContainer3.Panel2.Controls.Add(this.textBoxError);
-            this.splitContainer3.Panel2.Controls.Add(this.textBoxSuccess);
-            this.splitContainer3.Panel2.Controls.Add(this.label9);
-            this.splitContainer3.Panel2.Controls.Add(this.label8);
-            this.splitContainer3.Size = new System.Drawing.Size(893, 640);
-            this.splitContainer3.SplitterDistance = 607;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.dataGridViewMapping);
-            this.splitContainer4.Panel1MinSize = 300;
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.dataGridViewLogs);
-            this.splitContainer4.Panel2Collapsed = true;
-            this.splitContainer4.Panel2MinSize = 200;
-            this.splitContainer4.Size = new System.Drawing.Size(893, 607);
-            this.splitContainer4.SplitterDistance = 300;
-            this.splitContainer4.TabIndex = 6;
+            this.splitContainerMappingAndLogging.Panel2.Controls.Add(this.dataGridViewLogs);
+            this.splitContainerMappingAndLogging.Panel2Collapsed = true;
+            this.splitContainerMappingAndLogging.Size = new System.Drawing.Size(928, 681);
+            this.splitContainerMappingAndLogging.SplitterDistance = 300;
+            this.splitContainerMappingAndLogging.TabIndex = 6;
             // 
             // dataGridViewMapping
             // 
             this.dataGridViewMapping.AllowUserToAddRows = false;
             this.dataGridViewMapping.AllowUserToDeleteRows = false;
+            this.dataGridViewMapping.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMapping.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcelColumn,
@@ -646,14 +609,14 @@ namespace DataImport
             this.Falsevalue,
             this.DefaultValue,
             this.BlankBehaviour});
-            this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMapping.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewMapping.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewMapping.Name = "dataGridViewMapping";
             this.dataGridViewMapping.RowHeadersWidth = 30;
             this.dataGridViewMapping.RowTemplate.Height = 33;
-            this.dataGridViewMapping.Size = new System.Drawing.Size(893, 607);
+            this.dataGridViewMapping.Size = new System.Drawing.Size(1178, 1064);
             this.dataGridViewMapping.TabIndex = 1;
+            this.dataGridViewMapping.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMapping_CellContentClick);
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
             // ExcelColumn
@@ -856,6 +819,16 @@ namespace DataImport
             this.Logs.ToolTipText = "Any log notes, errors or messages";
             this.Logs.Width = 300;
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainer3.Size = new System.Drawing.Size(928, 652);
+            this.splitContainer3.SplitterDistance = 326;
+            this.splitContainer3.TabIndex = 0;
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -1006,28 +979,69 @@ namespace DataImport
             this.label8.TabIndex = 0;
             this.label8.Text = "Sucess: ";
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.RestoreDirectory = true;
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileName = "DataImportSettingsFile.xml";
+            this.saveFileDialog.Filter = "XML File|*.xml";
+            this.saveFileDialog.RestoreDirectory = true;
+            this.saveFileDialog.Title = "Settings File";
+            // 
             // settingsBindingSource
             // 
             this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
+            // 
+            // splitContainerMainAppAndProgressInfo
+            // 
+            this.splitContainerMainAppAndProgressInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerMainAppAndProgressInfo.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerMainAppAndProgressInfo.Name = "splitContainerMainAppAndProgressInfo";
+            this.splitContainerMainAppAndProgressInfo.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerMainAppAndProgressInfo.Panel1
+            // 
+            this.splitContainerMainAppAndProgressInfo.Panel1.Controls.Add(this.splitContainerSideBarAndMapping);
+            // 
+            // splitContainerMainAppAndProgressInfo.Panel2
+            // 
+            this.splitContainerMainAppAndProgressInfo.Panel2.BackColor = System.Drawing.Color.Thistle;
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label12);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label11);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textDeleted);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textUpdated);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textCreated);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label10);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textRowCount);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label7);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textBoxError);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textBoxSuccess);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label9);
+            this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label8);
+            this.splitContainerMainAppAndProgressInfo.Size = new System.Drawing.Size(1280, 720);
+            this.splitContainerMainAppAndProgressInfo.SplitterDistance = 681;
+            this.splitContainerMainAppAndProgressInfo.TabIndex = 4;
             // 
             // MyPluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMenu);
+            this.Controls.Add(this.splitContainerMainAppAndProgressInfo);
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "MyPluginControl";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(1245, 671);
+            this.Size = new System.Drawing.Size(1280, 720);
             this.TabIcon = global::DataImport.Properties.Resources.DataImportSharpSharp;
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitContainerSideBarAndMapping.Panel1.ResumeLayout(false);
+            this.splitContainerSideBarAndMapping.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerSideBarAndMapping)).EndInit();
+            this.splitContainerSideBarAndMapping.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -1035,18 +1049,20 @@ namespace DataImport
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).EndInit();
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            this.splitContainer3.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
-            this.splitContainer4.ResumeLayout(false);
+            this.splitContainerMappingAndLogging.Panel1.ResumeLayout(false);
+            this.splitContainerMappingAndLogging.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMappingAndLogging)).EndInit();
+            this.splitContainerMappingAndLogging.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).EndInit();
+            this.splitContainerMainAppAndProgressInfo.Panel1.ResumeLayout(false);
+            this.splitContainerMainAppAndProgressInfo.Panel2.ResumeLayout(false);
+            this.splitContainerMainAppAndProgressInfo.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMainAppAndProgressInfo)).EndInit();
+            this.splitContainerMainAppAndProgressInfo.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1055,7 +1071,7 @@ namespace DataImport
         #endregion
         private System.Windows.Forms.ToolStrip toolStripMenu;
         private System.Windows.Forms.ToolStripButton closeButton;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainerSideBarAndMapping;
         private System.Windows.Forms.DataGridView dataGridViewMapping;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
@@ -1097,7 +1113,7 @@ namespace DataImport
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Button LogToggle;
-        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.SplitContainer splitContainerMappingAndLogging;
         private System.Windows.Forms.DataGridViewTextBoxColumn Import;
         private System.Windows.Forms.DataGridViewTextBoxColumn Line;
         private System.Windows.Forms.DataGridViewTextBoxColumn Result;
@@ -1124,5 +1140,6 @@ namespace DataImport
         private NumericUpDown rowEndNum;
         private Label label15;
         private Label label14;
+        private SplitContainer splitContainerMainAppAndProgressInfo;
     }
 }
