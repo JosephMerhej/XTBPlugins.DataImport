@@ -34,7 +34,7 @@ namespace DataImport
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyPluginControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.browseFileButton = new System.Windows.Forms.ToolStripButton();
             this.processFieldsButton = new System.Windows.Forms.ToolStripButton();
@@ -70,16 +70,6 @@ namespace DataImport
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.splitContainerMappingAndLogging = new System.Windows.Forms.SplitContainer();
             this.dataGridViewMapping = new System.Windows.Forms.DataGridView();
-            this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.CRMField = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.IsLookup = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.lkpTargetEntity = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.lkpTargetfield = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BlankBehaviour = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewLogs = new System.Windows.Forms.DataGridView();
             this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -102,8 +92,18 @@ namespace DataImport
             this.label8 = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.splitContainerMainAppAndProgressInfo = new System.Windows.Forms.SplitContainer();
+            this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.CRMField = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.IsLookup = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.lkpTargetEntity = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.lkpTargetfield = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BlankBehaviour = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerSideBarAndMapping)).BeginInit();
             this.splitContainerSideBarAndMapping.Panel1.SuspendLayout();
@@ -123,11 +123,11 @@ namespace DataImport
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMainAppAndProgressInfo)).BeginInit();
             this.splitContainerMainAppAndProgressInfo.Panel1.SuspendLayout();
             this.splitContainerMainAppAndProgressInfo.Panel2.SuspendLayout();
             this.splitContainerMainAppAndProgressInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripMenu
@@ -230,7 +230,9 @@ namespace DataImport
             // 
             // splitContainerSideBarAndMapping
             // 
-            this.splitContainerSideBarAndMapping.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerSideBarAndMapping.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainerSideBarAndMapping.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainerSideBarAndMapping.IsSplitterFixed = true;
             this.splitContainerSideBarAndMapping.Location = new System.Drawing.Point(0, 0);
@@ -240,11 +242,13 @@ namespace DataImport
             // splitContainerSideBarAndMapping.Panel1
             // 
             this.splitContainerSideBarAndMapping.Panel1.Controls.Add(this.splitContainer2);
+            this.splitContainerSideBarAndMapping.Panel1MinSize = 350;
             // 
             // splitContainerSideBarAndMapping.Panel2
             // 
             this.splitContainerSideBarAndMapping.Panel2.Controls.Add(this.splitContainerMappingAndLogging);
-            this.splitContainerSideBarAndMapping.Size = new System.Drawing.Size(1280, 681);
+            this.splitContainerSideBarAndMapping.Panel2MinSize = 350;
+            this.splitContainerSideBarAndMapping.Size = new System.Drawing.Size(1280, 652);
             this.splitContainerSideBarAndMapping.SplitterDistance = 350;
             this.splitContainerSideBarAndMapping.SplitterWidth = 2;
             this.splitContainerSideBarAndMapping.TabIndex = 5;
@@ -285,7 +289,7 @@ namespace DataImport
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer2.Size = new System.Drawing.Size(350, 681);
+            this.splitContainer2.Size = new System.Drawing.Size(350, 652);
             this.splitContainer2.SplitterDistance = 300;
             this.splitContainer2.SplitterWidth = 2;
             this.splitContainer2.TabIndex = 3;
@@ -566,13 +570,15 @@ namespace DataImport
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(350, 379);
+            this.richTextBox1.Size = new System.Drawing.Size(350, 350);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 
             // splitContainerMappingAndLogging
             // 
-            this.splitContainerMappingAndLogging.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerMappingAndLogging.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainerMappingAndLogging.Location = new System.Drawing.Point(0, 0);
             this.splitContainerMappingAndLogging.Name = "splitContainerMappingAndLogging";
             this.splitContainerMappingAndLogging.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -581,23 +587,22 @@ namespace DataImport
             // 
             this.splitContainerMappingAndLogging.Panel1.AutoScroll = true;
             this.splitContainerMappingAndLogging.Panel1.Controls.Add(this.dataGridViewMapping);
+            this.splitContainerMappingAndLogging.Panel1MinSize = 200;
             // 
             // splitContainerMappingAndLogging.Panel2
             // 
             this.splitContainerMappingAndLogging.Panel2.Controls.Add(this.dataGridViewLogs);
             this.splitContainerMappingAndLogging.Panel2Collapsed = true;
-            this.splitContainerMappingAndLogging.Size = new System.Drawing.Size(928, 681);
-            this.splitContainerMappingAndLogging.SplitterDistance = 300;
+            this.splitContainerMappingAndLogging.Panel2MinSize = 100;
+            this.splitContainerMappingAndLogging.Size = new System.Drawing.Size(930, 652);
+            this.splitContainerMappingAndLogging.SplitterDistance = 200;
             this.splitContainerMappingAndLogging.TabIndex = 6;
             // 
             // dataGridViewMapping
             // 
             this.dataGridViewMapping.AllowUserToAddRows = false;
             this.dataGridViewMapping.AllowUserToDeleteRows = false;
-            this.dataGridViewMapping.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewMapping.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcelColumn,
             this.isKey,
@@ -609,121 +614,15 @@ namespace DataImport
             this.Falsevalue,
             this.DefaultValue,
             this.BlankBehaviour});
+            this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMapping.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewMapping.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewMapping.Name = "dataGridViewMapping";
             this.dataGridViewMapping.RowHeadersWidth = 30;
             this.dataGridViewMapping.RowTemplate.Height = 33;
-            this.dataGridViewMapping.Size = new System.Drawing.Size(1178, 1064);
+            this.dataGridViewMapping.Size = new System.Drawing.Size(930, 652);
             this.dataGridViewMapping.TabIndex = 1;
-            this.dataGridViewMapping.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMapping_CellContentClick);
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
-            // 
-            // ExcelColumn
-            // 
-            this.ExcelColumn.DataPropertyName = "ExcelColumn";
-            this.ExcelColumn.HeaderText = "Excel Column";
-            this.ExcelColumn.MinimumWidth = 9;
-            this.ExcelColumn.Name = "ExcelColumn";
-            this.ExcelColumn.ReadOnly = true;
-            this.ExcelColumn.Width = 150;
-            // 
-            // isKey
-            // 
-            this.isKey.DataPropertyName = "IsKey";
-            this.isKey.HeaderText = "is Key";
-            this.isKey.MinimumWidth = 9;
-            this.isKey.Name = "isKey";
-            this.isKey.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.isKey.Width = 175;
-            // 
-            // CRMField
-            // 
-            this.CRMField.DataPropertyName = "CRMField";
-            this.CRMField.DropDownWidth = 150;
-            this.CRMField.HeaderText = "CRM Field";
-            this.CRMField.Items.AddRange(new object[] {
-            "One",
-            "Two"});
-            this.CRMField.MaxDropDownItems = 20;
-            this.CRMField.MinimumWidth = 9;
-            this.CRMField.Name = "CRMField";
-            this.CRMField.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CRMField.Width = 150;
-            // 
-            // IsLookup
-            // 
-            this.IsLookup.DataPropertyName = "IsLookup";
-            this.IsLookup.HeaderText = "Is Lookup";
-            this.IsLookup.MinimumWidth = 9;
-            this.IsLookup.Name = "IsLookup";
-            this.IsLookup.Visible = false;
-            this.IsLookup.Width = 175;
-            // 
-            // lkpTargetEntity
-            // 
-            this.lkpTargetEntity.DataPropertyName = "LkpTargetEntity";
-            this.lkpTargetEntity.HeaderText = "[Lookup] Entity Name";
-            this.lkpTargetEntity.MinimumWidth = 9;
-            this.lkpTargetEntity.Name = "lkpTargetEntity";
-            this.lkpTargetEntity.ReadOnly = true;
-            this.lkpTargetEntity.Sorted = true;
-            this.lkpTargetEntity.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.lkpTargetEntity.Visible = false;
-            this.lkpTargetEntity.Width = 150;
-            // 
-            // lkpTargetfield
-            // 
-            this.lkpTargetfield.DataPropertyName = "LkpTargetField";
-            this.lkpTargetfield.HeaderText = "[Lookup] Field Name";
-            this.lkpTargetfield.MinimumWidth = 9;
-            this.lkpTargetfield.Name = "lkpTargetfield";
-            this.lkpTargetfield.ReadOnly = true;
-            this.lkpTargetfield.Sorted = true;
-            this.lkpTargetfield.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.lkpTargetfield.Visible = false;
-            this.lkpTargetfield.Width = 150;
-            // 
-            // Truevalue
-            // 
-            this.Truevalue.DataPropertyName = "TrueValue";
-            this.Truevalue.HeaderText = "True Label";
-            this.Truevalue.MinimumWidth = 9;
-            this.Truevalue.Name = "Truevalue";
-            this.Truevalue.ReadOnly = true;
-            this.Truevalue.Visible = false;
-            this.Truevalue.Width = 50;
-            // 
-            // Falsevalue
-            // 
-            this.Falsevalue.DataPropertyName = "FalseValue";
-            this.Falsevalue.HeaderText = "False Label";
-            this.Falsevalue.MinimumWidth = 9;
-            this.Falsevalue.Name = "Falsevalue";
-            this.Falsevalue.ReadOnly = true;
-            this.Falsevalue.Visible = false;
-            this.Falsevalue.Width = 50;
-            // 
-            // DefaultValue
-            // 
-            this.DefaultValue.DataPropertyName = "DefaultValue";
-            this.DefaultValue.HeaderText = "Default Value";
-            this.DefaultValue.MinimumWidth = 8;
-            this.DefaultValue.Name = "DefaultValue";
-            this.DefaultValue.ReadOnly = true;
-            this.DefaultValue.Visible = false;
-            this.DefaultValue.Width = 150;
-            // 
-            // BlankBehaviour
-            // 
-            this.BlankBehaviour.DataPropertyName = "BlankBehaviour";
-            this.BlankBehaviour.HeaderText = "Blank behaviour";
-            this.BlankBehaviour.Items.AddRange(new object[] {
-            "Clears CRM value",
-            "Keeps CRM value"});
-            this.BlankBehaviour.MinimumWidth = 9;
-            this.BlankBehaviour.Name = "BlankBehaviour";
-            this.BlankBehaviour.Width = 175;
             // 
             // dataGridViewLogs
             // 
@@ -739,14 +638,14 @@ namespace DataImport
             this.Updates,
             this.GUID,
             this.Logs});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewLogs.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewLogs.Margin = new System.Windows.Forms.Padding(2);
@@ -990,20 +889,19 @@ namespace DataImport
             this.saveFileDialog.RestoreDirectory = true;
             this.saveFileDialog.Title = "Settings File";
             // 
-            // settingsBindingSource
-            // 
-            this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
-            // 
             // splitContainerMainAppAndProgressInfo
             // 
-            this.splitContainerMainAppAndProgressInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerMainAppAndProgressInfo.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerMainAppAndProgressInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainerMainAppAndProgressInfo.Location = new System.Drawing.Point(0, 31);
             this.splitContainerMainAppAndProgressInfo.Name = "splitContainerMainAppAndProgressInfo";
             this.splitContainerMainAppAndProgressInfo.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainerMainAppAndProgressInfo.Panel1
             // 
             this.splitContainerMainAppAndProgressInfo.Panel1.Controls.Add(this.splitContainerSideBarAndMapping);
+            this.splitContainerMainAppAndProgressInfo.Panel1MinSize = 400;
             // 
             // splitContainerMainAppAndProgressInfo.Panel2
             // 
@@ -1020,9 +918,117 @@ namespace DataImport
             this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.textBoxSuccess);
             this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label9);
             this.splitContainerMainAppAndProgressInfo.Panel2.Controls.Add(this.label8);
-            this.splitContainerMainAppAndProgressInfo.Size = new System.Drawing.Size(1280, 720);
-            this.splitContainerMainAppAndProgressInfo.SplitterDistance = 681;
+            this.splitContainerMainAppAndProgressInfo.Panel2MinSize = 30;
+            this.splitContainerMainAppAndProgressInfo.Size = new System.Drawing.Size(1280, 689);
+            this.splitContainerMainAppAndProgressInfo.SplitterDistance = 652;
             this.splitContainerMainAppAndProgressInfo.TabIndex = 4;
+            // 
+            // settingsBindingSource
+            // 
+            this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
+            // 
+            // ExcelColumn
+            // 
+            this.ExcelColumn.DataPropertyName = "ExcelColumn";
+            this.ExcelColumn.HeaderText = "Excel Column";
+            this.ExcelColumn.MinimumWidth = 9;
+            this.ExcelColumn.Name = "ExcelColumn";
+            this.ExcelColumn.ReadOnly = true;
+            this.ExcelColumn.Width = 200;
+            // 
+            // isKey
+            // 
+            this.isKey.DataPropertyName = "IsKey";
+            this.isKey.HeaderText = "is Key";
+            this.isKey.MinimumWidth = 9;
+            this.isKey.Name = "isKey";
+            this.isKey.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.isKey.Width = 50;
+            // 
+            // CRMField
+            // 
+            this.CRMField.DataPropertyName = "CRMField";
+            this.CRMField.DropDownWidth = 150;
+            this.CRMField.HeaderText = "CRM Field";
+            this.CRMField.Items.AddRange(new object[] {
+            "One",
+            "Two"});
+            this.CRMField.MaxDropDownItems = 20;
+            this.CRMField.MinimumWidth = 9;
+            this.CRMField.Name = "CRMField";
+            this.CRMField.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.CRMField.Width = 200;
+            // 
+            // IsLookup
+            // 
+            this.IsLookup.DataPropertyName = "IsLookup";
+            this.IsLookup.HeaderText = "Is Lookup";
+            this.IsLookup.MinimumWidth = 9;
+            this.IsLookup.Name = "IsLookup";
+            this.IsLookup.Visible = false;
+            this.IsLookup.Width = 50;
+            // 
+            // lkpTargetEntity
+            // 
+            this.lkpTargetEntity.DataPropertyName = "LkpTargetEntity";
+            this.lkpTargetEntity.HeaderText = "[Lookup] Entity Name";
+            this.lkpTargetEntity.MinimumWidth = 9;
+            this.lkpTargetEntity.Name = "lkpTargetEntity";
+            this.lkpTargetEntity.ReadOnly = true;
+            this.lkpTargetEntity.Sorted = true;
+            this.lkpTargetEntity.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.lkpTargetEntity.Visible = false;
+            this.lkpTargetEntity.Width = 150;
+            // 
+            // lkpTargetfield
+            // 
+            this.lkpTargetfield.DataPropertyName = "LkpTargetField";
+            this.lkpTargetfield.HeaderText = "[Lookup] Field Name";
+            this.lkpTargetfield.MinimumWidth = 9;
+            this.lkpTargetfield.Name = "lkpTargetfield";
+            this.lkpTargetfield.ReadOnly = true;
+            this.lkpTargetfield.Sorted = true;
+            this.lkpTargetfield.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.lkpTargetfield.Visible = false;
+            this.lkpTargetfield.Width = 150;
+            // 
+            // Truevalue
+            // 
+            this.Truevalue.DataPropertyName = "TrueValue";
+            this.Truevalue.HeaderText = "True Label";
+            this.Truevalue.MinimumWidth = 9;
+            this.Truevalue.Name = "Truevalue";
+            this.Truevalue.ReadOnly = true;
+            this.Truevalue.Visible = false;
+            // 
+            // Falsevalue
+            // 
+            this.Falsevalue.DataPropertyName = "FalseValue";
+            this.Falsevalue.HeaderText = "False Label";
+            this.Falsevalue.MinimumWidth = 9;
+            this.Falsevalue.Name = "Falsevalue";
+            this.Falsevalue.ReadOnly = true;
+            this.Falsevalue.Visible = false;
+            // 
+            // DefaultValue
+            // 
+            this.DefaultValue.DataPropertyName = "DefaultValue";
+            this.DefaultValue.HeaderText = "Default Value";
+            this.DefaultValue.MinimumWidth = 8;
+            this.DefaultValue.Name = "DefaultValue";
+            this.DefaultValue.ReadOnly = true;
+            this.DefaultValue.Visible = false;
+            // 
+            // BlankBehaviour
+            // 
+            this.BlankBehaviour.DataPropertyName = "BlankBehaviour";
+            this.BlankBehaviour.HeaderText = "Blank behaviour";
+            this.BlankBehaviour.Items.AddRange(new object[] {
+            "Clears CRM value",
+            "Keeps CRM value"});
+            this.BlankBehaviour.MinimumWidth = 9;
+            this.BlankBehaviour.Name = "BlankBehaviour";
+            this.BlankBehaviour.Width = 150;
             // 
             // MyPluginControl
             // 
@@ -1057,12 +1063,12 @@ namespace DataImport
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).EndInit();
             this.splitContainerMainAppAndProgressInfo.Panel1.ResumeLayout(false);
             this.splitContainerMainAppAndProgressInfo.Panel2.ResumeLayout(false);
             this.splitContainerMainAppAndProgressInfo.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMainAppAndProgressInfo)).EndInit();
             this.splitContainerMainAppAndProgressInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1125,21 +1131,21 @@ namespace DataImport
         private System.Windows.Forms.ToolStripButton loadSettingsButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.BindingSource settingsBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLookup;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetEntity;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetfield;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
-        private System.Windows.Forms.DataGridViewComboBoxColumn BlankBehaviour;
-        internal System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
         private NumericUpDown rowStartNum;
         private Label label13;
         private NumericUpDown rowEndNum;
         private Label label15;
         private Label label14;
         private SplitContainer splitContainerMainAppAndProgressInfo;
+        private DataGridViewTextBoxColumn ExcelColumn;
+        private DataGridViewCheckBoxColumn isKey;
+        private DataGridViewComboBoxColumn CRMField;
+        private DataGridViewCheckBoxColumn IsLookup;
+        private DataGridViewComboBoxColumn lkpTargetEntity;
+        private DataGridViewComboBoxColumn lkpTargetfield;
+        private DataGridViewTextBoxColumn Truevalue;
+        private DataGridViewTextBoxColumn Falsevalue;
+        private DataGridViewTextBoxColumn DefaultValue;
+        private DataGridViewComboBoxColumn BlankBehaviour;
     }
 }

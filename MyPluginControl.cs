@@ -980,11 +980,6 @@ namespace DataImport
             }
         }
 
-        private void dataGridViewMapping_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
