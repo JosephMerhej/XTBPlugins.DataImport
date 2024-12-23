@@ -16,7 +16,9 @@
     <tags>XrmToolBox</tags>
   </metadata>
   <files>
+    <file src="bin\Release\DataImportSharp.dll" target="lib\net48\Plugins\" />    
     <file src="README.md" target="" />
     <file src="Resources\DataImportSharpSharp.png" target="Resources\DataImportSharpSharp.png" />
+    <file src="bin\Release\Libraries\*.dll" target="lib\net48\Plugins\DataImportSharp" />
   </files>
 </package>

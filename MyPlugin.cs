@@ -1,6 +1,9 @@
+using System;
 using System.ComponentModel.Composition;
+using System.Reflection;
 using XrmToolBox.Extensibility;
 using XrmToolBox.Extensibility.Interfaces;
+using System.IO;
 
 namespace DataImport
 {
@@ -19,9 +22,44 @@ namespace DataImport
         
     public class MyPlugin : PluginBase
     {
+        public MyPlugin()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
         public override IXrmToolBoxPluginControl GetControl()
         {
             return new MyPluginControl();
+        }
+
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Assembly loadAssembly = null;
+            Assembly currAssembly = Assembly.GetExecutingAssembly();
+
+            // Get the name of the assembly you want to load
+            var assemblyName = new AssemblyName(args.Name).Name + ".dll";
+
+            // Get the path of the current assembly
+            string directory = Path.GetDirectoryName(currAssembly.Location);
+
+            // Create the path to the assembly you want to load
+            string assemblyPath = Path.Combine(directory, assemblyName);
+
+            if (File.Exists(assemblyPath))
+            {
+                loadAssembly = Assembly.LoadFrom(assemblyPath);
+            }
+            else
+            {
+                // Try to load from the 'Libraries' subfolder
+                assemblyPath = Path.Combine(directory, "Libraries", assemblyName);
+                if (File.Exists(assemblyPath))
+                {
+                    loadAssembly = Assembly.LoadFrom(assemblyPath);
+                }
+            }
+
+            return loadAssembly;
         }
     }
 }
