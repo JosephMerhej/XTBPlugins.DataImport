@@ -319,8 +319,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF NOT EXIST C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins mkdir C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins
-move /Y $(TargetFileName) C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -330,8 +330,9 @@ move /Y $(TargetFileName) C:\Users\Andrew_Howes\Apps\XrmToolbox\Plugins</PostBui
     <Error Condition="!Exists('packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>IF NOT EXIST $(SolutionDir)bin\$(ConfigurationName)\Plugins mkdir $(SolutionDir)bin\$(ConfigurationName)\Plugins
+
+move /Y $(TargetFileName) $(SolutionDir)bin\$(ConfigurationName)\Plugins</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

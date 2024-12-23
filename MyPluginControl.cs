@@ -62,34 +62,16 @@ namespace DataImport
         // To store the Excel Mapping once ready for import
         DataTable tableMapping = new DataTable();
 
-        #region IGitHubPlugin implementation
-
-        public string RepositoryName => "XTBPlugins.DataImport";
-
-        public string UserName => "YesWeCandrew";
-
-        #endregion IGitHubPlugin implementation
-
-        #region IHelpPlugin implementation
-
-        public string HelpUrl => "https://github.com/YesWeCandrew/XTBPlugins.DataImport/blob/master/README.md";
-
-        #endregion IHelpPlugin implementation
+        #region Initialising Plugin
 
         public MyPluginControl()
         {
             InitializeComponent();
         }
 
-        // If the connection is updated and another environment is chosen.
-        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
-        {
-            base.UpdateConnection(newService, detail, actionName, parameter);
-            InitEntities();
-        }
-
         public void MyPluginControl_Load(object sender, System.EventArgs e)
         {
+            splitContainerSideBarAndMapping.Panel1Collapsed = true;
             settingsLookupFoundMultipleRecords.SelectedIndex = 0;
             settingsCrmAction.SelectedIndex = 0;
             textView.SelectedIndex = 0;
@@ -123,6 +105,41 @@ namespace DataImport
 
             this.dataGridViewMapping.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMapping_CellValueChanged);
         }
+
+        #endregion Initialising Plugin
+
+        #region XRMToolbox Commands
+
+        // If the connection is updated and another environment is chosen.
+        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
+        {
+            base.UpdateConnection(newService, detail, actionName, parameter);
+            InitEntities();
+        }
+
+        private void TsbClose_Click(object sender, EventArgs e)
+        {
+            CloseTool();
+        }
+
+
+        #region IGitHubPlugin implementation
+
+        public string RepositoryName => "XTBPlugins.DataImport";
+
+        public string UserName => "YesWeCandrew";
+
+        #endregion IGitHubPlugin implementation
+
+        #region IHelpPlugin implementation
+
+        public string HelpUrl => "https://github.com/YesWeCandrew/XTBPlugins.DataImport/blob/master/README.md";
+
+        #endregion IHelpPlugin implementation
+
+        #endregion XRMToolbox Commands
+
+        #region Retrieving Data From Dynamics
 
         public void InitEntities()
         {
@@ -164,12 +181,6 @@ namespace DataImport
                     }
                 }
             });
-        }
-        private void StartBackgroundWork(int i)
-        {
-            double perr = (i - 1) / (1.0 * (xlRange.Rows.Count - 1)) * 100;
-
-            //labelprogress.Text = "Import Progress "+perr.ToString("F") + "%";
         }
 
         private void InitEntityFields()
@@ -272,26 +283,43 @@ namespace DataImport
             });
         }
 
-        private void TsbClose_Click(object sender, EventArgs e)
+        #endregion Retrieving Data From Dynamics
+
+        #region Get Excel
+
+        private void BrowseFileButton_Click(object sender, EventArgs e)
         {
-            CloseTool();
+            GetFile();
         }
 
-
-        private void TsbSample_Click(object sender, EventArgs e)
+        private void GetFile()
         {
-            ExecuteMethod(InitEntities);
-        }
+            openFileDialog.FileName = "";
+            openFileDialog.Title = "Excel File to Import";
+            openFileDialog.Filter = "Excel File|*.xlsx;*.xls";
+            DialogResult result = openFileDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                EmptyDataGrid();
+                string file = openFileDialog.FileName;
+                try
+                {
+                    sFileName = openFileDialog.FileName;
 
-        private void MyPluginControl_OnCloseTool(object sender, EventArgs e)
-        {
-            // Before leaving, save the settings
-            SettingsManager.Instance.Save(GetType(), settings);
-        }
-
-        private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
+                    if (sFileName.Trim() != "")
+                    {
+                        ReadExcel(sFileName);
+                        splitContainerSideBarAndMapping.Panel1Collapsed = false;
+                        loadSettingsButton.Enabled = true;
+                        saveSettingsButton.Enabled = true;
+                        setInstructionVisibility(false);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Failed to load Excel file correctly:" + ex.Message.ToString());
+                }
+            }
         }
 
         // GET DATA FROM EXCEL AND POPULATE COMB0 BOX.
@@ -339,6 +367,12 @@ namespace DataImport
                 }
             });
         }
+
+        #endregion Get Excel
+
+        #region Logging
+
+        #region OriginalLogging
 
         private void SetTextBox1()
         {
@@ -391,113 +425,106 @@ namespace DataImport
             textUpdated.Text = updatednumber.ToString();
             textDeleted.Text = deletednumber.ToString();
         }
-        private void EmptyDataGrid()
+        private void CopyText_Click(object sender, EventArgs e)
         {
-            dataGridViewMapping.Rows.Clear();
-            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = false;
-            dataGridViewMapping.Columns["lkpTargetfield"].Visible = false;
-            dataGridViewMapping.Columns["Truevalue"].Visible = false;
-            dataGridViewMapping.Columns["Falsevalue"].Visible = false;
-            dataGridViewMapping.Columns["DefaultValue"].Visible = false;
+            StringBuilder sb = new StringBuilder();
+            foreach (string line in richTextBox1.Lines)
+                sb.AppendLine(line);
+            if (sb.Length != 0)
+                Clipboard.SetText(sb.ToString());
+            else
+                MessageBox.Show("Logs are empty");
         }
 
-        private void GetFile()
+        #endregion Original Logging
+
+        #region New Logging
+
+        private void LogToggle_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Title = "Excel File to Import";
-            openFileDialog1.FileName = "";
-            openFileDialog1.Filter = "Excel File|*.xlsx;*.xls";
-            DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
+            if (splitContainerMappingAndLogging.Panel2Collapsed == true)
             {
-                EmptyDataGrid();
-                string file = openFileDialog1.FileName;
-                try
-                {
-                    sFileName = openFileDialog1.FileName;
-
-                    if (sFileName.Trim() != "")
-                    {
-                        ReadExcel(sFileName);
-                    }
-                }
-                catch (IOException ex)
-                {
-                    MessageBox.Show("Failed to load Excel file correctly:" + ex.Message.ToString());
-                }
-            }
-        }
-        private void BrowseFileButton_Click(object sender, EventArgs e)
-        {
-            GetFile();
-            loadSettingsButton.Enabled = true;
-        }
-
-        private void rowStartNum_ValueChanged(object sender, EventArgs e)
-        {
-            // Set row end equal to start if start is after end
-            if (rowEndNum.Value <= rowStartNum.Value) {
-                rowEndNum.Value = rowStartNum.Value;
-            }
-            // Make the minimum equal to the new start
-            rowEndNum.Minimum = new decimal(new int[] {
-                        (int) rowStartNum.Value,
-                        0,
-                        0,
-                        0
-            });
-
-
-        }
-
-        private void ImportDataButton_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewMapping.RowCount == 0)
-            {
-                MessageBox.Show("Please BROWSE EXCEL FILE first and Pick your entity and fields mapping before Lauching the Import to CRM.");
-                return;
-            }
-
-            dataGridViewMapping.CurrentCell = dataGridViewMapping.Rows[0].Cells[0];
-
-            if (settingsCrmAction.SelectedIndex != 1)
-            {
-                bool wehavekey = false;
-                foreach (DataGridViewRow dataGridRow in dataGridViewMapping.Rows)
-                {
-                    if (dataGridRow.Cells["isKey"].Value != null && (bool)dataGridRow.Cells["isKey"].Value)
-                    {
-                        wehavekey = true;
-                        break;
-                    }
-                }
-                if (!wehavekey)
-                {
-                    DialogResult dialogResult = MessageBox.Show("You did not tick any Excel Column as an 'is Key' field." + Environment.NewLine + "This action will result in Updating/Deleting all of your CRM records for each excel line!" + Environment.NewLine + "We advice to end this request by clicking on 'No'. " + Environment.NewLine + "Do you still wish to go on with the CRM Import?", "Watch Out!", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        //do something
-                    }
-                    else if (dialogResult == DialogResult.No)
-                    {
-                        return;
-                    }
-                }
-            }
-            if (IsReadyToImport)
-            {
-                ImportExcel();
+                LogTableShow();
             }
             else
             {
-                MessageBox.Show("WARNING: Action will not be launched. Please press the button 'PROCESS FIELDS' before importing to CRM.");
+                LogTableHide();
+            }
+        }
+        private void LogTableHide()
+        {
+            splitContainerMappingAndLogging.Panel2Collapsed = true;
+            LogToggle.Text = "Show Log Table";
+
+        }
+
+        private void LogTableShow()
+        {
+            splitContainerMappingAndLogging.Panel2Collapsed = false;
+            LogToggle.Text = "Hide Log Table";
+        }
+
+        private void RefreshLogs_Click_2(object sender, EventArgs e)
+        {
+            SetTextBox1();
+            dataGridViewLogs.Refresh();
+        }
+
+        private void AddToLogRow(string[] row, string log = null, string GUID = null, string result = null)
+        {
+            // 0 = #
+            // 1 = Line
+            // 2 = Result
+            // 3 = Updates
+            // 4 = GUID
+            // 5 = Logs
+
+            // add the GUID to the cell if GUID is not null
+            if (GUID != null)
+            {
+                if (row[4] == null)
+                {
+                    row[3] = "1";
+                    row[4] = GUID;
+                }
+                else
+                {
+                    row[3] = (int.Parse(row[3]) + 1).ToString();
+                    row[4] += " " + GUID;
+                }
+            }
+
+            // Add the logs to the log cell
+            if (log != null)
+            {
+                if (row[5] == null)
+                {
+                    row[5] = log;
+                }
+                else
+                {
+                    row[5] += " | " + log;
+                }
+            }
+
+
+            // If a result is provided, add it to the result cell
+            if (result == null)
+            { return; }
+            else
+            {
+                row[2] = result;
             }
         }
 
+        #endregion New Logging
 
-        private void ToolStripButton3_Click(object sender, EventArgs e)
+        #endregion Logging
+
+        #region Clearing
+        private void resetButton_Click(object sender, EventArgs e)
         {
             ///CLEAR ALL
-
             xlWorkBook = null;
             xlWorkSheet = null;
             xlRange = null;
@@ -515,9 +542,98 @@ namespace DataImport
             settingsOptionSetValuesOrLabel.Visible = false;
             label4.Visible = false;
 
+            splitContainerSideBarAndMapping.Panel1Collapsed = true;
+            saveSettingsButton.Enabled = false;
+            loadSettingsButton.Enabled = false;
+
             EmptyDataGrid();
             CRMField.Items.Clear();
         }
+
+        private void EmptyDataGrid()
+        {
+            dataGridViewMapping.Rows.Clear();
+            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = false;
+            dataGridViewMapping.Columns["lkpTargetfield"].Visible = false;
+            dataGridViewMapping.Columns["Truevalue"].Visible = false;
+            dataGridViewMapping.Columns["Falsevalue"].Visible = false;
+            dataGridViewMapping.Columns["DefaultValue"].Visible = false;
+        }
+
+        #endregion Clearing
+
+        #region Sidebar Options
+        
+        private void rowStartNum_ValueChanged(object sender, EventArgs e)
+        {
+            // Set row end equal to start if start is after end
+            if (rowEndNum.Value <= rowStartNum.Value) {
+                rowEndNum.Value = rowStartNum.Value;
+            }
+            // Make the minimum equal to the new start
+            rowEndNum.Minimum = new decimal(new int[] {
+                        (int) rowStartNum.Value,
+                        0,
+                        0,
+                        0
+            });
+        }
+
+        private void settingsEntity_DropDownClosed(object sender, EventArgs e)
+        {
+            if (settingsEntity.SelectedItem != null)
+            {
+                settings.Entity = settingsEntity.SelectedItem.ToString();
+                for (int o = 0; o < dataGridViewMapping.RowCount; o++)
+                {
+                    DataGridViewComboBoxCell data = dataGridViewMapping.Rows[o].Cells[2] as DataGridViewComboBoxCell;
+                    data.Value = null;
+                }
+                ExecuteMethod(InitEntityFields);
+            }
+            else if (settingsEntity.Items.Count == 0)
+            {
+                ExecuteMethod(InitEntities);
+            }
+        }
+
+        private void settingsCrmAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.CrmAction = settingsCrmAction.SelectedItem.ToString();
+            if (settings.CrmAction == "Create")
+            {
+                settingsKeyFoundMultipleRecords.Visible = false;
+                label6.Visible = false;
+                dataGridViewMapping.Columns[1].Visible = false;
+            }
+            else
+            {
+                settingsKeyFoundMultipleRecords.Visible = true;
+                label6.Visible = true;
+                dataGridViewMapping.Columns[1].Visible = true;
+            }
+        }
+
+        private void settingsKeyFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
+        }
+
+        private void settingsOptionSetValuesOrLabel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
+        }
+
+        private void settingsLookupFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+        }
+
+
+
+        #endregion Sidebar Options
+
+        #region Data Grid
 
         private void dataGridViewMapping_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -555,11 +671,8 @@ namespace DataImport
                     dataGridViewMapping.Rows[e.RowIndex].Cells["lkpTargetfield"].Value = null;
                     processLookupField(e.RowIndex);
                     break;
-
-
             }
         }
-
         private void processLookupEntity(int row)
         {
             // make the lookup columns visible
@@ -567,7 +680,7 @@ namespace DataImport
             dataGridViewMapping.Columns["lkpTargetfield"].Visible = true;
             label4.Visible = true;
             settingsLookupFoundMultipleRecords.Visible = true;
-            
+
             //Flag row as lookup
             lookupscount++;
             dataGridViewMapping.Rows[row].Cells["IsLookup"].Value = true;
@@ -580,7 +693,6 @@ namespace DataImport
             data2.ReadOnly = false;
             data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
         }
-
         private void processLookupField(int row)
         {
             string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
@@ -663,8 +775,8 @@ namespace DataImport
             {
                 string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
                 acrmfield = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString());
-                if (resultsaved is null) 
-                    { return; }
+                if (resultsaved is null)
+                { return; }
                 foreach (object attribute in resultsaved.Attributes)
                 {
                     AttributeMetadata a = (AttributeMetadata)attribute;
@@ -688,234 +800,15 @@ namespace DataImport
                             processChoice();
                         }
                     }
-                } 
+                }
             }
             IsReadyToImport = true;
             importDataButton.Enabled = true;
         }
-        
+
         private void ProcessFieldsButton_Click(object sender, EventArgs e)
         {
             ExecuteMethod(ProcessFields);
-        }
-
-        private void CopyText_Click(object sender, EventArgs e)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (string line in richTextBox1.Lines)
-                sb.AppendLine(line);
-            if (sb.Length != 0)
-                Clipboard.SetText(sb.ToString());
-            else
-                MessageBox.Show("Logs are empty");
-        }
-
-        private void Button1_Click_2(object sender, EventArgs e)
-        {
-            SetTextBox1();
-            dataGridViewLogs.Refresh();
-        }
-
-        
-
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
-        }
-
-        private void blogURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://www.d365tips.com/home/xrmtoolbox-dataimport");
-        }
-
-        private void LogToggle_Click(object sender, EventArgs e)
-        {
-            if (splitContainer4.Panel2Collapsed == true)
-            {
-                LogTableShow();
-            }
-            else
-            {
-                LogTableHide();
-            }
-        }
-
-        private void LogTableHide()
-        {
-            splitContainer4.Panel2Collapsed = true;
-            LogToggle.Text = "Show Log Table";
-            
-        }
-
-        private void LogTableShow()
-        {
-            splitContainer4.Panel2Collapsed = false;
-            LogToggle.Text = "Hide Log Table";
-        }
-
-        private void AddToLogRow(string[] row, string log = null, string GUID = null, string result = null)
-        {
-            // 0 = #
-            // 1 = Line
-            // 2 = Result
-            // 3 = Updates
-            // 4 = GUID
-            // 5 = Logs
-
-            // add the GUID to the cell if GUID is not null
-            if (GUID != null)
-            {
-                if (row[4] == null)
-                {
-                    row[3] = "1";
-                    row[4] = GUID;
-                }
-                else
-                {
-                    row[3] = (int.Parse(row[3]) + 1).ToString();
-                    row[4] += " " + GUID;
-                }
-            }
-
-            // Add the logs to the log cell
-            if (log != null)
-            {
-                if (row[5] == null)
-                {
-                    row[5] = log;
-                }
-                else
-                {
-                    row[5] += " | " + log;
-                }
-            }
-            
-
-            // If a result is provided, add it to the result cell
-            if (result == null)
-            { return; }
-            else
-            {
-                row[2] = result;
-            }
-        }
-
-        private void saveSettingsButton_Click(object sender, EventArgs e)
-        {
-            // Ensure that the mapping table in Settings reflects the current state of the table.
-            SetMappingTableFromDataGridView();
-
-            string instructions = "Enter the name of your settings file. \n It will be saved in the default settings location (XRMToolbox\\Settings)";
-            string title = "Save Settings File";
-
-            string settingsFileName = Interaction.InputBox(instructions, title);
-             
-            if (!string.IsNullOrEmpty(settingsFileName))
-            {
-                SettingsManager.Instance.Save(GetType(), settings, settingsFileName);
-            }
-        }
-
-        private void loadSettingsButton_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.Title = "Settings File";
-            openFileDialog1.FileName = "";
-            openFileDialog1.Filter = "XML File|*.xml";
-            // Set the default directory of the file dialog to be the current working directory / Settings
-            openFileDialog1.InitialDirectory = Path.Combine(Environment.CurrentDirectory, "Settings");
-
-            DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
-            {
-                string fileName = openFileDialog1.FileName;
-                try
-                {
-                    if (fileName.Trim() != "")
-                    {
-                        settings.LoadSettingsFromXML(fileName);
-                        settingsEntity.SelectedItem = settings.Entity;
-                        InitEntityFields();
-                        settingsCrmAction.SelectedItem = settings.CrmAction;
-                        settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
-                        settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
-                        settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
-                        dataGridViewMapping.Rows.Clear();
-                        
-
-                        // Add rows
-                        foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
-                        {
-                            int rowIndex = dataGridViewMapping.Rows.Add(row.ItemArray);
-                            foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
-                            {
-                                if (col is DataGridViewComboBoxColumn)
-                                {
-                                    DataGridViewComboBoxColumn comboCol = col as DataGridViewComboBoxColumn;
-                                    if (!comboCol.Items.Contains(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value))
-                                    {
-                                        comboCol.Items.Add(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (IOException ex)
-                {
-                    MessageBox.Show("Failed to load Excel file correctly:" + ex.Message.ToString());
-                }
-            }
-            
-        }
-
-        private void settingsEntity_DropDownClosed(object sender, EventArgs e)
-        {
-            if (settingsEntity.SelectedItem != null)
-            {
-                settings.Entity = settingsEntity.SelectedItem.ToString();
-                for (int o = 0; o < dataGridViewMapping.RowCount; o++)
-                {
-                    DataGridViewComboBoxCell data = dataGridViewMapping.Rows[o].Cells[2] as DataGridViewComboBoxCell;
-                    data.Value = null;
-                }
-                ExecuteMethod(InitEntityFields);
-            }
-            else if (settingsEntity.Items.Count == 0)
-            {
-                ExecuteMethod(InitEntities);
-            }
-        }
-
-        private void settingsCrmAction_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            settings.CrmAction = settingsCrmAction.SelectedItem.ToString();
-            if (settings.CrmAction == "Create")
-            {
-                settingsKeyFoundMultipleRecords.Visible = false;
-                label6.Visible = false;
-                dataGridViewMapping.Columns[1].Visible = false;
-            }
-            else
-            {
-                settingsKeyFoundMultipleRecords.Visible = true;
-                label6.Visible = true;
-                dataGridViewMapping.Columns[1].Visible = true;
-            }
-        }
-
-        private void settingsKeyFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
-        }
-
-        private void settingsOptionSetValuesOrLabel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
-        }
-
-        private void settingsLookupFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
         }
 
         private void SetMappingTableFromDataGridView()
@@ -950,8 +843,6 @@ namespace DataImport
             SerializableDataTable serializableMappingTable = new SerializableDataTable(tableMapping);
             settings.XMLTableMapping = serializableMappingTable;
         }
-
-
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             if (e.Exception is ArgumentException && e.Context == DataGridViewDataErrorContexts.Commit)
@@ -961,6 +852,154 @@ namespace DataImport
                 string value = view.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
 
                 MessageBox.Show($"Error in column '{column.Name}' at row {e.RowIndex + 1}. Value '{value}' is not valid.");
+            }
+        }
+
+        #endregion Data Grid
+
+        #region Settings
+
+        private void saveSettingsButton_Click(object sender, EventArgs e)
+        {
+            // Ensure that the mapping table in Settings reflects the current state of the table.
+            SetMappingTableFromDataGridView();
+
+            DialogResult result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string fileName = saveFileDialog.FileName;
+                try
+                {
+                    if (fileName.Trim() != "")
+                    {
+                        settings.SaveSettingsToXML(fileName);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Failed to save settings file correctly:" + ex.Message.ToString());
+                }
+            }
+        }
+
+        private void loadSettingsButton_Click(object sender, EventArgs e)
+        {
+            openFileDialog.Title = "Settings File";
+            openFileDialog.FileName = "";
+            openFileDialog.Filter = "XML File|*.xml";
+            // Set the default directory of the file dialog to be the current working directory / Settings
+            openFileDialog.InitialDirectory = Path.Combine(Environment.CurrentDirectory);
+
+            DialogResult result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string fileName = openFileDialog.FileName;
+                try
+                {
+                    if (fileName.Trim() != "")
+                    {
+                        settings.LoadSettingsFromXML(fileName);
+                        settingsEntity.SelectedItem = settings.Entity;
+                        InitEntityFields();
+                        settingsCrmAction.SelectedItem = settings.CrmAction;
+                        settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
+                        settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
+                        settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
+                        dataGridViewMapping.Rows.Clear();
+                        
+
+                        // Add rows
+                        foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
+                        {
+                            int rowIndex = dataGridViewMapping.Rows.Add(row.ItemArray);
+                            foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
+                            {
+                                if (col is DataGridViewComboBoxColumn)
+                                {
+                                    DataGridViewComboBoxColumn comboCol = col as DataGridViewComboBoxColumn;
+                                    if (!comboCol.Items.Contains(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value))
+                                    {
+                                        comboCol.Items.Add(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Failed to load Settings file correctly:" + ex.Message.ToString());
+                }
+            }
+            
+        }
+
+        #endregion Settings
+
+        #region Import
+        private void ImportDataButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewMapping.RowCount == 0)
+            {
+                MessageBox.Show("Please choose an Excel file to import, pick your target entity and field mapping before Importing to CRM.");
+                return;
+            }
+
+            dataGridViewMapping.CurrentCell = dataGridViewMapping.Rows[0].Cells[0];
+
+            if (settingsCrmAction.SelectedIndex != 1)
+            {
+                bool wehavekey = false;
+                foreach (DataGridViewRow dataGridRow in dataGridViewMapping.Rows)
+                {
+                    if (dataGridRow.Cells["isKey"].Value != null && (bool)dataGridRow.Cells["isKey"].Value)
+                    {
+                        wehavekey = true;
+                        break;
+                    }
+                }
+                if (!wehavekey)
+                {
+                    DialogResult dialogResult = MessageBox.Show("You did not tick any Excel Column as an 'is Key' field." + Environment.NewLine + "This action will result in Updating/Deleting all of your CRM records for each excel line!" + Environment.NewLine + "We advice to end this request by clicking on 'No'. " + Environment.NewLine + "Do you still wish to go on with the CRM Import?", "Watch Out!", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        //do something
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+            }
+            if (IsReadyToImport)
+            {
+                ImportExcel();
+            }
+            else
+            {
+                MessageBox.Show("WARNING: Action will not be launched. Please press the button 'PROCESS FIELDS' before importing to CRM.");
+            }
+        }
+
+        // Shows or hides the instruction box when clicked
+        private void toggleInstructions_Click(object sender, EventArgs e)
+        {
+            setInstructionVisibility(!instructionBox.Visible);
+        }
+
+        // sets the visibility of the instruction box and the label of the toggle for instructions.
+        private void setInstructionVisibility(bool makeVisible)
+        {
+            if (makeVisible)
+            {
+                instructionBox.Visible = true;
+                toggleInstructions.Text = "Hide instructions";
+
+            }
+            else
+            {
+                instructionBox.Visible = false;
+                toggleInstructions.Text = "Show instructions";
             }
         }
 
@@ -1847,5 +1886,8 @@ namespace DataImport
                 }
             });
         }
+
+
+        #endregion Import
     }
 }
