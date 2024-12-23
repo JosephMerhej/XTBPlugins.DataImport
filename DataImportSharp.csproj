@@ -321,7 +321,7 @@
   <PropertyGroup>
     <PostBuildEvent>IF NOT EXIST $(SolutionDir)bin\$(ConfigurationName)\Plugins mkdir $(SolutionDir)bin\$(ConfigurationName)\Plugins
 
-move /Y $(TargetFileName) $(SolutionDir)bin\$(ConfigurationName)\Plugins</PostBuildEvent>
+copy /Y $(TargetFileName) $(SolutionDir)bin\$(ConfigurationName)\Plugins</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.2365.46\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

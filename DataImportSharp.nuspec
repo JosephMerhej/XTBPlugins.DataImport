@@ -2,16 +2,16 @@
 <package >
   <metadata>
     <id>AndrewHowes.DataImportSharp</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
+    <version>1.2024.12.23</version>
+    <title>Data Import ++ BETA</title>
+    <authors>Joseph Merhej and Andrew Howes</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">GPL-3.0-only</license>
     <readme>README.md</readme>
     <icon>Resources\DataImportSharpSharp.png</icon>
     <projectUrl>https://github.com/YesWeCandrew/XTBPlugins.DataImport</projectUrl>
-    <description>$description$</description>
-    <releaseNotes>Creates new BETA version with map saving, improved logging and bug fixes</releaseNotes>
+    <description>BETA V2 of Data Import++: Use Excel to create, update, upsert or delete records in CRM now with mapping saving, better logging and faster data entry.</description>
+    <releaseNotes>UI Improvements in advance of release</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>XrmToolBox</tags>
   </metadata>
