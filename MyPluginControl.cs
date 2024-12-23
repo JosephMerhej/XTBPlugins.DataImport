@@ -312,6 +312,7 @@ namespace DataImport
                         splitContainerSideBarAndMapping.Panel1Collapsed = false;
                         loadSettingsButton.Enabled = true;
                         saveSettingsButton.Enabled = true;
+                        setInstructionVisibility(false);
                     }
                 }
                 catch (IOException ex)
@@ -977,6 +978,28 @@ namespace DataImport
             else
             {
                 MessageBox.Show("WARNING: Action will not be launched. Please press the button 'PROCESS FIELDS' before importing to CRM.");
+            }
+        }
+
+        // Shows or hides the instruction box when clicked
+        private void toggleInstructions_Click(object sender, EventArgs e)
+        {
+            setInstructionVisibility(!instructionBox.Visible);
+        }
+
+        // sets the visibility of the instruction box and the label of the toggle for instructions.
+        private void setInstructionVisibility(bool makeVisible)
+        {
+            if (makeVisible)
+            {
+                instructionBox.Visible = true;
+                toggleInstructions.Text = "Hide instructions";
+
+            }
+            else
+            {
+                instructionBox.Visible = false;
+                toggleInstructions.Text = "Show instructions";
             }
         }
 
