@@ -285,8 +285,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +315,7 @@
     <Content Include="bin\coretools\System.Text.Json.dll" />
     <Content Include="bin\coretools\System.ValueTuple.dll" />
     <Content Include="DataImport.ico" />
+    <None Include="Resources\DataImport.bmp" />
     <None Include="Resources\DataImport.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,6 +7,5 @@
 /packages
 /.vs
 
-/DataImportSharp.csproj.user
-/DataImportSharp.csproj.user
+/DataImport.csproj.user
 *.nupkg

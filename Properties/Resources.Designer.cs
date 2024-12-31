@@ -63,9 +63,9 @@ namespace DataImport.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DataImportSharpSharp {
+        internal static System.Drawing.Bitmap DataImportLogo {
             get {
-                object obj = ResourceManager.GetObject("DataImportSharpSharp", resourceCulture);
+                object obj = ResourceManager.GetObject("DataImportLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

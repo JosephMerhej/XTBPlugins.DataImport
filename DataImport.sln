@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataImportSharp", "DataImportSharp.csproj", "{BBF85BF2-079F-4477-9791-2D8338817B71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataImport", "DataImport.csproj", "{BBF85BF2-079F-4477-9791-2D8338817B71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>JosephMerhej.DataImport</id>
-    <version>1.2024.9123.26203</version>
+    <version>2.2024.9131.26608</version>
     <title>DataImport++</title>
     <authors>Joseph Merhej and Andrew Howes</authors>
     <owners>Joseph Merhej and Andrew Howes</owners>
@@ -12,7 +12,7 @@
     <icon>Resources\DataImport.png</icon>
     <projectUrl>https://github.com/YesWeCandrew/XTBPlugins.DataImport</projectUrl>
     <description>Use Excel to create, update, upsert or delete records in Dataverse. Now with better logging, the ability to save and re use data maps, and faster data entry.</description>
-    <releaseNotes>UI Improvements in advance of release</releaseNotes>
+    <releaseNotes>V2 of DataImport++ with a new log table, the ability to save / load data maps, smoother mapping functionality, bug fixes and UI improvements.</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>XrmToolBox Plugin DataImport++ Data Import Upsert Create Delete Update Key Excel</tags>
     <dependencies>

@@ -1072,7 +1072,6 @@ namespace DataImport
             this.Name = "MyPluginControl";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
             this.Size = new System.Drawing.Size(1600, 923);
-            this.TabIcon = global::DataImport.Properties.Resources.DataImportSharpSharp;
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
