@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataImport</RootNamespace>
-    <AssemblyName>DataImportSharp</AssemblyName>
+    <AssemblyName>DataImport</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -37,7 +37,7 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>DataImportSharpSharp.ico</ApplicationIcon>
+    <ApplicationIcon>DataImport.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="McTools.Xrm.Connection, Version=1.2023.6.56, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
@@ -314,8 +314,8 @@
     <Content Include="bin\coretools\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="bin\coretools\System.Text.Json.dll" />
     <Content Include="bin\coretools\System.ValueTuple.dll" />
-    <Content Include="DataImportSharpSharp.ico" />
-    <None Include="Resources\DataImportSharpSharp.png" />
+    <Content Include="DataImport.ico" />
+    <None Include="Resources\DataImport.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
