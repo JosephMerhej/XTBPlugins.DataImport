@@ -71,7 +71,8 @@ namespace DataImport
 
         public void MyPluginControl_Load(object sender, System.EventArgs e)
         {
-            splitContainerSideBarAndMapping.Panel1Collapsed = true;
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Absolute, 0); // Hides the logs
+            dataGridViewMapping.Enabled = false; // Locks all the mapping until Excel is loaded.
             settingsLookupFoundMultipleRecords.SelectedIndex = 0;
             settingsCrmAction.SelectedIndex = 0;
             textView.SelectedIndex = 0;
@@ -229,6 +230,8 @@ namespace DataImport
                         
                     }
                     ProcessFields();
+                    setInstructionVisibility(false);
+                    dataGridViewMapping.Enabled = true;
                 }
             });
         }
@@ -309,10 +312,9 @@ namespace DataImport
                     if (sFileName.Trim() != "")
                     {
                         ReadExcel(sFileName);
-                        splitContainerSideBarAndMapping.Panel1Collapsed = false;
+                        settingsPanel.Enabled = true; // Enable all controls now that Excel is loaded
                         loadSettingsButton.Enabled = true;
                         saveSettingsButton.Enabled = true;
-                        setInstructionVisibility(false);
                     }
                 }
                 catch (IOException ex)
@@ -378,19 +380,19 @@ namespace DataImport
         {
             if (textView.SelectedItem.ToString() == "📙 ALL")
             {
-                richTextBox1.Text = richTextBoxAll.Text;
+                logTextBox.Text = richTextBoxAll.Text;
             }
             else if (textView.SelectedItem.ToString() == "✓ SUCCESS")
             {
-                richTextBox1.Text = richTextBoxImported.Text;
+                logTextBox.Text = richTextBoxImported.Text;
             }
             else if (textView.SelectedItem.ToString() == "❌ ERRORS")
             {
-                richTextBox1.Text = richTextBoxErrors.Text;
+                logTextBox.Text = richTextBoxErrors.Text;
             }
             else if (textView.SelectedItem.ToString() == "⚠ WARNINGS")
             {
-                richTextBox1.Text = richTextBoxWarning.Text;
+                logTextBox.Text = richTextBoxWarning.Text;
             }
             toolStripStatusSuccessNum.Text = successnumber.ToString();
             toolStripStatusErrorNum.Text = errornumber.ToString();
@@ -405,19 +407,19 @@ namespace DataImport
 
             if (textView.SelectedItem.ToString() == "📙 ALL")
             {
-                richTextBox1.Text = richTextBoxAll.Text;
+                logTextBox.Text = richTextBoxAll.Text;
             }
             else if (textView.SelectedItem.ToString() == "✓ SUCCESS")
             {
-                richTextBox1.Text = richTextBoxImported.Text;
+                logTextBox.Text = richTextBoxImported.Text;
             }
             else if (textView.SelectedItem.ToString() == "❌ ERRORS")
             {
-                richTextBox1.Text = richTextBoxErrors.Text;
+                logTextBox.Text = richTextBoxErrors.Text;
             }
             else if (textView.SelectedItem.ToString() == "⚠ WARNINGS")
             {
-                richTextBox1.Text = richTextBoxWarning.Text;
+                logTextBox.Text = richTextBoxWarning.Text;
             }
             toolStripStatusSuccessNum.Text = successnumber.ToString();
             toolStripStatusErrorNum.Text = errornumber.ToString();
@@ -428,7 +430,7 @@ namespace DataImport
         private void CopyText_Click(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (string line in richTextBox1.Lines)
+            foreach (string line in logTextBox.Lines)
                 sb.AppendLine(line);
             if (sb.Length != 0)
                 Clipboard.SetText(sb.ToString());
@@ -442,7 +444,7 @@ namespace DataImport
 
         private void LogToggle_Click(object sender, EventArgs e)
         {
-            if (splitContainerMappingAndLogging.Panel2Collapsed == true)
+            if (mainTableLayout.RowStyles[1].Height == 0) // Log sections are hidden
             {
                 LogTableShow();
             }
@@ -453,15 +455,15 @@ namespace DataImport
         }
         private void LogTableHide()
         {
-            splitContainerMappingAndLogging.Panel2Collapsed = true;
-            LogToggle.Text = "Show Log Table";
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Percent, 0);
+            LogToggle.Text = "Show Logs";
 
         }
 
         private void LogTableShow()
         {
-            splitContainerMappingAndLogging.Panel2Collapsed = false;
-            LogToggle.Text = "Hide Log Table";
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Percent, 45);
+            LogToggle.Text = "Hide Logs";
         }
 
         private void RefreshLogs_Click_2(object sender, EventArgs e)
@@ -538,13 +540,16 @@ namespace DataImport
             settingsKeyFoundMultipleRecords.SelectedIndex = 0;
             settings.Reset();
 
-            label2.Visible = false;
+            labelOptionSetValuesOrLabel.Visible = false;
             settingsOptionSetValuesOrLabel.Visible = false;
-            label4.Visible = false;
+            labelLookupFoundMultipleRecords.Visible = false;
 
-            splitContainerSideBarAndMapping.Panel1Collapsed = true;
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Percent, 0);
             saveSettingsButton.Enabled = false;
             loadSettingsButton.Enabled = false;
+            setInstructionVisibility(true);
+            settingsPanel.Enabled = false;
+            dataGridViewMapping.Enabled = false;
 
             EmptyDataGrid();
             CRMField.Items.Clear();
@@ -603,13 +608,13 @@ namespace DataImport
             if (settings.CrmAction == "Create")
             {
                 settingsKeyFoundMultipleRecords.Visible = false;
-                label6.Visible = false;
+                labelKeyFoundMultipleRecords.Visible = false;
                 dataGridViewMapping.Columns[1].Visible = false;
             }
             else
             {
                 settingsKeyFoundMultipleRecords.Visible = true;
-                label6.Visible = true;
+                labelKeyFoundMultipleRecords.Visible = true;
                 dataGridViewMapping.Columns[1].Visible = true;
             }
         }
@@ -678,7 +683,7 @@ namespace DataImport
             // make the lookup columns visible
             dataGridViewMapping.Columns["lkpTargetEntity"].Visible = true;
             dataGridViewMapping.Columns["lkpTargetfield"].Visible = true;
-            label4.Visible = true;
+            labelLookupFoundMultipleRecords.Visible = true;
             settingsLookupFoundMultipleRecords.Visible = true;
 
             //Flag row as lookup
@@ -756,7 +761,7 @@ namespace DataImport
 
         private void processChoice()
         {
-            label2.Visible = true;
+            labelOptionSetValuesOrLabel.Visible = true;
             settingsOptionSetValuesOrLabel.Visible = true;
         }
 
@@ -1860,19 +1865,19 @@ namespace DataImport
                     processFieldsButton.Enabled = true;
                     if (textView.SelectedItem.ToString() == "📙 ALL")
                     {
-                        richTextBox1.Text = richTextBoxAll.Text;
+                        logTextBox.Text = richTextBoxAll.Text;
                     }
                     else if (textView.SelectedItem.ToString() == "✓ SUCCESS")
                     {
-                        richTextBox1.Text = richTextBoxImported.Text;
+                        logTextBox.Text = richTextBoxImported.Text;
                     }
                     else if (textView.SelectedItem.ToString() == "❌ ERRORS")
                     {
-                        richTextBox1.Text = richTextBoxErrors.Text;
+                        logTextBox.Text = richTextBoxErrors.Text;
                     }
                     else if (textView.SelectedItem.ToString() == "⚠ WARNINGS")
                     {
-                        richTextBox1.Text = richTextBoxWarning.Text;
+                        logTextBox.Text = richTextBoxWarning.Text;
                     }
                     toolStripStatusSuccessNum.Text = successnumber.ToString();
                     toolStripStatusErrorNum.Text = errornumber.ToString();
