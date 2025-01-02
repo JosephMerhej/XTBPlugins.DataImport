@@ -353,7 +353,7 @@ namespace DataImport
                     }
 
                     // Set the labels and row values to the correct values.
-                    textRowCount.Text = ((xlRange.Rows.Count) - 1).ToString();
+                    toolStripStatusRowsNum.Text = ((xlRange.Rows.Count) - 1).ToString();
                     rowEndNum.Maximum = xlRange.Rows.Count;
                     rowEndNum.Minimum = 2;
                     rowEndNum.Value = xlRange.Rows.Count;
@@ -392,11 +392,11 @@ namespace DataImport
             {
                 richTextBox1.Text = richTextBoxWarning.Text;
             }
-            textBoxSuccess.Text = successnumber.ToString();
-            textBoxError.Text = errornumber.ToString();
-            textCreated.Text = creatednumber.ToString();
-            textUpdated.Text = updatednumber.ToString();
-            textDeleted.Text = deletednumber.ToString();
+            toolStripStatusSuccessNum.Text = successnumber.ToString();
+            toolStripStatusErrorNum.Text = errornumber.ToString();
+            toolStripStatusCreatedNum.Text = creatednumber.ToString();
+            toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+            toolStripStatusDeletedNum.Text = deletednumber.ToString();
 
         }
         private void TextView_DropDownClosed(object sender, EventArgs e)
@@ -419,11 +419,11 @@ namespace DataImport
             {
                 richTextBox1.Text = richTextBoxWarning.Text;
             }
-            textBoxSuccess.Text = successnumber.ToString();
-            textBoxError.Text = errornumber.ToString();
-            textCreated.Text = creatednumber.ToString();
-            textUpdated.Text = updatednumber.ToString();
-            textDeleted.Text = deletednumber.ToString();
+            toolStripStatusSuccessNum.Text = successnumber.ToString();
+            toolStripStatusErrorNum.Text = errornumber.ToString();
+            toolStripStatusCreatedNum.Text = creatednumber.ToString();
+            toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+            toolStripStatusDeletedNum.Text = deletednumber.ToString();
         }
         private void CopyText_Click(object sender, EventArgs e)
         {
@@ -1027,11 +1027,11 @@ namespace DataImport
             creatednumber = 0;
             updatednumber = 0;
             deletednumber = 0;
-            textBoxSuccess.Text = successnumber.ToString();
-            textBoxError.Text = errornumber.ToString();
-            textCreated.Text = creatednumber.ToString();
-            textUpdated.Text = updatednumber.ToString();
-            textDeleted.Text = deletednumber.ToString();
+            toolStripStatusSuccessNum.Text = successnumber.ToString();
+            toolStripStatusErrorNum.Text = errornumber.ToString();
+            toolStripStatusCreatedNum.Text = creatednumber.ToString();
+            toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+            toolStripStatusDeletedNum.Text = deletednumber.ToString();
             importDataButton.Enabled = false;
             processFieldsButton.Enabled = false;
             LogTableShow();
@@ -1874,8 +1874,11 @@ namespace DataImport
                     {
                         richTextBox1.Text = richTextBoxWarning.Text;
                     }
-                    textBoxSuccess.Text = successnumber.ToString();
-                    textBoxError.Text = errornumber.ToString();
+                    toolStripStatusSuccessNum.Text = successnumber.ToString();
+                    toolStripStatusErrorNum.Text = errornumber.ToString();
+                    toolStripStatusCreatedNum.Text = creatednumber.ToString();
+                    toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+                    toolStripStatusDeletedNum.Text = deletednumber.ToString();
                     dataGridViewLogs.ResumeLayout();
 
                     // Ensure that we have released the Excel spreadsheet
