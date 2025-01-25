@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace DataImport
 {
     partial class MyPluginControl
@@ -28,33 +30,44 @@ namespace DataImport
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyPluginControl));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
-            this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.BrowseFile = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.label6 = new System.Windows.Forms.Label();
-            this.keyRecords = new System.Windows.Forms.ComboBox();
+            this.browseFileButton = new System.Windows.Forms.ToolStripButton();
+            this.processFieldsButton = new System.Windows.Forms.ToolStripButton();
+            this.importDataButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveSettingsButton = new System.Windows.Forms.ToolStripButton();
+            this.loadSettingsButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.resetButton = new System.Windows.Forms.ToolStripButton();
+            this.closeButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toggleInstructions = new System.Windows.Forms.ToolStripLabel();
+            this.labelRowsToImportEnd = new System.Windows.Forms.Label();
+            this.labelRowsToImportStart = new System.Windows.Forms.Label();
+            this.rowEndNum = new System.Windows.Forms.NumericUpDown();
+            this.labelRowsToImportDesc = new System.Windows.Forms.Label();
+            this.rowStartNum = new System.Windows.Forms.NumericUpDown();
+            this.LogToggle = new System.Windows.Forms.Button();
+            this.labelKeyFoundMultipleRecords = new System.Windows.Forms.Label();
+            this.settingsKeyFoundMultipleRecords = new System.Windows.Forms.ComboBox();
             this.RefreshLogs = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelFilterLogs = new System.Windows.Forms.Label();
             this.copyText = new System.Windows.Forms.Button();
             this.textView = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pickedEntity = new System.Windows.Forms.ComboBox();
-            this.optionSetVL = new System.Windows.Forms.ComboBox();
-            this.crmAction = new System.Windows.Forms.ComboBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.labelOptionSetValuesOrLabel = new System.Windows.Forms.Label();
+            this.settingsLookupFoundMultipleRecords = new System.Windows.Forms.ComboBox();
+            this.labelLookupFoundMultipleRecords = new System.Windows.Forms.Label();
+            this.labelCrmAction = new System.Windows.Forms.Label();
+            this.labelEntity = new System.Windows.Forms.Label();
+            this.settingsEntity = new System.Windows.Forms.ComboBox();
+            this.settingsOptionSetValuesOrLabel = new System.Windows.Forms.ComboBox();
+            this.settingsCrmAction = new System.Windows.Forms.ComboBox();
+            this.logTextBox = new System.Windows.Forms.RichTextBox();
+            this.instructionBox = new System.Windows.Forms.RichTextBox();
+            this.dataGridViewMapping = new System.Windows.Forms.DataGridView();
             this.ExcelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CRMField = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -63,212 +76,306 @@ namespace DataImport
             this.lkpTargetfield = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OperatorCol = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.textRowCount = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBoxError = new System.Windows.Forms.TextBox();
-            this.textBoxSuccess = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textCreated = new System.Windows.Forms.TextBox();
-            this.textUpdated = new System.Windows.Forms.TextBox();
-            this.textDeleted = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BlankBehaviour = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewLogs = new System.Windows.Forms.DataGridView();
+            this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.mainTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.settingsPanel = new System.Windows.Forms.Panel();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusRowsLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusRowsNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusSuccessLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusSuccessNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusErrorLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusErrorNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusCreatedLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusCreatedNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusUpdatedLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusUpdatedNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusDeletedLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusDeletedNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStripMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.mainTableLayout.SuspendLayout();
+            this.settingsPanel.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripMenu
             // 
             this.toolStripMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbClose,
-            this.tssSeparator1,
-            this.BrowseFile,
-            this.toolStripButton2,
-            this.toolStripButton1,
-            this.toolStripButton3});
+            this.browseFileButton,
+            this.processFieldsButton,
+            this.importDataButton,
+            this.toolStripSeparator1,
+            this.saveSettingsButton,
+            this.loadSettingsButton,
+            this.toolStripSeparator2,
+            this.resetButton,
+            this.closeButton,
+            this.toolStripSeparator3,
+            this.toggleInstructions});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(1245, 31);
+            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.toolStripMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStripMenu.Size = new System.Drawing.Size(1536, 38);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
-            // tsbClose
+            // browseFileButton
             // 
-            this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
-            this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(70, 28);
-            this.tsbClose.Text = "CLOSE";
-            this.tsbClose.Click += new System.EventHandler(this.TsbClose_Click);
+            this.browseFileButton.Image = ((System.Drawing.Image)(resources.GetObject("browseFileButton.Image")));
+            this.browseFileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.browseFileButton.Name = "browseFileButton";
+            this.browseFileButton.Size = new System.Drawing.Size(127, 33);
+            this.browseFileButton.Text = "Open Excel";
+            this.browseFileButton.ToolTipText = "Choose the Excel file you want to import";
+            this.browseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
             // 
-            // tssSeparator1
+            // processFieldsButton
             // 
-            this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.processFieldsButton.Enabled = false;
+            this.processFieldsButton.Image = ((System.Drawing.Image)(resources.GetObject("processFieldsButton.Image")));
+            this.processFieldsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.processFieldsButton.Name = "processFieldsButton";
+            this.processFieldsButton.Size = new System.Drawing.Size(147, 33);
+            this.processFieldsButton.Text = "Process fields";
+            this.processFieldsButton.Click += new System.EventHandler(this.ProcessFieldsButton_Click);
             // 
-            // BrowseFile
+            // importDataButton
             // 
-            this.BrowseFile.Image = ((System.Drawing.Image)(resources.GetObject("BrowseFile.Image")));
-            this.BrowseFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BrowseFile.Name = "BrowseFile";
-            this.BrowseFile.Size = new System.Drawing.Size(117, 28);
-            this.BrowseFile.Text = "BROWSE EXCEL";
-            this.BrowseFile.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            this.importDataButton.Enabled = false;
+            this.importDataButton.Image = ((System.Drawing.Image)(resources.GetObject("importDataButton.Image")));
+            this.importDataButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.importDataButton.Name = "importDataButton";
+            this.importDataButton.Size = new System.Drawing.Size(135, 33);
+            this.importDataButton.Text = "Import data";
+            this.importDataButton.Click += new System.EventHandler(this.ImportDataButton_Click);
             // 
-            // toolStripButton2
+            // toolStripSeparator1
             // 
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(122, 28);
-            this.toolStripButton2.Text = "PROCESS FIELDS";
-            this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
             // 
-            // toolStripButton1
+            // saveSettingsButton
             // 
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(107, 28);
-            this.toolStripButton1.Text = "IMPORT CRM";
-            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
+            this.saveSettingsButton.Enabled = false;
+            this.saveSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("saveSettingsButton.Image")));
+            this.saveSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveSettingsButton.Name = "saveSettingsButton";
+            this.saveSettingsButton.Size = new System.Drawing.Size(144, 33);
+            this.saveSettingsButton.Text = "Save settings";
+            this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
             // 
-            // toolStripButton3
+            // loadSettingsButton
             // 
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(67, 28);
-            this.toolStripButton3.Text = "RESET";
-            this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click);
+            this.loadSettingsButton.Enabled = false;
+            this.loadSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("loadSettingsButton.Image")));
+            this.loadSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.loadSettingsButton.Name = "loadSettingsButton";
+            this.loadSettingsButton.Size = new System.Drawing.Size(146, 33);
+            this.loadSettingsButton.Text = "Load settings";
+            this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
+            this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
             // 
-            // splitContainer1
+            // toolStripSeparator2
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
-            this.splitContainer1.Name = "splitContainer1";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
             // 
-            // splitContainer1.Panel1
+            // resetButton
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.resetButton.Image = ((System.Drawing.Image)(resources.GetObject("resetButton.Image")));
+            this.resetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(82, 33);
+            this.resetButton.Text = "Reset";
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
-            // splitContainer1.Panel2
+            // closeButton
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1245, 640);
-            this.splitContainer1.SplitterDistance = 350;
-            this.splitContainer1.SplitterWidth = 2;
-            this.splitContainer1.TabIndex = 5;
-            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
+            this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(83, 33);
+            this.closeButton.Text = "Close";
+            this.closeButton.Click += new System.EventHandler(this.TsbClose_Click);
             // 
-            // splitContainer2
+            // toolStripSeparator3
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 38);
             // 
-            // splitContainer2.Panel1
+            // toggleInstructions
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.label6);
-            this.splitContainer2.Panel1.Controls.Add(this.keyRecords);
-            this.splitContainer2.Panel1.Controls.Add(this.RefreshLogs);
-            this.splitContainer2.Panel1.Controls.Add(this.label5);
-            this.splitContainer2.Panel1.Controls.Add(this.copyText);
-            this.splitContainer2.Panel1.Controls.Add(this.textView);
-            this.splitContainer2.Panel1.Controls.Add(this.label2);
-            this.splitContainer2.Panel1.Controls.Add(this.comboBox1);
-            this.splitContainer2.Panel1.Controls.Add(this.label4);
-            this.splitContainer2.Panel1.Controls.Add(this.label3);
-            this.splitContainer2.Panel1.Controls.Add(this.label1);
-            this.splitContainer2.Panel1.Controls.Add(this.pickedEntity);
-            this.splitContainer2.Panel1.Controls.Add(this.optionSetVL);
-            this.splitContainer2.Panel1.Controls.Add(this.crmAction);
-            this.splitContainer2.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer2_Panel1_Paint);
+            this.toggleInstructions.Name = "toggleInstructions";
+            this.toggleInstructions.Size = new System.Drawing.Size(145, 33);
+            this.toggleInstructions.Text = "Hide instructions";
+            this.toggleInstructions.Click += new System.EventHandler(this.toggleInstructions_Click);
             // 
-            // splitContainer2.Panel2
+            // labelRowsToImportEnd
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer2.Size = new System.Drawing.Size(350, 640);
-            this.splitContainer2.SplitterDistance = 241;
-            this.splitContainer2.SplitterWidth = 2;
-            this.splitContainer2.TabIndex = 3;
-            this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer2_SplitterMoved);
+            this.labelRowsToImportEnd.AutoSize = true;
+            this.labelRowsToImportEnd.Location = new System.Drawing.Point(30, 229);
+            this.labelRowsToImportEnd.Name = "labelRowsToImportEnd";
+            this.labelRowsToImportEnd.Size = new System.Drawing.Size(139, 20);
+            this.labelRowsToImportEnd.TabIndex = 29;
+            this.labelRowsToImportEnd.Text = "Last row to import:";
             // 
-            // label6
+            // labelRowsToImportStart
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(2, 80);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(145, 13);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Filter on key found > 1 record";
+            this.labelRowsToImportStart.AutoSize = true;
+            this.labelRowsToImportStart.Location = new System.Drawing.Point(30, 186);
+            this.labelRowsToImportStart.Name = "labelRowsToImportStart";
+            this.labelRowsToImportStart.Size = new System.Drawing.Size(139, 20);
+            this.labelRowsToImportStart.TabIndex = 28;
+            this.labelRowsToImportStart.Text = "First row to import:";
             // 
-            // keyRecords
+            // rowEndNum
             // 
-            this.keyRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.keyRecords.FormattingEnabled = true;
-            this.keyRecords.Items.AddRange(new object[] {
-            "DO ACTION FOR ALL",
-            "IGNORE EXCEL LINE"});
-            this.keyRecords.Location = new System.Drawing.Point(2, 94);
-            this.keyRecords.Margin = new System.Windows.Forms.Padding(2);
-            this.keyRecords.Name = "keyRecords";
-            this.keyRecords.Size = new System.Drawing.Size(252, 21);
-            this.keyRecords.TabIndex = 13;
+            this.rowEndNum.AccessibleDescription = "The Excel line that the import should import to. By default is the last row in th" +
+    "e spreadsheet.";
+            this.rowEndNum.AccessibleName = "Import Excel to row number";
+            this.rowEndNum.BackColor = System.Drawing.Color.White;
+            this.rowEndNum.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rowEndNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rowEndNum.ForeColor = System.Drawing.Color.Black;
+            this.rowEndNum.Location = new System.Drawing.Point(216, 225);
+            this.rowEndNum.MinimumSize = new System.Drawing.Size(155, 0);
+            this.rowEndNum.Name = "rowEndNum";
+            this.rowEndNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.rowEndNum.Size = new System.Drawing.Size(155, 26);
+            this.rowEndNum.TabIndex = 4;
+            this.rowEndNum.ThousandsSeparator = true;
+            this.rowEndNum.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // labelRowsToImportDesc
+            // 
+            this.labelRowsToImportDesc.AutoSize = true;
+            this.labelRowsToImportDesc.Location = new System.Drawing.Point(30, 151);
+            this.labelRowsToImportDesc.Name = "labelRowsToImportDesc";
+            this.labelRowsToImportDesc.Size = new System.Drawing.Size(320, 20);
+            this.labelRowsToImportDesc.TabIndex = 26;
+            this.labelRowsToImportDesc.Text = "3. Choose rows in the spreadsheet to import";
+            // 
+            // rowStartNum
+            // 
+            this.rowStartNum.AccessibleDescription = "The Excel line that the import should start from. By default is set to row 2, whi" +
+    "ch excludes the header.";
+            this.rowStartNum.AccessibleName = "Import Excel from row number";
+            this.rowStartNum.BackColor = System.Drawing.Color.White;
+            this.rowStartNum.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rowStartNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rowStartNum.ForeColor = System.Drawing.Color.Black;
+            this.rowStartNum.Location = new System.Drawing.Point(216, 182);
+            this.rowStartNum.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.rowStartNum.MinimumSize = new System.Drawing.Size(155, 0);
+            this.rowStartNum.Name = "rowStartNum";
+            this.rowStartNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.rowStartNum.Size = new System.Drawing.Size(155, 26);
+            this.rowStartNum.TabIndex = 3;
+            this.rowStartNum.ThousandsSeparator = true;
+            this.rowStartNum.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.rowStartNum.ValueChanged += new System.EventHandler(this.rowStartNum_ValueChanged);
+            // 
+            // LogToggle
+            // 
+            this.LogToggle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LogToggle.Location = new System.Drawing.Point(30, 545);
+            this.LogToggle.MinimumSize = new System.Drawing.Size(340, 32);
+            this.LogToggle.Name = "LogToggle";
+            this.LogToggle.Size = new System.Drawing.Size(340, 32);
+            this.LogToggle.TabIndex = 11;
+            this.LogToggle.Text = "Show Logs";
+            this.LogToggle.UseVisualStyleBackColor = true;
+            this.LogToggle.Click += new System.EventHandler(this.LogToggle_Click);
+            // 
+            // labelKeyFoundMultipleRecords
+            // 
+            this.labelKeyFoundMultipleRecords.AutoSize = true;
+            this.labelKeyFoundMultipleRecords.Location = new System.Drawing.Point(30, 269);
+            this.labelKeyFoundMultipleRecords.Name = "labelKeyFoundMultipleRecords";
+            this.labelKeyFoundMultipleRecords.Size = new System.Drawing.Size(214, 20);
+            this.labelKeyFoundMultipleRecords.TabIndex = 14;
+            this.labelKeyFoundMultipleRecords.Text = "Filter on key found > 1 record";
+            // 
+            // settingsKeyFoundMultipleRecords
+            // 
+            this.settingsKeyFoundMultipleRecords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.settingsKeyFoundMultipleRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsKeyFoundMultipleRecords.FormattingEnabled = true;
+            this.settingsKeyFoundMultipleRecords.Items.AddRange(new object[] {
+            "Do action for all",
+            "Ignore excel line"});
+            this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(30, 298);
+            this.settingsKeyFoundMultipleRecords.MinimumSize = new System.Drawing.Size(340, 0);
+            this.settingsKeyFoundMultipleRecords.Name = "settingsKeyFoundMultipleRecords";
+            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(340, 28);
+            this.settingsKeyFoundMultipleRecords.TabIndex = 5;
+            this.settingsKeyFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsKeyFoundMultipleRecords_SelectedIndexChanged);
             // 
             // RefreshLogs
             // 
-            this.RefreshLogs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshLogs.BackgroundImage")));
-            this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RefreshLogs.Location = new System.Drawing.Point(175, 213);
+            this.RefreshLogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.RefreshLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.RefreshLogs.Location = new System.Drawing.Point(296, 503);
+            this.RefreshLogs.MinimumSize = new System.Drawing.Size(75, 32);
             this.RefreshLogs.Name = "RefreshLogs";
-            this.RefreshLogs.Size = new System.Drawing.Size(26, 23);
-            this.RefreshLogs.TabIndex = 12;
-            this.RefreshLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.RefreshLogs.Size = new System.Drawing.Size(75, 32);
+            this.RefreshLogs.TabIndex = 10;
+            this.RefreshLogs.Text = "↻";
             this.RefreshLogs.UseVisualStyleBackColor = true;
-            this.RefreshLogs.Click += new System.EventHandler(this.Button1_Click_2);
+            this.RefreshLogs.Click += new System.EventHandler(this.RefreshLogs_Click_2);
             // 
-            // label5
+            // labelFilterLogs
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(2, 198);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Filter logs";
+            this.labelFilterLogs.AutoSize = true;
+            this.labelFilterLogs.Location = new System.Drawing.Point(30, 475);
+            this.labelFilterLogs.Name = "labelFilterLogs";
+            this.labelFilterLogs.Size = new System.Drawing.Size(77, 20);
+            this.labelFilterLogs.TabIndex = 11;
+            this.labelFilterLogs.Text = "Filter logs";
             // 
             // copyText
             // 
-            this.copyText.Location = new System.Drawing.Point(125, 213);
-            this.copyText.Margin = new System.Windows.Forms.Padding(2);
+            this.copyText.Location = new System.Drawing.Point(215, 504);
+            this.copyText.MinimumSize = new System.Drawing.Size(75, 32);
             this.copyText.Name = "copyText";
-            this.copyText.Size = new System.Drawing.Size(50, 23);
-            this.copyText.TabIndex = 10;
+            this.copyText.Size = new System.Drawing.Size(75, 32);
+            this.copyText.TabIndex = 9;
             this.copyText.Text = "Copy";
             this.copyText.UseVisualStyleBackColor = true;
             this.copyText.Click += new System.EventHandler(this.CopyText_Click);
@@ -284,166 +391,157 @@ namespace DataImport
             "✓ SUCCESS",
             "❌ ERRORS",
             "⚠ WARNINGS"});
-            this.textView.Location = new System.Drawing.Point(2, 214);
-            this.textView.Margin = new System.Windows.Forms.Padding(2);
+            this.textView.Location = new System.Drawing.Point(30, 505);
+            this.textView.MinimumSize = new System.Drawing.Size(180, 0);
             this.textView.Name = "textView";
-            this.textView.Size = new System.Drawing.Size(121, 21);
-            this.textView.TabIndex = 4;
-            this.textView.SelectedIndexChanged += new System.EventHandler(this.TextView_SelectedIndexChanged);
+            this.textView.Size = new System.Drawing.Size(180, 28);
+            this.textView.TabIndex = 8;
             this.textView.DropDownClosed += new System.EventHandler(this.TextView_DropDownClosed);
             // 
-            // label2
+            // labelOptionSetValuesOrLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 118);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(108, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "OptionSet field format";
-            this.label2.Visible = false;
+            this.labelOptionSetValuesOrLabel.AutoSize = true;
+            this.labelOptionSetValuesOrLabel.Location = new System.Drawing.Point(30, 408);
+            this.labelOptionSetValuesOrLabel.Name = "labelOptionSetValuesOrLabel";
+            this.labelOptionSetValuesOrLabel.Size = new System.Drawing.Size(164, 20);
+            this.labelOptionSetValuesOrLabel.TabIndex = 6;
+            this.labelOptionSetValuesOrLabel.Text = "OptionSet field format";
+            this.labelOptionSetValuesOrLabel.Visible = false;
             // 
-            // comboBox1
+            // settingsLookupFoundMultipleRecords
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "MAP THE FIRST FOUND RECORD TO THE LOOKUP",
-            "SKIP RECORD WITHOUT IMPORTING IT AT ALL",
-            "IMPORT CRM RECORD WITH CLEARED LOOKUP"});
-            this.comboBox1.Location = new System.Drawing.Point(2, 173);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(252, 21);
-            this.comboBox1.TabIndex = 9;
-            this.comboBox1.Visible = false;
+            this.settingsLookupFoundMultipleRecords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.settingsLookupFoundMultipleRecords.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsLookupFoundMultipleRecords.FormattingEnabled = true;
+            this.settingsLookupFoundMultipleRecords.Items.AddRange(new object[] {
+            "Map to the first record found by the lookup",
+            "Skip the record and do not import it",
+            "Import the record with the lookup blank"});
+            this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(30, 365);
+            this.settingsLookupFoundMultipleRecords.MinimumSize = new System.Drawing.Size(340, 0);
+            this.settingsLookupFoundMultipleRecords.Name = "settingsLookupFoundMultipleRecords";
+            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(340, 28);
+            this.settingsLookupFoundMultipleRecords.TabIndex = 6;
+            this.settingsLookupFoundMultipleRecords.Visible = false;
+            this.settingsLookupFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsLookupFoundMultipleRecords_SelectedIndexChanged);
             // 
-            // label4
+            // labelLookupFoundMultipleRecords
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(2, 157);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(146, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Lookup field found > 1 record";
-            this.label4.Visible = false;
+            this.labelLookupFoundMultipleRecords.AutoSize = true;
+            this.labelLookupFoundMultipleRecords.Location = new System.Drawing.Point(30, 342);
+            this.labelLookupFoundMultipleRecords.Name = "labelLookupFoundMultipleRecords";
+            this.labelLookupFoundMultipleRecords.Size = new System.Drawing.Size(215, 20);
+            this.labelLookupFoundMultipleRecords.TabIndex = 8;
+            this.labelLookupFoundMultipleRecords.Text = "Lookup field found > 1 record";
+            this.labelLookupFoundMultipleRecords.Visible = false;
             // 
-            // label3
+            // labelCrmAction
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(2, 39);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(115, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "2. Choose CRM Action";
+            this.labelCrmAction.AutoSize = true;
+            this.labelCrmAction.Location = new System.Drawing.Point(30, 78);
+            this.labelCrmAction.Name = "labelCrmAction";
+            this.labelCrmAction.Size = new System.Drawing.Size(170, 20);
+            this.labelCrmAction.TabIndex = 7;
+            this.labelCrmAction.Text = "2. Choose CRM Action";
             // 
-            // label1
+            // labelEntity
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "1. Pick Entity";
-            this.label1.Click += new System.EventHandler(this.Label1_Click);
+            this.labelEntity.AutoSize = true;
+            this.labelEntity.Location = new System.Drawing.Point(30, 15);
+            this.labelEntity.Margin = new System.Windows.Forms.Padding(0);
+            this.labelEntity.MinimumSize = new System.Drawing.Size(104, 20);
+            this.labelEntity.Name = "labelEntity";
+            this.labelEntity.Size = new System.Drawing.Size(104, 20);
+            this.labelEntity.TabIndex = 5;
+            this.labelEntity.Text = "1. Pick Entity";
             // 
-            // pickedEntity
+            // settingsEntity
             // 
-            this.pickedEntity.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.pickedEntity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.pickedEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.pickedEntity.DropDownWidth = 200;
-            this.pickedEntity.FormattingEnabled = true;
-            this.pickedEntity.Location = new System.Drawing.Point(2, 16);
-            this.pickedEntity.Margin = new System.Windows.Forms.Padding(2);
-            this.pickedEntity.Name = "pickedEntity";
-            this.pickedEntity.Size = new System.Drawing.Size(252, 21);
-            this.pickedEntity.Sorted = true;
-            this.pickedEntity.TabIndex = 4;
-            this.pickedEntity.SelectedIndexChanged += new System.EventHandler(this.PickedEntity_SelectedIndexChanged);
-            this.pickedEntity.DropDownClosed += new System.EventHandler(this.PickedEntity_DropDownClosed);
+            this.settingsEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.settingsEntity.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.settingsEntity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.settingsEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsEntity.DropDownWidth = 200;
+            this.settingsEntity.FormattingEnabled = true;
+            this.settingsEntity.Location = new System.Drawing.Point(30, 38);
+            this.settingsEntity.MinimumSize = new System.Drawing.Size(340, 0);
+            this.settingsEntity.Name = "settingsEntity";
+            this.settingsEntity.Size = new System.Drawing.Size(340, 28);
+            this.settingsEntity.Sorted = true;
+            this.settingsEntity.TabIndex = 1;
+            this.settingsEntity.DropDownClosed += new System.EventHandler(this.settingsEntity_DropDownClosed);
             // 
-            // optionSetVL
+            // settingsOptionSetValuesOrLabel
             // 
-            this.optionSetVL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.optionSetVL.FormattingEnabled = true;
-            this.optionSetVL.Items.AddRange(new object[] {
-            "OPTIONSET VALUES",
-            "OPTIONSET LABELS"});
-            this.optionSetVL.Location = new System.Drawing.Point(2, 134);
-            this.optionSetVL.Margin = new System.Windows.Forms.Padding(2);
-            this.optionSetVL.Name = "optionSetVL";
-            this.optionSetVL.Size = new System.Drawing.Size(252, 21);
-            this.optionSetVL.TabIndex = 3;
-            this.optionSetVL.Visible = false;
+            this.settingsOptionSetValuesOrLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.settingsOptionSetValuesOrLabel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsOptionSetValuesOrLabel.FormattingEnabled = true;
+            this.settingsOptionSetValuesOrLabel.Items.AddRange(new object[] {
+            "Values",
+            "Labels"});
+            this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(30, 431);
+            this.settingsOptionSetValuesOrLabel.MinimumSize = new System.Drawing.Size(340, 0);
+            this.settingsOptionSetValuesOrLabel.Name = "settingsOptionSetValuesOrLabel";
+            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(340, 28);
+            this.settingsOptionSetValuesOrLabel.TabIndex = 7;
+            this.settingsOptionSetValuesOrLabel.Visible = false;
+            this.settingsOptionSetValuesOrLabel.SelectedIndexChanged += new System.EventHandler(this.settingsOptionSetValuesOrLabel_SelectedIndexChanged);
             // 
-            // crmAction
+            // settingsCrmAction
             // 
-            this.crmAction.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.crmAction.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.crmAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.crmAction.FormattingEnabled = true;
-            this.crmAction.Items.AddRange(new object[] {
-            "UPSERT",
-            "CREATE",
-            "UPDATE",
-            "DELETE"});
-            this.crmAction.Location = new System.Drawing.Point(2, 55);
-            this.crmAction.Margin = new System.Windows.Forms.Padding(2);
-            this.crmAction.Name = "crmAction";
-            this.crmAction.Size = new System.Drawing.Size(252, 21);
-            this.crmAction.TabIndex = 2;
-            this.crmAction.DropDownClosed += new System.EventHandler(this.CrmAction_DropDownClosed);
+            this.settingsCrmAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.settingsCrmAction.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.settingsCrmAction.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.settingsCrmAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsCrmAction.FormattingEnabled = true;
+            this.settingsCrmAction.Items.AddRange(new object[] {
+            "Upsert",
+            "Create",
+            "Update",
+            "Delete"});
+            this.settingsCrmAction.Location = new System.Drawing.Point(30, 105);
+            this.settingsCrmAction.MinimumSize = new System.Drawing.Size(340, 0);
+            this.settingsCrmAction.Name = "settingsCrmAction";
+            this.settingsCrmAction.Size = new System.Drawing.Size(340, 28);
+            this.settingsCrmAction.TabIndex = 2;
+            this.settingsCrmAction.SelectedIndexChanged += new System.EventHandler(this.settingsCrmAction_SelectedIndexChanged);
             // 
-            // richTextBox1
+            // logTextBox
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(350, 397);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
+            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logTextBox.Location = new System.Drawing.Point(4, 768);
+            this.logTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.ReadOnly = true;
+            this.logTextBox.Size = new System.Drawing.Size(412, 375);
+            this.logTextBox.TabIndex = 3;
+            this.logTextBox.Text = "";
             // 
-            // splitContainer3
+            // instructionBox
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.instructionBox.BulletIndent = 4;
+            this.instructionBox.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.instructionBox.Location = new System.Drawing.Point(525, 154);
+            this.instructionBox.Margin = new System.Windows.Forms.Padding(375, 0, 375, 385);
+            this.instructionBox.MaximumSize = new System.Drawing.Size(784, 429);
+            this.instructionBox.MinimumSize = new System.Drawing.Size(784, 429);
+            this.instructionBox.Name = "instructionBox";
+            this.instructionBox.ReadOnly = true;
+            this.instructionBox.Size = new System.Drawing.Size(784, 429);
+            this.instructionBox.TabIndex = 3;
+            this.instructionBox.Text = resources.GetString("instructionBox.Text");
             // 
-            // splitContainer3.Panel1
+            // dataGridViewMapping
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.dataGridView1);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.BackColor = System.Drawing.Color.Thistle;
-            this.splitContainer3.Panel2.Controls.Add(this.label12);
-            this.splitContainer3.Panel2.Controls.Add(this.label11);
-            this.splitContainer3.Panel2.Controls.Add(this.textDeleted);
-            this.splitContainer3.Panel2.Controls.Add(this.textUpdated);
-            this.splitContainer3.Panel2.Controls.Add(this.textCreated);
-            this.splitContainer3.Panel2.Controls.Add(this.label10);
-            this.splitContainer3.Panel2.Controls.Add(this.textRowCount);
-            this.splitContainer3.Panel2.Controls.Add(this.label7);
-            this.splitContainer3.Panel2.Controls.Add(this.textBoxError);
-            this.splitContainer3.Panel2.Controls.Add(this.textBoxSuccess);
-            this.splitContainer3.Panel2.Controls.Add(this.label9);
-            this.splitContainer3.Panel2.Controls.Add(this.label8);
-            this.splitContainer3.Size = new System.Drawing.Size(893, 640);
-            this.splitContainer3.SplitterDistance = 568;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewMapping.AllowUserToAddRows = false;
+            this.dataGridViewMapping.AllowUserToDeleteRows = false;
+            this.dataGridViewMapping.ColumnHeadersHeight = 34;
+            this.dataGridViewMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dataGridViewMapping.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcelColumn,
             this.isKey,
             this.CRMField,
@@ -452,47 +550,64 @@ namespace DataImport
             this.lkpTargetfield,
             this.Truevalue,
             this.Falsevalue,
-            this.OperatorCol});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.Size = new System.Drawing.Size(893, 568);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            this.DefaultValue,
+            this.BlankBehaviour});
+            this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewMapping.Enabled = false;
+            this.dataGridViewMapping.Location = new System.Drawing.Point(423, 51);
+            this.dataGridViewMapping.Name = "dataGridViewMapping";
+            this.dataGridViewMapping.RowHeadersWidth = 30;
+            this.dataGridViewMapping.RowTemplate.Height = 33;
+            this.dataGridViewMapping.Size = new System.Drawing.Size(1110, 709);
+            this.dataGridViewMapping.TabIndex = 1;
+            this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
             // ExcelColumn
             // 
+            this.ExcelColumn.DataPropertyName = "ExcelColumn";
             this.ExcelColumn.HeaderText = "Excel Column";
+            this.ExcelColumn.MinimumWidth = 9;
             this.ExcelColumn.Name = "ExcelColumn";
             this.ExcelColumn.ReadOnly = true;
-            this.ExcelColumn.Width = 150;
+            this.ExcelColumn.Width = 200;
             // 
             // isKey
             // 
+            this.isKey.DataPropertyName = "IsKey";
             this.isKey.HeaderText = "is Key";
+            this.isKey.MinimumWidth = 9;
             this.isKey.Name = "isKey";
             this.isKey.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.isKey.Width = 50;
             // 
             // CRMField
             // 
+            this.CRMField.DataPropertyName = "CRMField";
+            this.CRMField.DropDownWidth = 150;
             this.CRMField.HeaderText = "CRM Field";
+            this.CRMField.Items.AddRange(new object[] {
+            "One",
+            "Two"});
+            this.CRMField.MaxDropDownItems = 20;
+            this.CRMField.MinimumWidth = 9;
             this.CRMField.Name = "CRMField";
             this.CRMField.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CRMField.Sorted = true;
-            this.CRMField.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.CRMField.Width = 150;
+            this.CRMField.Width = 200;
             // 
             // IsLookup
             // 
+            this.IsLookup.DataPropertyName = "IsLookup";
             this.IsLookup.HeaderText = "Is Lookup";
+            this.IsLookup.MinimumWidth = 9;
             this.IsLookup.Name = "IsLookup";
             this.IsLookup.Visible = false;
+            this.IsLookup.Width = 50;
             // 
             // lkpTargetEntity
             // 
+            this.lkpTargetEntity.DataPropertyName = "LkpTargetEntity";
             this.lkpTargetEntity.HeaderText = "[Lookup] Entity Name";
+            this.lkpTargetEntity.MinimumWidth = 9;
             this.lkpTargetEntity.Name = "lkpTargetEntity";
             this.lkpTargetEntity.ReadOnly = true;
             this.lkpTargetEntity.Sorted = true;
@@ -502,7 +617,9 @@ namespace DataImport
             // 
             // lkpTargetfield
             // 
+            this.lkpTargetfield.DataPropertyName = "LkpTargetField";
             this.lkpTargetfield.HeaderText = "[Lookup] Field Name";
+            this.lkpTargetfield.MinimumWidth = 9;
             this.lkpTargetfield.Name = "lkpTargetfield";
             this.lkpTargetfield.ReadOnly = true;
             this.lkpTargetfield.Sorted = true;
@@ -512,299 +629,345 @@ namespace DataImport
             // 
             // Truevalue
             // 
+            this.Truevalue.DataPropertyName = "TrueValue";
             this.Truevalue.HeaderText = "True Label";
+            this.Truevalue.MinimumWidth = 9;
             this.Truevalue.Name = "Truevalue";
             this.Truevalue.ReadOnly = true;
             this.Truevalue.Visible = false;
-            this.Truevalue.Width = 50;
+            this.Truevalue.Width = 150;
             // 
             // Falsevalue
             // 
+            this.Falsevalue.DataPropertyName = "FalseValue";
             this.Falsevalue.HeaderText = "False Label";
+            this.Falsevalue.MinimumWidth = 9;
             this.Falsevalue.Name = "Falsevalue";
             this.Falsevalue.ReadOnly = true;
             this.Falsevalue.Visible = false;
-            this.Falsevalue.Width = 50;
+            this.Falsevalue.Width = 150;
             // 
-            // OperatorCol
+            // DefaultValue
             // 
-            this.OperatorCol.HeaderText = "Operator";
-            this.OperatorCol.Items.AddRange(new object[] {
-            "Equal",
-            "NotEqual",
-            "GreaterThan",
-            "LessThan",
-            "GreaterEqual",
-            "LessEqual",
-            "Like",
-            "NotLike",
-            "In",
-            "NotIn",
-            "Between",
-            "NotBetween",
-            "Null",
-            "NotNull",
-            "Yesterday",
-            "Today",
-            "Tomorrow",
-            "Last7Days",
-            "Next7Days",
-            "LastWeek",
-            "ThisWeek",
-            "NextWeek",
-            "LastMonth",
-            "ThisMonth",
-            "NextMonth",
-            "On",
-            "OnOrBefore",
-            "OnOrAfter",
-            "LastYear",
-            "ThisYear",
-            "NextYear",
-            "LastXHours",
-            "NextXHours",
-            "LastXDays",
-            "NextXDays",
-            "LastXWeeks",
-            "NextXWeeks",
-            "LastXMonths",
-            "NextXMonths",
-            "LastXYears",
-            "NextXYears",
-            "EqualUserId",
-            "NotEqualUserId",
-            "EqualBusinessId",
-            "NotEqualBusinessId",
-            "ChildOf",
-            "Mask",
-            "NotMask",
-            "MasksSelect",
-            "Contains",
-            "DoesNotContain",
-            "EqualUserLanguage",
-            "NotOn",
-            "OlderThanXMonths",
-            "BeginsWith",
-            "DoesNotBeginWith",
-            "EndsWith",
-            "DoesNotEndWith",
-            "ThisFiscalYear",
-            "ThisFiscalPeriod",
-            "NextFiscalYear",
-            "NextFiscalPeriod",
-            "LastFiscalYear",
-            "LastFiscalPeriod",
-            "LastXFiscalYears",
-            "LastXFiscalPeriods",
-            "NextXFiscalYears",
-            "NextXFiscalPeriods",
-            "InFiscalYear",
-            "InFiscalPeriod",
-            "InFiscalPeriodAndYear",
-            "InOrBeforeFiscalPeriodAndYear",
-            "InOrAfterFiscalPeriodAndYear",
-            "EqualUserTeams",
-            "EqualUserOrUserTeams",
-            "Under",
-            "NotUnder",
-            "UnderOrEqual",
-            "Above",
-            "AboveOrEqual",
-            "EqualUserOrUserHierarchy",
-            "EqualUserOrUserHierarchyAndTeams",
-            "OlderThanXYears",
-            "OlderThanXWeeks",
-            "OlderThanXDays",
-            "OlderThanXHours",
-            "OlderThanXMinutes",
-            "ContainValues",
-            "DoesNotContainValues"});
-            this.OperatorCol.Name = "OperatorCol";
-            this.OperatorCol.Visible = false;
+            this.DefaultValue.DataPropertyName = "DefaultValue";
+            this.DefaultValue.HeaderText = "Default Value";
+            this.DefaultValue.MinimumWidth = 8;
+            this.DefaultValue.Name = "DefaultValue";
+            this.DefaultValue.ReadOnly = true;
+            this.DefaultValue.Visible = false;
+            this.DefaultValue.Width = 150;
             // 
-            // textRowCount
+            // BlankBehaviour
             // 
-            this.textRowCount.BackColor = System.Drawing.Color.Thistle;
-            this.textRowCount.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textRowCount.Cursor = System.Windows.Forms.Cursors.No;
-            this.textRowCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textRowCount.ForeColor = System.Drawing.Color.Indigo;
-            this.textRowCount.Location = new System.Drawing.Point(116, 1);
-            this.textRowCount.MaxLength = 100000;
-            this.textRowCount.Name = "textRowCount";
-            this.textRowCount.ReadOnly = true;
-            this.textRowCount.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textRowCount.Size = new System.Drawing.Size(84, 23);
-            this.textRowCount.TabIndex = 15;
+            this.BlankBehaviour.DataPropertyName = "BlankBehaviour";
+            this.BlankBehaviour.HeaderText = "Blank behaviour";
+            this.BlankBehaviour.Items.AddRange(new object[] {
+            "Clears CRM value",
+            "Keeps CRM value"});
+            this.BlankBehaviour.MinimumWidth = 9;
+            this.BlankBehaviour.Name = "BlankBehaviour";
+            this.BlankBehaviour.Width = 150;
             // 
-            // label7
+            // dataGridViewLogs
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(4, 4);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 13);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "Excel Rows Count:";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            this.dataGridViewLogs.AllowUserToAddRows = false;
+            this.dataGridViewLogs.AllowUserToDeleteRows = false;
+            this.dataGridViewLogs.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridViewLogs.ColumnHeadersHeight = 35;
+            this.dataGridViewLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dataGridViewLogs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Import,
+            this.Line,
+            this.Result,
+            this.Updates,
+            this.GUID,
+            this.Logs});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewLogs.Location = new System.Drawing.Point(423, 766);
+            this.dataGridViewLogs.Name = "dataGridViewLogs";
+            this.dataGridViewLogs.RowHeadersVisible = false;
+            this.dataGridViewLogs.RowHeadersWidth = 5;
+            this.dataGridViewLogs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dataGridViewLogs.RowTemplate.Height = 20;
+            this.dataGridViewLogs.Size = new System.Drawing.Size(1110, 379);
+            this.dataGridViewLogs.TabIndex = 4;
             // 
-            // textBoxError
+            // Import
             // 
-            this.textBoxError.BackColor = System.Drawing.Color.LightPink;
-            this.textBoxError.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxError.Cursor = System.Windows.Forms.Cursors.No;
-            this.textBoxError.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxError.ForeColor = System.Drawing.Color.DarkRed;
-            this.textBoxError.Location = new System.Drawing.Point(423, 1);
-            this.textBoxError.MaxLength = 100000;
-            this.textBoxError.Name = "textBoxError";
-            this.textBoxError.ReadOnly = true;
-            this.textBoxError.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxError.Size = new System.Drawing.Size(91, 23);
-            this.textBoxError.TabIndex = 18;
+            this.Import.DataPropertyName = "Import";
+            this.Import.HeaderText = "Import";
+            this.Import.MinimumWidth = 8;
+            this.Import.Name = "Import";
+            this.Import.ReadOnly = true;
+            this.Import.ToolTipText = "The run number for the import.";
+            this.Import.Width = 50;
             // 
-            // textBoxSuccess
+            // Line
             // 
-            this.textBoxSuccess.BackColor = System.Drawing.Color.LightGreen;
-            this.textBoxSuccess.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxSuccess.Cursor = System.Windows.Forms.Cursors.No;
-            this.textBoxSuccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSuccess.ForeColor = System.Drawing.Color.Green;
-            this.textBoxSuccess.Location = new System.Drawing.Point(265, 1);
-            this.textBoxSuccess.MaxLength = 100000;
-            this.textBoxSuccess.Name = "textBoxSuccess";
-            this.textBoxSuccess.ReadOnly = true;
-            this.textBoxSuccess.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxSuccess.Size = new System.Drawing.Size(91, 23);
-            this.textBoxSuccess.TabIndex = 17;
+            this.Line.DataPropertyName = "Line";
+            this.Line.HeaderText = "Line";
+            this.Line.MinimumWidth = 8;
+            this.Line.Name = "Line";
+            this.Line.ReadOnly = true;
+            this.Line.ToolTipText = "The line in the Excel, starting from line 2";
+            this.Line.Width = 50;
             // 
-            // label9
+            // Result
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(377, 6);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(42, 13);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Error: ";
+            this.Result.DataPropertyName = "Result";
+            this.Result.HeaderText = "Result";
+            this.Result.MinimumWidth = 8;
+            this.Result.Name = "Result";
+            this.Result.ReadOnly = true;
+            this.Result.ToolTipText = "The final result of the process";
+            this.Result.Width = 150;
             // 
-            // label8
+            // Updates
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(207, 6);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(56, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Sucess: ";
+            this.Updates.DataPropertyName = "Updates";
+            this.Updates.HeaderText = "Updates";
+            this.Updates.MinimumWidth = 8;
+            this.Updates.Name = "Updates";
+            this.Updates.ReadOnly = true;
+            this.Updates.ToolTipText = "The number of records updated in Dataverse";
+            this.Updates.Width = 50;
             // 
-            // openFileDialog1
+            // GUID
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog1_FileOk);
+            this.GUID.DataPropertyName = "GUID";
+            this.GUID.HeaderText = "GUID";
+            this.GUID.MinimumWidth = 8;
+            this.GUID.Name = "GUID";
+            this.GUID.ReadOnly = true;
+            this.GUID.ToolTipText = "The GUID(s) of each row";
+            this.GUID.Width = 200;
             // 
-            // label10
+            // Logs
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(62, 40);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 13);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "Created: ";
+            this.Logs.DataPropertyName = "Logs";
+            this.Logs.HeaderText = "Logs";
+            this.Logs.MinimumWidth = 8;
+            this.Logs.Name = "Logs";
+            this.Logs.ReadOnly = true;
+            this.Logs.ToolTipText = "Any log notes, errors or messages";
+            this.Logs.Width = 250;
             // 
-            // textCreated
+            // splitContainer3
             // 
-            this.textCreated.BackColor = System.Drawing.Color.PowderBlue;
-            this.textCreated.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textCreated.Cursor = System.Windows.Forms.Cursors.No;
-            this.textCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textCreated.ForeColor = System.Drawing.Color.Indigo;
-            this.textCreated.Location = new System.Drawing.Point(116, 35);
-            this.textCreated.MaxLength = 100000;
-            this.textCreated.Name = "textCreated";
-            this.textCreated.ReadOnly = true;
-            this.textCreated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textCreated.Size = new System.Drawing.Size(84, 23);
-            this.textCreated.TabIndex = 20;
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainer3.Size = new System.Drawing.Size(928, 652);
+            this.splitContainer3.SplitterDistance = 326;
+            this.splitContainer3.TabIndex = 0;
             // 
-            // textUpdated
+            // openFileDialog
             // 
-            this.textUpdated.BackColor = System.Drawing.Color.PowderBlue;
-            this.textUpdated.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textUpdated.Cursor = System.Windows.Forms.Cursors.No;
-            this.textUpdated.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textUpdated.ForeColor = System.Drawing.Color.Indigo;
-            this.textUpdated.Location = new System.Drawing.Point(265, 35);
-            this.textUpdated.MaxLength = 100000;
-            this.textUpdated.Name = "textUpdated";
-            this.textUpdated.ReadOnly = true;
-            this.textUpdated.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textUpdated.Size = new System.Drawing.Size(91, 23);
-            this.textUpdated.TabIndex = 21;
+            this.openFileDialog.RestoreDirectory = true;
             // 
-            // textDeleted
+            // saveFileDialog
             // 
-            this.textDeleted.BackColor = System.Drawing.Color.PowderBlue;
-            this.textDeleted.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textDeleted.Cursor = System.Windows.Forms.Cursors.No;
-            this.textDeleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textDeleted.ForeColor = System.Drawing.Color.Indigo;
-            this.textDeleted.Location = new System.Drawing.Point(423, 35);
-            this.textDeleted.MaxLength = 100000;
-            this.textDeleted.Name = "textDeleted";
-            this.textDeleted.ReadOnly = true;
-            this.textDeleted.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textDeleted.Size = new System.Drawing.Size(91, 23);
-            this.textDeleted.TabIndex = 22;
+            this.saveFileDialog.FileName = "DataImportSettingsFile.xml";
+            this.saveFileDialog.Filter = "XML File|*.xml";
+            this.saveFileDialog.RestoreDirectory = true;
+            this.saveFileDialog.Title = "Settings File";
             // 
-            // label11
+            // mainTableLayout
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(203, 40);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(59, 13);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "Updated:";
+            this.mainTableLayout.ColumnCount = 2;
+            this.mainTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 420F));
+            this.mainTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mainTableLayout.Controls.Add(this.dataGridViewMapping, 1, 0);
+            this.mainTableLayout.Controls.Add(this.settingsPanel, 0, 0);
+            this.mainTableLayout.Controls.Add(this.logTextBox, 0, 1);
+            this.mainTableLayout.Controls.Add(this.dataGridViewLogs, 1, 1);
+            this.mainTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainTableLayout.Location = new System.Drawing.Point(0, 0);
+            this.mainTableLayout.Name = "mainTableLayout";
+            this.mainTableLayout.Padding = new System.Windows.Forms.Padding(0, 48, 0, 34);
+            this.mainTableLayout.RowCount = 2;
+            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.mainTableLayout.Size = new System.Drawing.Size(1536, 1182);
+            this.mainTableLayout.TabIndex = 5;
             // 
-            // label12
+            // settingsPanel
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(362, 40);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(55, 13);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "Deleted:";
+            this.settingsPanel.AutoScroll = true;
+            this.settingsPanel.Controls.Add(this.labelEntity);
+            this.settingsPanel.Controls.Add(this.settingsEntity);
+            this.settingsPanel.Controls.Add(this.labelCrmAction);
+            this.settingsPanel.Controls.Add(this.settingsCrmAction);
+            this.settingsPanel.Controls.Add(this.labelRowsToImportDesc);
+            this.settingsPanel.Controls.Add(this.labelRowsToImportStart);
+            this.settingsPanel.Controls.Add(this.rowStartNum);
+            this.settingsPanel.Controls.Add(this.labelRowsToImportEnd);
+            this.settingsPanel.Controls.Add(this.rowEndNum);
+            this.settingsPanel.Controls.Add(this.labelKeyFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.settingsKeyFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.labelLookupFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.settingsLookupFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.labelOptionSetValuesOrLabel);
+            this.settingsPanel.Controls.Add(this.settingsOptionSetValuesOrLabel);
+            this.settingsPanel.Controls.Add(this.labelFilterLogs);
+            this.settingsPanel.Controls.Add(this.textView);
+            this.settingsPanel.Controls.Add(this.copyText);
+            this.settingsPanel.Controls.Add(this.RefreshLogs);
+            this.settingsPanel.Controls.Add(this.LogToggle);
+            this.settingsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingsPanel.Enabled = false;
+            this.settingsPanel.Location = new System.Drawing.Point(0, 48);
+            this.settingsPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.settingsPanel.Name = "settingsPanel";
+            this.settingsPanel.Padding = new System.Windows.Forms.Padding(30, 8, 30, 8);
+            this.settingsPanel.Size = new System.Drawing.Size(420, 715);
+            this.settingsPanel.TabIndex = 25;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusRowsLabel,
+            this.toolStripStatusRowsNum,
+            this.toolStripStatusSuccessLabel,
+            this.toolStripStatusSuccessNum,
+            this.toolStripStatusErrorLabel,
+            this.toolStripStatusErrorNum,
+            this.toolStripStatusCreatedLabel,
+            this.toolStripStatusCreatedNum,
+            this.toolStripStatusUpdatedLabel,
+            this.toolStripStatusUpdatedNum,
+            this.toolStripStatusDeletedLabel,
+            this.toolStripStatusDeletedNum});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1150);
+            this.statusStrip1.Margin = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1536, 32);
+            this.statusStrip1.TabIndex = 0;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusRowsLabel
+            // 
+            this.toolStripStatusRowsLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusRowsLabel.Name = "toolStripStatusRowsLabel";
+            this.toolStripStatusRowsLabel.Size = new System.Drawing.Size(62, 25);
+            this.toolStripStatusRowsLabel.Text = "Rows:";
+            // 
+            // toolStripStatusRowsNum
+            // 
+            this.toolStripStatusRowsNum.Name = "toolStripStatusRowsNum";
+            this.toolStripStatusRowsNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusRowsNum.Text = "0";
+            // 
+            // toolStripStatusSuccessLabel
+            // 
+            this.toolStripStatusSuccessLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusSuccessLabel.Name = "toolStripStatusSuccessLabel";
+            this.toolStripStatusSuccessLabel.Size = new System.Drawing.Size(82, 25);
+            this.toolStripStatusSuccessLabel.Text = "Success:";
+            // 
+            // toolStripStatusSuccessNum
+            // 
+            this.toolStripStatusSuccessNum.Name = "toolStripStatusSuccessNum";
+            this.toolStripStatusSuccessNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusSuccessNum.Text = "0";
+            // 
+            // toolStripStatusErrorLabel
+            // 
+            this.toolStripStatusErrorLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusErrorLabel.Name = "toolStripStatusErrorLabel";
+            this.toolStripStatusErrorLabel.Size = new System.Drawing.Size(60, 25);
+            this.toolStripStatusErrorLabel.Text = "Error:";
+            // 
+            // toolStripStatusErrorNum
+            // 
+            this.toolStripStatusErrorNum.Name = "toolStripStatusErrorNum";
+            this.toolStripStatusErrorNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusErrorNum.Text = "0";
+            // 
+            // toolStripStatusCreatedLabel
+            // 
+            this.toolStripStatusCreatedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusCreatedLabel.Name = "toolStripStatusCreatedLabel";
+            this.toolStripStatusCreatedLabel.Size = new System.Drawing.Size(83, 25);
+            this.toolStripStatusCreatedLabel.Text = "Created:";
+            // 
+            // toolStripStatusCreatedNum
+            // 
+            this.toolStripStatusCreatedNum.Name = "toolStripStatusCreatedNum";
+            this.toolStripStatusCreatedNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusCreatedNum.Text = "0";
+            // 
+            // toolStripStatusUpdatedLabel
+            // 
+            this.toolStripStatusUpdatedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusUpdatedLabel.Name = "toolStripStatusUpdatedLabel";
+            this.toolStripStatusUpdatedLabel.Size = new System.Drawing.Size(90, 25);
+            this.toolStripStatusUpdatedLabel.Text = "Updated:";
+            // 
+            // toolStripStatusUpdatedNum
+            // 
+            this.toolStripStatusUpdatedNum.Name = "toolStripStatusUpdatedNum";
+            this.toolStripStatusUpdatedNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusUpdatedNum.Text = "0";
+            // 
+            // toolStripStatusDeletedLabel
+            // 
+            this.toolStripStatusDeletedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusDeletedLabel.Name = "toolStripStatusDeletedLabel";
+            this.toolStripStatusDeletedLabel.Size = new System.Drawing.Size(83, 25);
+            this.toolStripStatusDeletedLabel.Text = "Deleted:";
+            // 
+            // toolStripStatusDeletedNum
+            // 
+            this.toolStripStatusDeletedNum.Name = "toolStripStatusDeletedNum";
+            this.toolStripStatusDeletedNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusDeletedNum.Text = "0";
+            // 
+            // settingsBindingSource
+            // 
+            this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
             // 
             // MyPluginControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMenu);
-            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.Controls.Add(this.instructionBox);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.mainTableLayout);
+            this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.MinimumSize = new System.Drawing.Size(1536, 769);
             this.Name = "MyPluginControl";
-            this.Size = new System.Drawing.Size(1245, 671);
+            this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
+            this.Size = new System.Drawing.Size(1536, 1182);
+            this.TabIcon = global::DataImport.Properties.Resources.DataImportLogo;
+            this.ToolName = "Data Import ++";
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            this.splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLogs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.mainTableLayout.ResumeLayout(false);
+            this.settingsPanel.ResumeLayout(false);
+            this.settingsPanel.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -812,52 +975,75 @@ namespace DataImport
 
         #endregion
         private System.Windows.Forms.ToolStrip toolStripMenu;
-        private System.Windows.Forms.ToolStripButton tsbClose;
-        private System.Windows.Forms.ToolStripSeparator tssSeparator1;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ComboBox crmAction;
-        private System.Windows.Forms.ComboBox optionSetVL;
-        private System.Windows.Forms.ComboBox pickedEntity;
-        private System.Windows.Forms.ToolStripButton BrowseFile;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton closeButton;
+        private System.Windows.Forms.DataGridView dataGridViewMapping;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ComboBox settingsCrmAction;
+        private System.Windows.Forms.ComboBox settingsOptionSetValuesOrLabel;
+        private System.Windows.Forms.ComboBox settingsEntity;
+        private System.Windows.Forms.ToolStripButton browseFileButton;
+        private System.Windows.Forms.ToolStripButton importDataButton;
+        private System.Windows.Forms.Label labelEntity;
+        private System.Windows.Forms.Label labelCrmAction;
+        private System.Windows.Forms.Label labelOptionSetValuesOrLabel;
+        private System.Windows.Forms.RichTextBox logTextBox;
+        private System.Windows.Forms.ToolStripButton resetButton;
+        private System.Windows.Forms.Label labelLookupFoundMultipleRecords;
+        private System.Windows.Forms.ComboBox settingsLookupFoundMultipleRecords;
+        private System.Windows.Forms.ToolStripButton processFieldsButton;
         private System.Windows.Forms.ComboBox textView;
         private System.Windows.Forms.Button copyText;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelFilterLogs;
         private System.Windows.Forms.Button RefreshLogs;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox keyRecords;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ExcelColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn isKey;
-        private System.Windows.Forms.DataGridViewComboBoxColumn CRMField;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLookup;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetEntity;
-        private System.Windows.Forms.DataGridViewComboBoxColumn lkpTargetfield;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Truevalue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Falsevalue;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OperatorCol;
-        private System.Windows.Forms.TextBox textRowCount;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label labelKeyFoundMultipleRecords;
+        private System.Windows.Forms.ComboBox settingsKeyFoundMultipleRecords;
         private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TextBox textBoxSuccess;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBoxError;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textDeleted;
-        private System.Windows.Forms.TextBox textUpdated;
-        private System.Windows.Forms.TextBox textCreated;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DataGridView dataGridViewLogs;
+        private System.Windows.Forms.Button LogToggle;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton saveSettingsButton;
+        private System.Windows.Forms.ToolStripButton loadSettingsButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.BindingSource settingsBindingSource;
+        private NumericUpDown rowStartNum;
+        private Label labelRowsToImportDesc;
+        private NumericUpDown rowEndNum;
+        private Label labelRowsToImportEnd;
+        private Label labelRowsToImportStart;
+        private DataGridViewTextBoxColumn ExcelColumn;
+        private DataGridViewCheckBoxColumn isKey;
+        private DataGridViewComboBoxColumn CRMField;
+        private DataGridViewCheckBoxColumn IsLookup;
+        private DataGridViewComboBoxColumn lkpTargetEntity;
+        private DataGridViewComboBoxColumn lkpTargetfield;
+        private DataGridViewTextBoxColumn Truevalue;
+        private DataGridViewTextBoxColumn Falsevalue;
+        private DataGridViewTextBoxColumn DefaultValue;
+        private DataGridViewComboBoxColumn BlankBehaviour;
+        private RichTextBox instructionBox;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripLabel toggleInstructions;
+        private TableLayoutPanel mainTableLayout;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusRowsLabel;
+        private ToolStripStatusLabel toolStripStatusRowsNum;
+        private ToolStripStatusLabel toolStripStatusSuccessLabel;
+        private ToolStripStatusLabel toolStripStatusSuccessNum;
+        private ToolStripStatusLabel toolStripStatusErrorLabel;
+        private ToolStripStatusLabel toolStripStatusErrorNum;
+        private ToolStripStatusLabel toolStripStatusCreatedLabel;
+        private ToolStripStatusLabel toolStripStatusCreatedNum;
+        private ToolStripStatusLabel toolStripStatusUpdatedLabel;
+        private ToolStripStatusLabel toolStripStatusUpdatedNum;
+        private ToolStripStatusLabel toolStripStatusDeletedLabel;
+        private ToolStripStatusLabel toolStripStatusDeletedNum;
+        private Panel settingsPanel;
+        private DataGridViewTextBoxColumn Import;
+        private DataGridViewTextBoxColumn Line;
+        private DataGridViewTextBoxColumn Result;
+        private DataGridViewTextBoxColumn Updates;
+        private DataGridViewTextBoxColumn GUID;
+        private DataGridViewTextBoxColumn Logs;
     }
 }

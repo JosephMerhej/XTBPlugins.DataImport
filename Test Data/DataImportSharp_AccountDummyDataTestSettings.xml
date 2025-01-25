@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entity>account</Entity>
+  <CrmAction>Upsert</CrmAction>
+  <OptionSetValuesOrLabel>Values</OptionSetValuesOrLabel>
+  <LookupFoundMultipleRecords>Skip the record and do not import it</LookupFoundMultipleRecords>
+  <KeyFoundMultipleRecords>Ignore excel line</KeyFoundMultipleRecords>
+  <XMLTableMapping>
+    <Table>
+      <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="TableMapping" msdata:UseCurrentLocale="true">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="TableMapping">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ExcelColumn" type="xs:string" minOccurs="0" />
+                    <xs:element name="isKey" type="xs:boolean" minOccurs="0" />
+                    <xs:element name="CRMField" type="xs:string" minOccurs="0" />
+                    <xs:element name="IsLookup" type="xs:string" minOccurs="0" />
+                    <xs:element name="lkpTargetEntity" type="xs:string" minOccurs="0" />
+                    <xs:element name="lkpTargetfield" type="xs:string" minOccurs="0" />
+                    <xs:element name="Truevalue" type="xs:string" minOccurs="0" />
+                    <xs:element name="Falsevalue" type="xs:string" minOccurs="0" />
+                    <xs:element name="DefaultValue" type="xs:string" minOccurs="0" />
+                    <xs:element name="BlankBehaviour" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:schema>
+      <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+        <DocumentElement>
+          <TableMapping diffgr:id="TableMapping17" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+            <ExcelColumn>AccountID</ExcelColumn>
+            <isKey>true</isKey>
+            <CRMField>accountid</CRMField>
+            <IsLookup>False</IsLookup>
+            <BlankBehaviour>Clears CRM value</BlankBehaviour>
+          </TableMapping>
+          <TableMapping diffgr:id="TableMapping18" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+            <ExcelColumn>Name</ExcelColumn>
+            <isKey>false</isKey>
+            <CRMField>name</CRMField>
+            <IsLookup>False</IsLookup>
+            <BlankBehaviour>Clears CRM value</BlankBehaviour>
+          </TableMapping>
+          <TableMapping diffgr:id="TableMapping19" msdata:rowOrder="2" diffgr:hasChanges="inserted">
+            <ExcelColumn>Description</ExcelColumn>
+            <isKey>false</isKey>
+            <CRMField>description</CRMField>
+            <IsLookup>False</IsLookup>
+            <BlankBehaviour>Clears CRM value</BlankBehaviour>
+          </TableMapping>
+        </DocumentElement>
+      </diffgr:diffgram>
+    </Table>
+  </XMLTableMapping>
+</Settings>

@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+/bin/*
+/obj/*
+/.vs/*
+/packages
+/.vs
+
+/DataImport.csproj.user
+*.nupkg

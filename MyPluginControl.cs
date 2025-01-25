@@ -5,24 +5,23 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk;
-using McTools.Xrm.Connection;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Messages;
-using System.Xml;
-using System.Collections;
 using System.ServiceModel;
 using System.Runtime.InteropServices;
+using Microsoft.VisualBasic;
+using McTools.Xrm.Connection;
+using XrmToolBox.Extensibility.Interfaces;
 
 namespace DataImport
 {
-    public partial class MyPluginControl : PluginControlBase
+    public partial class MyPluginControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
         // CREATE EXCEL OBJECTS.
         Excel.Application xlApp = new Excel.Application();
@@ -37,7 +36,6 @@ namespace DataImport
         RichTextBox richTextBoxWarning = new RichTextBox();
         //DataGridViewComboBoxCell dcc; //??
         string sFileName;
-        string strentityname;
         bool strIsKey;
         bool IsReadyToImport = false;
         string qestr;
@@ -53,22 +51,97 @@ namespace DataImport
         int creatednumber = 0;
         int updatednumber = 0;
         int deletednumber = 0;
-        private Settings mySettings;
+        int importRunNumber = 0; // Number of times the Excel Import process has been run
+
+        // The Settings for the import
+        private Settings settings = Settings.Instance;
+
+        // To store the table logs
+        DataTable tableLogEntries = new DataTable();
+
+        // To store the Excel Mapping once ready for import
+        DataTable tableMapping = new DataTable();
+
+        #region Initialising Plugin
 
         public MyPluginControl()
         {
             InitializeComponent();
         }
+
         public void MyPluginControl_Load(object sender, System.EventArgs e)
         {
-            comboBox1.SelectedIndex = 0;
-            crmAction.SelectedIndex = 0;
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Absolute, 0); // Hides the logs
+            dataGridViewMapping.Enabled = false; // Locks all the mapping until Excel is loaded.
+            settingsLookupFoundMultipleRecords.SelectedIndex = 0;
+            settingsCrmAction.SelectedIndex = 0;
             textView.SelectedIndex = 0;
-            optionSetVL.SelectedIndex = 0;
-            keyRecords.SelectedIndex = 0;
+            settingsOptionSetValuesOrLabel.SelectedIndex = 0;
+            settingsKeyFoundMultipleRecords.SelectedIndex = 0;
             ExecuteMethod(InitEntities);
+
+            // Initialise the table logs
+            tableLogEntries.Columns.Add("Import", typeof(int));
+            tableLogEntries.Columns.Add("Line", typeof(int));
+            tableLogEntries.Columns.Add("Result", typeof(string));
+            tableLogEntries.Columns.Add("Updates", typeof(int));
+            tableLogEntries.Columns.Add("GUID", typeof(string));
+            tableLogEntries.Columns.Add("Logs", typeof(string));
+
+            dataGridViewLogs.DataSource = tableLogEntries;
+
+            tableMapping.TableName = "TableMapping";
+
+            // Initialise the table mapping
+            tableMapping.Columns.Add("ExcelColumn");
+            tableMapping.Columns.Add("isKey", typeof(bool));
+            tableMapping.Columns.Add("CRMField");
+            tableMapping.Columns.Add("IsLookup");
+            tableMapping.Columns.Add("lkpTargetEntity");
+            tableMapping.Columns.Add("lkpTargetfield");
+            tableMapping.Columns.Add("Truevalue");
+            tableMapping.Columns.Add("Falsevalue");
+            tableMapping.Columns.Add("DefaultValue");
+            tableMapping.Columns.Add("BlankBehaviour");
+
+            this.dataGridViewMapping.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMapping_CellValueChanged);
         }
-        
+
+        #endregion Initialising Plugin
+
+        #region XRMToolbox Commands
+
+        // If the connection is updated and another environment is chosen.
+        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
+        {
+            base.UpdateConnection(newService, detail, actionName, parameter);
+            InitEntities();
+        }
+
+        private void TsbClose_Click(object sender, EventArgs e)
+        {
+            CloseTool();
+        }
+
+
+        #region IGitHubPlugin implementation
+
+        public string RepositoryName => "XTBPlugins.DataImport";
+
+        public string UserName => "YesWeCandrew";
+
+        #endregion IGitHubPlugin implementation
+
+        #region IHelpPlugin implementation
+
+        public string HelpUrl => "https://github.com/YesWeCandrew/XTBPlugins.DataImport/blob/master/README.md";
+
+        #endregion IHelpPlugin implementation
+
+        #endregion XRMToolbox Commands
+
+        #region Retrieving Data From Dynamics
+
         public void InitEntities()
         {
             WorkAsync(new WorkAsyncInfo
@@ -95,7 +168,7 @@ namespace DataImport
                     {
                         MessageBox.Show(args.Error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    pickedEntity.Items.Clear();
+                    settingsEntity.Items.Clear();
                     lkpTargetEntity.Items.Clear();
                     var result = args.Result as RetrieveAllEntitiesResponse;
                     if (result != null)
@@ -103,23 +176,17 @@ namespace DataImport
                         var entities = result.EntityMetadata;
                         foreach (EntityMetadata Entity in entities)
                         {
-                            pickedEntity.Items.Add(Entity.LogicalName);
+                            settingsEntity.Items.Add(Entity.LogicalName);
                             lkpTargetEntity.Items.Add(Entity.LogicalName);
                         }
                     }
                 }
             });
         }
-        private void StartBackgroundWork(int i)
-        {
-            double perr = (i-1)/(1.0 * (xlRange.Rows.Count - 1)) * 100;
-
-            //labelprogress.Text = "Import Progress "+perr.ToString("F") + "%";
-        }
 
         private void InitEntityFields()
         {
-            if (pickedEntity.SelectedItem == null)
+            if (settingsEntity.SelectedItem == null)
             {
                 //MessageBox.Show("Please load entities first and pick your entity then press this button.");
                 //ExecuteMethod(InitEntities);
@@ -127,7 +194,6 @@ namespace DataImport
             }
             CRMField.Items.Clear();
 
-            strentityname = pickedEntity.SelectedItem.ToString();
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Getting entity fields",
@@ -137,7 +203,7 @@ namespace DataImport
                     RetrieveEntityRequest retrieveEntityRequest = new RetrieveEntityRequest
                     {
                         EntityFilters = EntityFilters.All,
-                        LogicalName = strentityname
+                        LogicalName = settings.Entity
                     };
 
                     // Execute the request
@@ -153,32 +219,32 @@ namespace DataImport
                     resultsaved = result.EntityMetadata;
                     if (result != null)
                     {
+                        CRMField.Items.Add("");
                         foreach (object attribute in resultsaved.Attributes)
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
 
-                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" ||  (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
+                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
-                            /*else if(a.LogicalName.ToString()=="statecode")
-                            { 
-                                    MessageBox.Show(a.LogicalName.ToString()+ " - "+a.AttributeType.ToString());
-                            }*/
                         }
+                        
                     }
+                    ProcessFields();
+                    setInstructionVisibility(false);
+                    dataGridViewMapping.Enabled = true;
                 }
             });
         }
 
         private void InitLookupFields(string myentity, int thatRow)
         {
-            
-            if ( myentity == null || myentity == "")
+
+            if (myentity == null || myentity == "")
             {
                 return;
             }
             //lkpTargetfield.Items.Clear();
-            DataGridViewComboBoxCell datalkpfield = dataGridView1.Rows[thatRow].Cells[5] as DataGridViewComboBoxCell;
-            datalkpfield.Value = null;
+            DataGridViewComboBoxCell datalkpfield = dataGridViewMapping.Rows[thatRow].Cells[5] as DataGridViewComboBoxCell;
             datalkpfield.Items.Clear();
             WorkAsync(new WorkAsyncInfo
             {
@@ -205,8 +271,8 @@ namespace DataImport
                     lkpresultsaved = result.EntityMetadata;
                     if (result != null)
                     {
-                        DataGridViewComboBoxCell stateCell = (DataGridViewComboBoxCell)(dataGridView1.Rows[thatRow].Cells[5]);
-                        
+                        DataGridViewComboBoxCell stateCell = (DataGridViewComboBoxCell)(dataGridViewMapping.Rows[thatRow].Cells[5]);
+
                         foreach (object attribute in lkpresultsaved.Attributes)
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
@@ -214,82 +280,48 @@ namespace DataImport
                             {
                                 stateCell.Items.Add(a.LogicalName.ToString());
                             }
-                        }                        
+                        }
                     }
                 }
             });
         }
 
-        private void TsbClose_Click(object sender, EventArgs e)
+        #endregion Retrieving Data From Dynamics
+
+        #region Get Excel
+
+        private void BrowseFileButton_Click(object sender, EventArgs e)
         {
-            CloseTool();
+            GetFile();
         }
 
-
-        private void TsbSample_Click(object sender, EventArgs e)
+        private void GetFile()
         {
-            ExecuteMethod(InitEntities);
-        }
-
-        private void MyPluginControl_OnCloseTool(object sender, EventArgs e)
-        {
-            // Before leaving, save the settings
-            SettingsManager.Instance.Save(GetType(), mySettings);
-        }
-
-        /// <summary>
-        /// This event occurs when the connection has been updated in XrmToolBox
-        /// </summary>
-        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
-        {
-            base.UpdateConnection(newService, detail, actionName, parameter);
-            if (mySettings != null && detail != null)
+            openFileDialog.FileName = "";
+            openFileDialog.Title = "Excel File to Import";
+            openFileDialog.Filter = "Excel File|*.xlsx;*.xls";
+            DialogResult result = openFileDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
             {
-                mySettings.LastUsedOrganizationWebappUrl = detail.WebApplicationUrl;
-                LogInfo("Connection has changed to: {0}", detail.WebApplicationUrl);
+                EmptyDataGrid();
+                string file = openFileDialog.FileName;
+                try
+                {
+                    sFileName = openFileDialog.FileName;
+
+                    if (sFileName.Trim() != "")
+                    {
+                        ReadExcel(sFileName);
+                        settingsPanel.Enabled = true; // Enable all controls now that Excel is loaded
+                        loadSettingsButton.Enabled = true;
+                        saveSettingsButton.Enabled = true;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Failed to load Excel file correctly:" + ex.Message.ToString());
+                }
             }
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-
-
-
-        }
-
-        private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-      /*  private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            //GET OUR COMBO OBJECT
-            var combo = e.Control as ComboBox;
-            if (combo != null)
-            {
-                // AVOID ATTACHMENT TO MULTIPLE EVENT HANDLERS
-                combo.SelectedIndexChanged -= new EventHandler(Combo_SelectedIndexChanged);
-
-                //THEN NOW ADD
-                combo.SelectedIndexChanged += Combo_SelectedIndexChanged;
-            }
-        }
-
-        private void Combo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selected = (sender as ComboBox).SelectedItem.ToString();
-        }
-        */
-
-        private void Button1_Click_1(object sender, EventArgs e)
-        {
-
         }
 
         // GET DATA FROM EXCEL AND POPULATE COMB0 BOX.
@@ -316,157 +348,619 @@ namespace DataImport
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(xlRange.Cells[1, iCol].value);
+                            dataGridViewMapping.Rows.Add(xlRange.Cells[1, iCol].value);
+                            // Set default for load to CRM to Keeps CRM Value
+                            dataGridViewMapping.Rows[iCol-1].Cells[9].Value = "Keeps CRM value";
                         }
                     }
-                    textRowCount.Text = ((xlRange.Rows.Count)-1).ToString();
-                    
+
+                    // Set the labels and row values to the correct values.
+                    toolStripStatusRowsNum.Text = ((xlRange.Rows.Count) - 1).ToString();
+                    rowEndNum.Maximum = xlRange.Rows.Count;
+                    rowEndNum.Minimum = 2;
+                    rowEndNum.Value = xlRange.Rows.Count;
+                    rowStartNum.Maximum = xlRange.Rows.Count;
+                    rowStartNum.Value = 2;
+
                     xlWorkBook.Close();
                     xlApp.Quit();
+
+                    processFieldsButton.Enabled = true;
                 }
             });
         }
 
-        private void SplitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
-        {
+        #endregion Get Excel
 
-        }
+        #region Logging
 
-        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        #region OriginalLogging
 
-        }
-
-        private void PickedEntity_DropDownClosed(object sender, EventArgs e)
-        {//SelectedIndexChanged
-            if (pickedEntity.SelectedItem != null)
-            {
-                for (int o = 0; o < dataGridView1.RowCount; o++)
-                {
-                    DataGridViewComboBoxCell data = dataGridView1.Rows[o].Cells[2] as DataGridViewComboBoxCell;
-                    data.Value = null;
-                }
-                ExecuteMethod(InitEntityFields);
-            }
-            else if(pickedEntity.Items.Count ==0)
-            {
-                ExecuteMethod(InitEntities);
-            }
-        }
         private void SetTextBox1()
         {
             if (textView.SelectedItem.ToString() == "📙 ALL")
             {
-                richTextBox1.Text = richTextBoxAll.Text;
+                logTextBox.Text = richTextBoxAll.Text;
             }
             else if (textView.SelectedItem.ToString() == "✓ SUCCESS")
             {
-                richTextBox1.Text = richTextBoxImported.Text;
+                logTextBox.Text = richTextBoxImported.Text;
             }
             else if (textView.SelectedItem.ToString() == "❌ ERRORS")
             {
-                richTextBox1.Text = richTextBoxErrors.Text;
+                logTextBox.Text = richTextBoxErrors.Text;
             }
             else if (textView.SelectedItem.ToString() == "⚠ WARNINGS")
             {
-                richTextBox1.Text = richTextBoxWarning.Text;
+                logTextBox.Text = richTextBoxWarning.Text;
             }
-            textBoxSuccess.Text = successnumber.ToString();
-            textBoxError.Text = errornumber.ToString();
-            textCreated.Text = creatednumber.ToString();
-            textUpdated.Text = updatednumber.ToString();
-            textDeleted.Text = deletednumber.ToString();
+            toolStripStatusSuccessNum.Text = successnumber.ToString();
+            toolStripStatusErrorNum.Text = errornumber.ToString();
+            toolStripStatusCreatedNum.Text = creatednumber.ToString();
+            toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+            toolStripStatusDeletedNum.Text = deletednumber.ToString();
 
         }
         private void TextView_DropDownClosed(object sender, EventArgs e)
         {
             //SetTextBox1();
-            
+
             if (textView.SelectedItem.ToString() == "📙 ALL")
             {
-                richTextBox1.Text = richTextBoxAll.Text;
+                logTextBox.Text = richTextBoxAll.Text;
             }
             else if (textView.SelectedItem.ToString() == "✓ SUCCESS")
             {
-                richTextBox1.Text = richTextBoxImported.Text;
+                logTextBox.Text = richTextBoxImported.Text;
             }
             else if (textView.SelectedItem.ToString() == "❌ ERRORS")
             {
-                richTextBox1.Text = richTextBoxErrors.Text;
+                logTextBox.Text = richTextBoxErrors.Text;
             }
             else if (textView.SelectedItem.ToString() == "⚠ WARNINGS")
             {
-                richTextBox1.Text = richTextBoxWarning.Text;
+                logTextBox.Text = richTextBoxWarning.Text;
             }
-            textBoxSuccess.Text = successnumber.ToString();
-            textBoxError.Text = errornumber.ToString();
-            textCreated.Text = creatednumber.ToString();
-            textUpdated.Text = updatednumber.ToString();
-            textDeleted.Text = deletednumber.ToString();
+            toolStripStatusSuccessNum.Text = successnumber.ToString();
+            toolStripStatusErrorNum.Text = errornumber.ToString();
+            toolStripStatusCreatedNum.Text = creatednumber.ToString();
+            toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+            toolStripStatusDeletedNum.Text = deletednumber.ToString();
         }
+        private void CopyText_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string line in logTextBox.Lines)
+                sb.AppendLine(line);
+            if (sb.Length != 0)
+                Clipboard.SetText(sb.ToString());
+            else
+                MessageBox.Show("Logs are empty");
+        }
+
+        #endregion Original Logging
+
+        #region New Logging
+
+        private void LogToggle_Click(object sender, EventArgs e)
+        {
+            if (mainTableLayout.RowStyles[1].Height == 0) // Log sections are hidden
+            {
+                LogTableShow();
+            }
+            else
+            {
+                LogTableHide();
+            }
+        }
+        private void LogTableHide()
+        {
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Percent, 0);
+            LogToggle.Text = "Show Logs";
+
+        }
+
+        private void LogTableShow()
+        {
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Percent, 45);
+            LogToggle.Text = "Hide Logs";
+        }
+
+        private void RefreshLogs_Click_2(object sender, EventArgs e)
+        {
+            SetTextBox1();
+            dataGridViewLogs.Refresh();
+        }
+
+        private void AddToLogRow(string[] row, string log = null, string GUID = null, string result = null)
+        {
+            // 0 = #
+            // 1 = Line
+            // 2 = Result
+            // 3 = Updates
+            // 4 = GUID
+            // 5 = Logs
+
+            // add the GUID to the cell if GUID is not null
+            if (GUID != null)
+            {
+                if (row[4] == null)
+                {
+                    row[3] = "1";
+                    row[4] = GUID;
+                }
+                else
+                {
+                    row[3] = (int.Parse(row[3]) + 1).ToString();
+                    row[4] += " " + GUID;
+                }
+            }
+
+            // Add the logs to the log cell
+            if (log != null)
+            {
+                if (row[5] == null)
+                {
+                    row[5] = log;
+                }
+                else
+                {
+                    row[5] += " | " + log;
+                }
+            }
+
+
+            // If a result is provided, add it to the result cell
+            if (result == null)
+            { return; }
+            else
+            {
+                row[2] = result;
+            }
+        }
+
+        #endregion New Logging
+
+        #endregion Logging
+
+        #region Clearing
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            ///CLEAR ALL
+            xlWorkBook = null;
+            xlWorkSheet = null;
+            xlRange = null;
+            xlApp = null;
+
+            settingsEntity.SelectedItem = null;
+            settingsLookupFoundMultipleRecords.Visible = false;
+            settingsCrmAction.SelectedIndex = 0;
+            settingsLookupFoundMultipleRecords.SelectedIndex = 0;
+            settingsOptionSetValuesOrLabel.SelectedIndex = 0;
+            settingsKeyFoundMultipleRecords.SelectedIndex = 0;
+            settings.Reset();
+
+            labelOptionSetValuesOrLabel.Visible = false;
+            settingsOptionSetValuesOrLabel.Visible = false;
+            labelLookupFoundMultipleRecords.Visible = false;
+
+            mainTableLayout.RowStyles[1] = new RowStyle(SizeType.Percent, 0);
+            saveSettingsButton.Enabled = false;
+            loadSettingsButton.Enabled = false;
+            setInstructionVisibility(true);
+            settingsPanel.Enabled = false;
+            dataGridViewMapping.Enabled = false;
+
+            EmptyDataGrid();
+            CRMField.Items.Clear();
+        }
+
         private void EmptyDataGrid()
         {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns["lkpTargetEntity"].Visible = false;
-            dataGridView1.Columns["lkpTargetfield"].Visible = false;
-            dataGridView1.Columns["Truevalue"].Visible = false;
-            dataGridView1.Columns["Falsevalue"].Visible = false;
-            dataGridView1.Columns["DefaultValue"].Visible = false;
+            dataGridViewMapping.Rows.Clear();
+            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = false;
+            dataGridViewMapping.Columns["lkpTargetfield"].Visible = false;
+            dataGridViewMapping.Columns["Truevalue"].Visible = false;
+            dataGridViewMapping.Columns["Falsevalue"].Visible = false;
+            dataGridViewMapping.Columns["DefaultValue"].Visible = false;
         }
 
-        private void GetFile()
-        {
-            openFileDialog1.Title = "Excel File to Import";
-            openFileDialog1.FileName = "";
-            openFileDialog1.Filter = "Excel File|*.xlsx;*.xls";
-            DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
-            {
-                EmptyDataGrid();
-                string file = openFileDialog1.FileName;
-                try
-                {
-                    sFileName = openFileDialog1.FileName;
+        #endregion Clearing
 
-                    if (sFileName.Trim() != "")
+        #region Sidebar Options
+        
+        private void rowStartNum_ValueChanged(object sender, EventArgs e)
+        {
+            // Set row end equal to start if start is after end
+            if (rowEndNum.Value <= rowStartNum.Value) {
+                rowEndNum.Value = rowStartNum.Value;
+            }
+            // Make the minimum equal to the new start
+            rowEndNum.Minimum = new decimal(new int[] {
+                        (int) rowStartNum.Value,
+                        0,
+                        0,
+                        0
+            });
+        }
+
+        private void settingsEntity_DropDownClosed(object sender, EventArgs e)
+        {
+            if (settingsEntity.SelectedItem != null)
+            {
+                settings.Entity = settingsEntity.SelectedItem.ToString();
+                for (int o = 0; o < dataGridViewMapping.RowCount; o++)
+                {
+                    DataGridViewComboBoxCell data = dataGridViewMapping.Rows[o].Cells[2] as DataGridViewComboBoxCell;
+                    data.Value = null;
+                }
+                ExecuteMethod(InitEntityFields);
+            }
+            else if (settingsEntity.Items.Count == 0)
+            {
+                ExecuteMethod(InitEntities);
+            }
+        }
+
+        private void settingsCrmAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.CrmAction = settingsCrmAction.SelectedItem.ToString();
+            if (settings.CrmAction == "Create")
+            {
+                settingsKeyFoundMultipleRecords.Visible = false;
+                labelKeyFoundMultipleRecords.Visible = false;
+                dataGridViewMapping.Columns[1].Visible = false;
+            }
+            else
+            {
+                settingsKeyFoundMultipleRecords.Visible = true;
+                labelKeyFoundMultipleRecords.Visible = true;
+                dataGridViewMapping.Columns[1].Visible = true;
+            }
+        }
+
+        private void settingsKeyFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
+        }
+
+        private void settingsOptionSetValuesOrLabel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
+        }
+
+        private void settingsLookupFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+        }
+
+
+
+        #endregion Sidebar Options
+
+        #region Data Grid
+
+        private void dataGridViewMapping_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+            switch (e.ColumnIndex)
+            {
+                // If the user changes the CRM Field, check if it is a lookup and process it
+                case 2:
+                    foreach (object attribute in resultsaved.Attributes)
                     {
-                        ReadExcel(sFileName);
+                        AttributeMetadata a = (AttributeMetadata)attribute;
+                        if (a.LogicalName.ToString() == dataGridViewMapping.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString())  //Find the CRM field between the metadata
+                        {
+                            if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
+                            {
+                                processLookupEntity(e.RowIndex);
+                            }
+                            else
+                            {
+                                processNonLookupEntity(e.RowIndex);
+                            }
+                            if (a.AttributeType.ToString() == "Boolean")
+                            {
+                                processBoolean(e.RowIndex);
+                            }
+                            if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
+                            {
+                                processChoice();
+                            }
+                        }
+                    }
+                    break;
+
+                case 4:
+                    dataGridViewMapping.Rows[e.RowIndex].Cells["lkpTargetfield"].Value = null;
+                    processLookupField(e.RowIndex);
+                    break;
+            }
+        }
+        private void processLookupEntity(int row)
+        {
+            // make the lookup columns visible
+            dataGridViewMapping.Columns["lkpTargetEntity"].Visible = true;
+            dataGridViewMapping.Columns["lkpTargetfield"].Visible = true;
+            labelLookupFoundMultipleRecords.Visible = true;
+            settingsLookupFoundMultipleRecords.Visible = true;
+
+            //Flag row as lookup
+            lookupscount++;
+            dataGridViewMapping.Rows[row].Cells["IsLookup"].Value = true;
+
+            // Unlock the lookup fields
+            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell;
+            data1.ReadOnly = false;
+            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[row].Cells[5] as DataGridViewComboBoxCell;
+            data2.ReadOnly = false;
+            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+        }
+        private void processLookupField(int row)
+        {
+            string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
+            InitLookupFields(lkpentityname, row);
+        }
+
+        private void processNonLookupEntity(int row)
+        {
+            // set is Lookup to false
+            dataGridViewMapping.Rows[row].Cells["IsLookup"].Value = false;
+
+            // Lock the lookup fields
+            DataGridViewComboBoxCell data1 = dataGridViewMapping.Rows[row].Cells[4] as DataGridViewComboBoxCell;
+            data1.ReadOnly = true;
+            data1.Value = null;
+            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
+            DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[row].Cells[5] as DataGridViewComboBoxCell;
+            data2.ReadOnly = true;
+            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
+            data2.Value = null;
+        }
+
+        private void processBoolean(int row)
+        {
+            dataGridViewMapping.Columns["Truevalue"].Visible = true;
+            dataGridViewMapping.Columns["Falsevalue"].Visible = true;
+            dataGridViewMapping.Columns["DefaultValue"].Visible = true;
+            DataGridViewCell databooltrue = dataGridViewMapping.Rows[row].Cells["Truevalue"] as DataGridViewCell;
+            databooltrue.ReadOnly = false;
+            databooltrue.Style.BackColor = Color.LightGray;
+            DataGridViewCell databoolfalse = dataGridViewMapping.Rows[row].Cells["Falsevalue"] as DataGridViewCell;
+            databoolfalse.ReadOnly = false;
+            databoolfalse.Style.BackColor = Color.LightGray;
+            DataGridViewCell databooldefault = dataGridViewMapping.Rows[row].Cells["DefaultValue"] as DataGridViewCell;
+            databooldefault.ReadOnly = false;
+            databooldefault.Style.BackColor = Color.LightGray;
+
+            //fetch for true and false boolean values
+            RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
+            {
+                EntityLogicalName = settingsEntity.SelectedItem.ToString(),
+                LogicalName = Convert.ToString((dataGridViewMapping.Rows[row].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString()),
+                RetrieveAsIfPublished = true
+            };
+            RetrieveAttributeResponse retrieveAttributeResponse = (RetrieveAttributeResponse)Service.Execute(retrieveAttributeRequest);
+            BooleanAttributeMetadata retrievedBooleanAttributeMetadata = (BooleanAttributeMetadata)retrieveAttributeResponse.AttributeMetadata;
+            string boolTextTrue = retrievedBooleanAttributeMetadata.OptionSet.TrueOption.Label.UserLocalizedLabel.Label;
+            string boolTextFalse = retrievedBooleanAttributeMetadata.OptionSet.FalseOption.Label.UserLocalizedLabel.Label;
+            bool boolDefault = retrievedBooleanAttributeMetadata.DefaultValue.Value;
+            string boolTextDefault;
+
+            if (boolDefault)
+                boolTextDefault = boolTextTrue;
+            else
+                boolTextDefault = boolTextFalse;
+
+            dataGridViewMapping.Rows[row].Cells["Truevalue"].Value = boolTextTrue;
+            dataGridViewMapping.Rows[row].Cells["Falsevalue"].Value = boolTextFalse;
+            dataGridViewMapping.Rows[row].Cells["DefaultValue"].Value = boolTextDefault;
+        }
+
+        private void processChoice()
+        {
+            labelOptionSetValuesOrLabel.Visible = true;
+            settingsOptionSetValuesOrLabel.Visible = true;
+        }
+
+        private void ProcessFields()
+        {
+            if (dataGridViewMapping.RowCount == 0)
+            {
+                MessageBox.Show("Please BROWSE EXCEL FILE and Pick your entity and fields mapping first.");
+                return;
+            }
+            dataGridViewMapping.CurrentCell = dataGridViewMapping.Rows[0].Cells[0];
+            string acrmfield;
+            int dRow;
+            lookupscount = 0;
+            for (dRow = 0; dRow < dataGridViewMapping.RowCount; dRow++)
+            {
+                string lkpentityname = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
+                acrmfield = Convert.ToString((dataGridViewMapping.Rows[dRow].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString());
+                if (resultsaved is null)
+                { return; }
+                foreach (object attribute in resultsaved.Attributes)
+                {
+                    AttributeMetadata a = (AttributeMetadata)attribute;
+                    if (a.LogicalName.ToString() == acrmfield)  //Find the CRM field between the metadata
+                    {
+                        if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
+                        {
+                            processLookupEntity(dRow);
+                            processLookupField(dRow);
+                        }
+                        else
+                        {
+                            processNonLookupEntity(dRow);
+                        }
+                        if (a.AttributeType.ToString() == "Boolean")
+                        {
+                            processBoolean(dRow);
+                        }
+                        if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
+                        {
+                            processChoice();
+                        }
                     }
                 }
-                catch (IOException)
-                {
+            }
+            IsReadyToImport = true;
+            importDataButton.Enabled = true;
+        }
 
+        private void ProcessFieldsButton_Click(object sender, EventArgs e)
+        {
+            ExecuteMethod(ProcessFields);
+        }
+
+        private void SetMappingTableFromDataGridView()
+        {
+
+            tableMapping.Clear();
+
+            foreach (DataGridViewRow row in dataGridViewMapping.Rows)
+            {
+                DataRow dRow = tableMapping.NewRow();
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value == null)
+                    {
+                        if (cell.ColumnIndex == 1 || cell.ColumnIndex == 3)
+                        {
+                            dRow[cell.ColumnIndex] = false;
+                        }
+                        else
+                        {
+                            dRow[cell.ColumnIndex] = DBNull.Value;
+                        }
+                    }
+                    else
+                    {
+                        dRow[cell.ColumnIndex] = cell.Value;
+                    }
+                }
+                tableMapping.Rows.Add(dRow);
+            }
+
+            SerializableDataTable serializableMappingTable = new SerializableDataTable(tableMapping);
+            settings.XMLTableMapping = serializableMappingTable;
+        }
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.Exception is ArgumentException && e.Context == DataGridViewDataErrorContexts.Commit)
+            {
+                DataGridView view = (DataGridView)sender;
+                DataGridViewComboBoxColumn column = (DataGridViewComboBoxColumn)view.Columns[e.ColumnIndex];
+                string value = view.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                MessageBox.Show($"Error in column '{column.Name}' at row {e.RowIndex + 1}. Value '{value}' is not valid.");
+            }
+        }
+
+        #endregion Data Grid
+
+        #region Settings
+
+        private void saveSettingsButton_Click(object sender, EventArgs e)
+        {
+            // Ensure that the mapping table in Settings reflects the current state of the table.
+            SetMappingTableFromDataGridView();
+
+            DialogResult result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string fileName = saveFileDialog.FileName;
+                try
+                {
+                    if (fileName.Trim() != "")
+                    {
+                        settings.SaveSettingsToXML(fileName);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Failed to save settings file correctly:" + ex.Message.ToString());
                 }
             }
         }
-        private void ToolStripButton1_Click(object sender, EventArgs e)
-        {
-            GetFile();
-        }
 
-        private void Label1_Click(object sender, EventArgs e)
+        private void loadSettingsButton_Click(object sender, EventArgs e)
         {
+            openFileDialog.Title = "Settings File";
+            openFileDialog.FileName = "";
+            openFileDialog.Filter = "XML File|*.xml";
+            // Set the default directory of the file dialog to be the current working directory / Settings
+            openFileDialog.InitialDirectory = Path.Combine(Environment.CurrentDirectory);
 
-        }
-
-        private void ToolStripButton1_Click_1(object sender, EventArgs e)
-        {
-            if (dataGridView1.RowCount == 0)
+            DialogResult result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                MessageBox.Show("Please BROWSE EXCEL FILE first and Pick your entity and fields mapping before Lauching the Import to CRM.");
+                string fileName = openFileDialog.FileName;
+                try
+                {
+                    if (fileName.Trim() != "")
+                    {
+                        settings.LoadSettingsFromXML(fileName);
+                        settingsEntity.SelectedItem = settings.Entity;
+                        InitEntityFields();
+                        settingsCrmAction.SelectedItem = settings.CrmAction;
+                        settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
+                        settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
+                        settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
+                        dataGridViewMapping.Rows.Clear();
+                        
+
+                        // Add rows
+                        foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
+                        {
+                            int rowIndex = dataGridViewMapping.Rows.Add(row.ItemArray);
+                            foreach (DataGridViewColumn col in dataGridViewMapping.Columns)
+                            {
+                                if (col is DataGridViewComboBoxColumn)
+                                {
+                                    DataGridViewComboBoxColumn comboCol = col as DataGridViewComboBoxColumn;
+                                    if (!comboCol.Items.Contains(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value))
+                                    {
+                                        comboCol.Items.Add(dataGridViewMapping.Rows[rowIndex].Cells[col.Index].Value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Failed to load Settings file correctly:" + ex.Message.ToString());
+                }
+            }
+            
+        }
+
+        #endregion Settings
+
+        #region Import
+        private void ImportDataButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewMapping.RowCount == 0)
+            {
+                MessageBox.Show("Please choose an Excel file to import, pick your target entity and field mapping before Importing to CRM.");
                 return;
             }
 
-            dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
+            dataGridViewMapping.CurrentCell = dataGridViewMapping.Rows[0].Cells[0];
 
-            if (crmAction.SelectedIndex != 1)
+            if (settingsCrmAction.SelectedIndex != 1)
             {
                 bool wehavekey = false;
-                foreach (DataGridViewRow dataGridRow in dataGridView1.Rows)
+                foreach (DataGridViewRow dataGridRow in dataGridViewMapping.Rows)
                 {
                     if (dataGridRow.Cells["isKey"].Value != null && (bool)dataGridRow.Cells["isKey"].Value)
                     {
                         wehavekey = true;
+                        break;
                     }
                 }
                 if (!wehavekey)
@@ -492,286 +986,62 @@ namespace DataImport
             }
         }
 
-        private void ToolStripButton2_Click(object sender, EventArgs e)
+        // Shows or hides the instruction box when clicked
+        private void toggleInstructions_Click(object sender, EventArgs e)
         {
-            ExecuteMethod(InitEntityFields);
+            setInstructionVisibility(!instructionBox.Visible);
         }
 
-        private void ToolStripButton3_Click(object sender, EventArgs e)
+        // sets the visibility of the instruction box and the label of the toggle for instructions.
+        private void setInstructionVisibility(bool makeVisible)
         {
-            ///CLEAR ALL
-            xlWorkBook = null;
-            xlWorkSheet = null;
-            xlRange = null;
-            xlApp = null;
-            pickedEntity.SelectedItem = null;
-            EmptyDataGrid();
-            label2.Visible = false;
-            optionSetVL.Visible = false;
-            label4.Visible = false;
-            comboBox1.Visible = false;
-            crmAction.SelectedIndex = 0;
-            CRMField.Items.Clear();
-            dataGridView1.Refresh();
-            richTextBox1.Text = "";
-            richTextBoxErrors.Text = "";
-            richTextBoxImported.Text = "";
-            richTextBoxAll.Text = "";
-            richTextBoxWarning.Text = "";
-            flaglookup = false;
-            lookupscount = 0;
-            IsReadyToImport = false;
-            textRowCount.Text = "";
-            textBoxSuccess.Text = "";
-            successnumber = 0;
-            textBoxError.Text = "";
-            errornumber = 0;
-            textCreated.Text = "";
-            creatednumber = 0;
-            textUpdated.Text = "";
-            updatednumber = 0;
-            textDeleted.Text = "";
-            deletednumber = 0;
-            comboBox1.SelectedIndex = 0;
-            textView.SelectedIndex = 0;
-            optionSetVL.SelectedIndex = 0;
-            keyRecords.SelectedIndex = 0;
-        }
-        private void ProcessFields()
-        {
-            if (dataGridView1.RowCount == 0)
+            if (makeVisible)
             {
-                MessageBox.Show("Please BROWSE EXCEL FILE and Pick your entity and fields mapping first.");
-                return;
-            }
-            dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
-            string acrmfield;
-            int dRow;
-            lookupscount = 0;
-            for (dRow = 0; dRow < dataGridView1.RowCount; dRow++)
-            {
-                string lkpentityname = Convert.ToString((dataGridView1.Rows[dRow].Cells[4] as DataGridViewComboBoxCell).FormattedValue.ToString());
-                acrmfield = Convert.ToString((dataGridView1.Rows[dRow].Cells[2] as DataGridViewComboBoxCell).FormattedValue.ToString());
-                foreach (object attribute in resultsaved.Attributes)
-                {
-                    AttributeMetadata a = (AttributeMetadata)attribute;
-                    if (a.LogicalName.ToString() == acrmfield)  //Find the CRM field between the metadata
-                    {
-                        DataGridViewCheckBoxCell chk = dataGridView1.Rows[dRow].Cells[3] as DataGridViewCheckBoxCell;
-                        if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
-                        {
-                            dataGridView1.Columns["lkpTargetEntity"].Visible = true;
-                            dataGridView1.Columns["lkpTargetfield"].Visible = true;
-                            label4.Visible = true;
-                            comboBox1.Visible = true;
-                            //Flag row as lookup
-                            lookupscount++;
-                            chk.Value = true;
-                            DataGridViewComboBoxCell data1 = dataGridView1.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
-                            data1.ReadOnly = false;
-                            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
-                            DataGridViewComboBoxCell data2 = dataGridView1.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
-                            data2.ReadOnly = false;
-                            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
-                            InitLookupFields(lkpentityname, dRow);
-                        }
-                        else
-                        {
-                            //Décocher la case
-                            chk.Value = false;
-                            //Bloquer la grille des non lookup
-                            DataGridViewComboBoxCell data1 = dataGridView1.Rows[dRow].Cells[4] as DataGridViewComboBoxCell;
-                            data1.ReadOnly = true;
-                            data1.Value = null;
-                            data1.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                            DataGridViewComboBoxCell data2 = dataGridView1.Rows[dRow].Cells[5] as DataGridViewComboBoxCell;
-                            data2.ReadOnly = true;
-                            data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                            data2.Value = null;
-                        }
-                        if (a.AttributeType.ToString() == "Boolean")
-                        {
-                            dataGridView1.Columns["Truevalue"].Visible = true;
-                            dataGridView1.Columns["Falsevalue"].Visible = true;
-                            dataGridView1.Columns["DefaultValue"].Visible = true;
-                            DataGridViewCell databooltrue = dataGridView1.Rows[dRow].Cells[6] as DataGridViewCell;
-                            databooltrue.ReadOnly = false;
-                            databooltrue.Style.BackColor = Color.LightGray;
-                            DataGridViewCell databoolfalse = dataGridView1.Rows[dRow].Cells[7] as DataGridViewCell;
-                            databoolfalse.ReadOnly = false;
-                            databoolfalse.Style.BackColor = Color.LightGray;
-                            DataGridViewCell databooldefault = dataGridView1.Rows[dRow].Cells[8] as DataGridViewCell;
-                            databooldefault.ReadOnly = false;
-                            databooldefault.Style.BackColor = Color.LightGray;
+                instructionBox.Visible = true;
+                toggleInstructions.Text = "Hide instructions";
 
-                            //fetch for true and false boolean values
-                            RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
-                            {
-                                EntityLogicalName = pickedEntity.SelectedItem.ToString(),
-                                LogicalName = acrmfield,
-                                RetrieveAsIfPublished = true
-                            };
-                            RetrieveAttributeResponse retrieveAttributeResponse = (RetrieveAttributeResponse)Service.Execute(retrieveAttributeRequest);
-                            BooleanAttributeMetadata retrievedBooleanAttributeMetadata = (BooleanAttributeMetadata)retrieveAttributeResponse.AttributeMetadata;
-                            string boolTextTrue = retrievedBooleanAttributeMetadata.OptionSet.TrueOption.Label.UserLocalizedLabel.Label;
-                            string boolTextFalse = retrievedBooleanAttributeMetadata.OptionSet.FalseOption.Label.UserLocalizedLabel.Label;
-                            bool boolDefault = retrievedBooleanAttributeMetadata.DefaultValue.Value;
-                            string boolTextDefault;
-
-                            if (boolDefault)
-                                boolTextDefault = boolTextTrue;
-                            else
-                                boolTextDefault = boolTextFalse;
-
-                            dataGridView1.Rows[dRow].Cells["Truevalue"].Value = boolTextTrue;
-                            dataGridView1.Rows[dRow].Cells["Falsevalue"].Value = boolTextFalse;
-                            dataGridView1.Rows[dRow].Cells["DefaultValue"].Value = boolTextDefault;
-                        }
-                        if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
-                        {
-                            label2.Visible = true;
-                            optionSetVL.Visible = true;
-                            optionSetVL.SelectedIndex = 1;
-                        }
-                    }
-                }
-            }
-            IsReadyToImport = true;
-        }
-        
-        private void ToolStripButton2_Click_1(object sender, EventArgs e)
-        {
-            ExecuteMethod(ProcessFields);
-        }
-        private void SplitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
-        }
-
-        private void DataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void Lookuprelatedfields_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PickedEntity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ProgressBar1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CopyText_Click(object sender, EventArgs e)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (string line in richTextBox1.Lines)
-                sb.AppendLine(line);
-            if (sb.Length != 0)
-                Clipboard.SetText(sb.ToString());
-            else
-                MessageBox.Show("Logs are empty");
-        }
-
-        private void Labelprogress_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button1_Click_2(object sender, EventArgs e)
-        {
-            SetTextBox1();
-        }
-
-        private void CrmAction_DropDownClosed(object sender, EventArgs e)
-        {
-            if (crmAction.SelectedItem.ToString() == "CREATE")
-            {
-                keyRecords.Visible = false;
-                label6.Visible = false;
-                dataGridView1.Columns[1].Visible = false;
             }
             else
             {
-                keyRecords.Visible = true;
-                label6.Visible = true;
-                dataGridView1.Columns[1].Visible = true;
+                instructionBox.Visible = false;
+                toggleInstructions.Text = "Show instructions";
             }
-        }
-
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void blogURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://www.d365tips.com/home/xrmtoolbox-dataimport");
         }
 
         private void ImportExcel()
         {
             //Verification que L'action CRM est bien choisie
-            if (crmAction.SelectedItem == null)
+            if (settingsCrmAction.SelectedItem == null)
             {
-                //MessageBox.Show("Please choose a CRM action before Importing the file to CRM");
+                MessageBox.Show("Please choose a CRM action before importing a file to CRM");
                 return;
             }
-            DataTable dt = new DataTable();
 
-            foreach (DataGridViewColumn col in dataGridView1.Columns)
-            {
-                dt.Columns.Add(col.Name);
-            }
+            SetMappingTableFromDataGridView();
+            DataTable dt = tableMapping;
 
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                DataRow dRow = dt.NewRow();
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    dRow[cell.ColumnIndex] = cell.Value;
-                    if (dRow[cell.ColumnIndex] == DBNull.Value)
-                    {
-                        if (cell.ColumnIndex == 1 || cell.ColumnIndex == 3)
-                            dRow[cell.ColumnIndex] = false;
-                        else
-                        dRow[cell.ColumnIndex] = "";
-                    }
-                }
-                dt.Rows.Add(dRow);
-            }
-            string mcrmAction = crmAction.SelectedItem.ToString();
-            string mcomboBox1 = comboBox1.SelectedItem.ToString();
-            string moptionSetVL = optionSetVL.SelectedItem.ToString();
-            int mkeyRecords = keyRecords.SelectedIndex;
+            // Ensure all visible settings are applied
+            settings.Entity = settingsEntity.SelectedItem.ToString();
+            settings.CrmAction = settingsCrmAction.SelectedItem.ToString();
+            settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+            settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
+            settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
+
             successnumber = 0;
             errornumber = 0;
             creatednumber = 0;
             updatednumber = 0;
             deletednumber = 0;
-            textBoxSuccess.Text = successnumber.ToString();
-            textBoxError.Text = errornumber.ToString();
-            textCreated.Text = creatednumber.ToString();
-            textUpdated.Text = updatednumber.ToString();
-            textDeleted.Text = deletednumber.ToString();
-            toolStripButton1.Enabled = false;
-            toolStripButton2.Enabled = false;
+            toolStripStatusSuccessNum.Text = successnumber.ToString();
+            toolStripStatusErrorNum.Text = errornumber.ToString();
+            toolStripStatusCreatedNum.Text = creatednumber.ToString();
+            toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+            toolStripStatusDeletedNum.Text = deletednumber.ToString();
+            importDataButton.Enabled = false;
+            processFieldsButton.Enabled = false;
+            LogTableShow();
+            importRunNumber++;
+
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Importing...",
@@ -785,12 +1055,12 @@ namespace DataImport
                     Guid _recordId = new Guid();
                     bool istoimport;
                     
-                    richTextBoxErrors.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
-                    richTextBoxImported.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
-                    richTextBoxAll.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
-                    richTextBoxWarning.Text += "STARTING " + mcrmAction + " ACTION ON " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxErrors.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine;
+                    richTextBoxImported.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxAll.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine + Environment.NewLine + "✓LINE1" + " - COLUMNS HEADER";
+                    richTextBoxWarning.Text += "Starting " + settings.CrmAction + " action on " + DateTime.Now.ToString() + Environment.NewLine;
                     
-                    for (iRow = 2; iRow <= xlRange.Rows.Count; iRow++)  // START FROM THE SECOND ROW.
+                    for (iRow = (int) rowStartNum.Value; iRow <= (int) rowEndNum.Value; iRow++)  // Iterate over the selected rows
                     {
                         if (wcl.CancellationPending == true)
                         {
@@ -799,13 +1069,17 @@ namespace DataImport
                         }
 
                         Entity record = null;
-                        record = new Entity(strentityname);
+                        record = new Entity(settings.Entity);
                         istoimport = true;
                         flaglookup = false;
 
-                        QueryExpression qe = new QueryExpression
+                        // Add a row to the log table and set current rows
+                        int rowNumber = tableLogEntries.Rows.Count + 1;
+                        string[] row = { importRunNumber.ToString(), iRow.ToString(), null, null, null, null };
+
+                    QueryExpression qe = new QueryExpression
                         {
-                            EntityName = strentityname,
+                            EntityName = settings.Entity,
                             ColumnSet = new ColumnSet()
                         };
                         
@@ -821,8 +1095,12 @@ namespace DataImport
                             //    break;
                             logicalnm[iCol - 1] = myfieldlabel;
                             string myfieldtype = "";
-                            if (xlRange.Cells[iRow, iCol].value == null || xlRange[1, iCol].value == "")
+                            dynamic cellValue = xlRange.Cells[iRow, iCol].value;
+
+                            // If the cell is blank, or header is blanked
+                            if (cellValue == null || xlRange[1, iCol].value == "")
                             {
+                                // If we should clear CRM value then set the value to clear in the record
                                 if (dt.Rows[iCol - 1][9].ToString() == "Clears CRM value")
                                 {
                                     foreach (object attribute in resultsaved.Attributes)
@@ -868,6 +1146,8 @@ namespace DataImport
                                     if (strIsKey)
                                     {
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Null));
+                                        // Update Logs
+                                        AddToLogRow(row, "⚠ EXCEL LINE contains an empty key field: " + myfieldlabel);
                                         richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
                                         richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - EXCEL LINE contains an empty key field: " + myfieldlabel;
                                     }
@@ -875,7 +1155,8 @@ namespace DataImport
                             }
                             else //Record not empty
                             {
-                                //SET UP FIELDS OF THE ENTITY
+                                //SET UP FIELDS OF THE ENTITY --
+                                // TODO: this iterates through each attribute until it finds the matching one. Must be better way of doing that
                                 foreach (object attribute in resultsaved.Attributes)
                                 {
                                     AttributeMetadata a = (AttributeMetadata)attribute;
@@ -885,7 +1166,7 @@ namespace DataImport
                                         if (myfieldtype == "Picklist")
                                         {
                                             //// OPTIONSET LABELS
-                                            if (moptionSetVL == "OPTIONSET LABELS")
+                                            if (settings.OptionSetValuesOrLabel == "Labels")
                                             {
 
                                                 var picklistMetadata = (PicklistAttributeMetadata)resultsaved.Attributes.FirstOrDefault(myattribute => String.Equals(myattribute.LogicalName, a.LogicalName, StringComparison.OrdinalIgnoreCase));
@@ -894,17 +1175,19 @@ namespace DataImport
                                                 try
                                                 {
                                                     string xlvalue;
-                                                    if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
-                                                        xlvalue = xlRange.Cells[iRow, iCol].value;
+                                                    if (cellValue.Equals(typeof(String)))
+                                                        xlvalue = cellValue;
                                                     else
-                                                        xlvalue = xlRange.Cells[iRow, iCol].value.ToString();
+                                                        xlvalue = cellValue.ToString();
                                                     int activeValue = (int)options.Where(o => o.Text == xlvalue).Select(o => o.Value).FirstOrDefault();
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue(activeValue);
                                                 }
                                                 catch (InvalidOperationException ex)
                                                 {
-                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + xlRange.Cells[iRow, iCol].value + " - " + ex.Message.ToString();
-                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + xlRange.Cells[iRow, iCol].value + " - " + ex.Message.ToString();
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ Couldnt match Optionset Label : " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2 + " - " + ex.Message.ToString());
+                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + cellValue + " - " + ex.Message.ToString();
+                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match Optionset Label : " + cellValue + " - " + ex.Message.ToString();
                                                     //SetTextBox1();
                                                 }
 
@@ -913,23 +1196,27 @@ namespace DataImport
                                             }
                                             else //OPTIONSET VALUES
                                             {
-                                                if (xlRange.Cells[iRow, iCol].value.Equals(typeof(String)))
+                                                if (cellValue is String)
                                                 {
                                                     int intvaluecell = 0;
                                                     try
                                                     {
-                                                        intvaluecell = System.Convert.ToInt32(xlRange.Cells[iRow, iCol].value);
+                                                        intvaluecell = System.Convert.ToInt32(cellValue);
                                                         record[logicalnm[iCol - 1]] = new OptionSetValue(intvaluecell);
                                                     }
                                                     catch (FormatException)
                                                     {
-                                                        MessageBox.Show("NOT A VALID INTEGER FOR AN OPTIONSETVALUE FIELD TYPE");
+                                                        // Update Logs
+                                                        AddToLogRow(row, "❌ Couldnt match cell to Option Set value: " + cellValue);
+                                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
+                                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
                                                     }
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue();
                                                 }
                                                 else
                                                 {
-                                                    int avalue = (int)xlRange.Cells[iRow, iCol].value;
+
+                                                    int avalue = (int)cellValue;
                                                     record[logicalnm[iCol - 1]] = new OptionSetValue(avalue);
                                                 }
                                             }
@@ -977,6 +1264,8 @@ namespace DataImport
                                             }
                                             else
                                             {
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ Couldnt match boolean value: " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2 + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString());
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match boolean value : " + xlRange.Cells[iRow, iCol].value + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString();
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match boolean value : " + xlRange.Cells[iRow, iCol].value + " - REASON: Only available options are: " + dt.Rows[iCol - 1]["Truevalue"].ToString() + " and " + dt.Rows[iCol - 1]["Falsevalue"].ToString();
                                             }
@@ -999,6 +1288,8 @@ namespace DataImport
                                                 }
                                                 catch (FormatException)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ MultiSelect OptionSet field : " + myfieldlabel + ": " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2.ToString() + " is not valid.");
                                                     richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                                     richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                                 }
@@ -1034,6 +1325,8 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ DateTime field : " + myfieldlabel + ": " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2.ToString() + " is not valid.");
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - DateTime field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - DateTime field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                         }
@@ -1052,7 +1345,10 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show("NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE");
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE: " + xlRange.Cells[iRow, iCol].value.ToString());
+                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE: " + xlRange.Cells[iRow, iCol].value.ToString();
                                         }
                                     }
                                     else
@@ -1071,8 +1367,11 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show("NOT A VALID DECIMAL FOR A CURRENCY FIELD TYPE");
-                                        }
+                                        // Update Logs
+                                        AddToLogRow(row, "⚠ NOT A VALID DECIMAL: " + xlRange.Cells[iRow, iCol].value.ToString());
+                                        richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                        richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID DECIMAL: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                    }
                                 }
                                 else if (myfieldtype == "Integer")
                                 {
@@ -1086,7 +1385,10 @@ namespace DataImport
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show("NOT A VALID Integer FOR A CURRENCY FIELD TYPE");
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ NOT A VALID INTEGER: " + xlRange.Cells[iRow, iCol].value.ToString());
+                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID INTEGER: " + xlRange.Cells[iRow, iCol].value.ToString();
+                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - NOT A VALID INTEGER: " + xlRange.Cells[iRow, iCol].value.ToString();
                                         }
                                     }
                                     else
@@ -1161,6 +1463,8 @@ namespace DataImport
                                             }
                                             catch (FormatException)
                                             {
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ MultiSelect OptionSet field : " + myfieldlabel + ": " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2.ToString() + " is not valid.");
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - MultiSelect OptionSet field : " + myfieldlabel + ": " + xlRange.Cells[iRow, iCol].value.ToString() + " is not valid.";
                                             }
@@ -1180,7 +1484,7 @@ namespace DataImport
                                     /*///ADD CONDITION FOR KEY
                                     if (myfieldtype != "Lookup" && myfieldtype != "Customer" && myfieldtype != "Boolean" && myfieldtype != "Uniqueidentifier")
                                     {
-                                        //dcc = (DataGridViewComboBoxCell)dataGridView1.Rows[iCol - 1].Cells[2];
+                                        //dcc = (DataGridViewComboBoxCell)dataGridViewMapping.Rows[iCol - 1].Cells[2];
                                         //int indexx = dcc.Items.IndexOf(dcc.Value);
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.Equal, qestr));
                                     }*/
@@ -1188,7 +1492,7 @@ namespace DataImport
                             }
                         }
                         //START/////////////////////////////////////////////////////////////////////////////////////////////
-                        if (flaglookup && mcrmAction != "DELETE")
+                        if (flaglookup && settings.CrmAction != "Delete")
                         {
                             QueryExpression lookupquery = new QueryExpression();
                             lookupquery.ColumnSet = new ColumnSet();
@@ -1234,23 +1538,29 @@ namespace DataImport
                                     {
                                         if (mycollect.Entities.Count > 1)
                                         {
-                                            if (mcomboBox1 == "IMPORT CRM RECORD WITH CLEARED LOOKUP")
+                                            if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
                                             {
                                                 record[distcVec[m]] = null;
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                             }
-                                            else if (mcomboBox1 == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
+                                            else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
                                             {
                                                 record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.");
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
                                                 if (distcKeyVec[m])
                                                     qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
                                             }
-                                            else if (mcomboBox1 == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
+                                            else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
                                             {
                                                 istoimport = false;
+                                                // Update Logs
+                                                AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
                                                 richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                                 richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
                                             }
@@ -1265,19 +1575,25 @@ namespace DataImport
                                     else // Didn't find a match
                                     {
                                         record[distcVec[m]] = null;
-                                        if (mcomboBox1 == "IMPORT RECORD WITH CLEARED LOOKUP")
+                                        if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
-                                        else if (mcomboBox1 == "MAP THE FIRST FOUND RECORD TO THE LOOKUP")
+                                        else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
-                                        else if (mcomboBox1 == "SKIP RECORD WITHOUT IMPORTING IT AT ALL")
+                                        else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
                                         {
                                             istoimport = false;
+                                            // Update Logs
+                                            AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.", null, "Not Imported");
                                             richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                         }
@@ -1285,6 +1601,8 @@ namespace DataImport
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
+                                    // Update Logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString()+".  Record will not be imported.  EXCEPTION MESSAGE: "+ ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message;
                                     istoimport = false;
@@ -1297,11 +1615,13 @@ namespace DataImport
                         {
 
                             //CREATE
-                            if (mcrmAction == "CREATE")
+                            if (settings.CrmAction == "Create")
                             {
                                 try
                                 {
                                     _recordId = Service.Create(record);
+                                    // Update Logs
+                                    AddToLogRow(row, null, _recordId.ToString(), "Imported");
                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                     successnumber++;
@@ -1309,6 +1629,8 @@ namespace DataImport
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
+                                    // Update Logs
+                                    AddToLogRow(row, "❌ Exception Message for CREATE: " + (ex.Message), null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                     errornumber++;
@@ -1316,14 +1638,14 @@ namespace DataImport
                             }
 
                             //UPDATE
-                            else if (mcrmAction == "UPDATE")
+                            else if (settings.CrmAction == "Update")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                        if (ec.Entities.Count == 1 || settings.KeyFoundMultipleRecords == "Do action for all")
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1331,6 +1653,8 @@ namespace DataImport
                                                 try
                                                 {
                                                     Service.Update(record);
+                                                    // Update Logs
+                                                    AddToLogRow(row, null, entity.Id.ToString(), "Updated");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     successnumber++;
@@ -1338,6 +1662,8 @@ namespace DataImport
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "❌ Exception Message for UPDATE: " + (ex.Message), null, "Failed");
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     errornumber++;
@@ -1346,6 +1672,8 @@ namespace DataImport
                                         }
                                         else
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "❌ LINE NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.", null, "Failed");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             errornumber++;
@@ -1353,6 +1681,8 @@ namespace DataImport
                                     }
                                     else
                                     {
+                                        // Update Logs
+                                        AddToLogRow(row, "❌ LINE NOT FOUND TO UPDATE", null, "Failed");
                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO UPDATE";
                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO UPDATE";
                                         errornumber++;
@@ -1360,6 +1690,8 @@ namespace DataImport
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
+                                    // Update Logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Updated.  EXCEPTION MESSAGE: " + ex.Message;
                                     errornumber++;
@@ -1367,14 +1699,14 @@ namespace DataImport
                             }
 
                             //UPSERT
-                            else if (mcrmAction == "UPSERT")
+                            else if (settings.CrmAction == "Upsert")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                        if (ec.Entities.Count == 1 || settings.KeyFoundMultipleRecords == "Do action for all")
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
@@ -1382,6 +1714,8 @@ namespace DataImport
                                                 try
                                                 {
                                                     Service.Update(record);
+                                                    // Update Logs
+                                                    AddToLogRow(row, null, entity.Id.ToString(), "Updated");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - UPDATED: " + entity.Id.ToString();
                                                     successnumber++;
@@ -1389,6 +1723,8 @@ namespace DataImport
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "❌ Exception Message for UPDATE: " + (ex.Message), null, "Failed");
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for UPDATE: " + (ex.Message);
                                                     errornumber++;
@@ -1397,6 +1733,8 @@ namespace DataImport
                                         }
                                         else
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "❌ NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             errornumber++;
@@ -1407,6 +1745,8 @@ namespace DataImport
                                         try
                                         {
                                             _recordId = Service.Create(record);
+                                            // Update Logs
+                                            AddToLogRow(row, null, _recordId.ToString(), "Created");
                                             richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                             richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                             successnumber++;
@@ -1414,6 +1754,8 @@ namespace DataImport
                                         }
                                         catch (FaultException<OrganizationServiceFault> ex)
                                         {
+                                            // Update Logs
+                                            AddToLogRow(row, "❌ Exception Message for CREATE" + (ex.Message), null, "Failed");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for CREATE: " + (ex.Message);
                                             errornumber++;
@@ -1423,26 +1765,30 @@ namespace DataImport
                                 }
                                 catch(FaultException < OrganizationServiceFault > ex)
                                 {
+                                    // Update logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Upserted.  EXCEPTION MESSAGE: " + ex.Message;
                                     errornumber++;
                                 }
                             }
-                            else if (mcrmAction == "DELETE")
+                            else if (settings.CrmAction == "Delete")
                             {
                                 try
                                 {
                                     EntityCollection ec = Service.RetrieveMultiple(qe);
                                     if (ec.Entities.Count > 0)
                                     {
-                                        if (ec.Entities.Count == 1 || mkeyRecords == 0)
+                                        if (ec.Entities.Count == 1 || settings.KeyFoundMultipleRecords == "Do action for all")
                                         {
                                             foreach (Entity entity in ec.Entities)
                                             {
                                                 record.Id = entity.Id;
                                                 try
                                                 {
-                                                    Service.Delete(strentityname, record.Id);
+                                                    Service.Delete(settings.Entity, record.Id);
+                                                    // Update logs
+                                                    AddToLogRow(row, null, entity.Id.ToString(), "Deleted");
                                                     richTextBoxImported.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
                                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - DELETED: " + entity.Id.ToString();
                                                     successnumber++;
@@ -1450,6 +1796,8 @@ namespace DataImport
                                                 }
                                                 catch (FaultException<OrganizationServiceFault> ex)
                                                 {
+                                                    // Update logs
+                                                    AddToLogRow(row, "❌ Exception Message for DELETE: " + (ex.Message), null, "Failed");
                                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
                                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Exception Message for DELETE: " + (ex.Message);
                                                     errornumber++;
@@ -1458,6 +1806,8 @@ namespace DataImport
                                         }
                                         else
                                         {
+                                            // Update logs
+                                            AddToLogRow(row, "❌ NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.", null, "Failed");
                                             richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT IMPORTED: Found " + ec.Entities.Count.ToString() + " records.";
                                             errornumber++;
@@ -1465,6 +1815,8 @@ namespace DataImport
                                     }
                                     else
                                     {
+                                        // Update logs
+                                        AddToLogRow(row, "❌ NOT FOUND TO DELETE", null, "Failed");
                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - NOT FOUND TO DELETE: LINE" + iRow;
                                         errornumber++;
@@ -1472,6 +1824,8 @@ namespace DataImport
                                 }
                                 catch (FaultException < OrganizationServiceFault > ex)
                                 {
+                                    // Update logs
+                                    AddToLogRow(row, "❌ Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
                                     richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message;
                                     richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record.  Record will not be Deleted.  EXCEPTION MESSAGE: " + ex.Message;
                                     errornumber++;
@@ -1479,6 +1833,10 @@ namespace DataImport
                             }
                             
                         }
+                        dataGridViewLogs.BeginInvoke(new Action(() =>
+                        {
+                            tableLogEntries.Rows.Add(row);
+                        }));
                         double perr = (iRow - 1) / (1.0 * (xlRange.Rows.Count - 1)) * 100;
                         int perrr = Convert.ToInt32(perr);
                         wcl.ReportProgress(perrr);
@@ -1490,10 +1848,10 @@ namespace DataImport
                     if (xlWorkBook != null) Marshal.ReleaseComObject(xlWorkBook);
                     if (xlApp != null) Marshal.ReleaseComObject(xlApp);
 
-                    richTextBoxImported.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxErrors.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
-                    richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + mcrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxImported.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxErrors.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxWarning.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
+                    richTextBoxAll.Text += Environment.NewLine + Environment.NewLine + settings.CrmAction + " PROCESS FINISHED ON " + DateTime.Now.ToString() + Environment.NewLine + "-----------------------------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine;
                     
                 },
                 ProgressChanged = e =>
@@ -1503,28 +1861,41 @@ namespace DataImport
                 PostWorkCallBack = e =>
                 {
                     // This code is executed in the main thread
-                    toolStripButton1.Enabled = true;
-                    toolStripButton2.Enabled = true;
+                    importDataButton.Enabled = true;
+                    processFieldsButton.Enabled = true;
                     if (textView.SelectedItem.ToString() == "📙 ALL")
                     {
-                        richTextBox1.Text = richTextBoxAll.Text;
+                        logTextBox.Text = richTextBoxAll.Text;
                     }
                     else if (textView.SelectedItem.ToString() == "✓ SUCCESS")
                     {
-                        richTextBox1.Text = richTextBoxImported.Text;
+                        logTextBox.Text = richTextBoxImported.Text;
                     }
                     else if (textView.SelectedItem.ToString() == "❌ ERRORS")
                     {
-                        richTextBox1.Text = richTextBoxErrors.Text;
+                        logTextBox.Text = richTextBoxErrors.Text;
                     }
                     else if (textView.SelectedItem.ToString() == "⚠ WARNINGS")
                     {
-                        richTextBox1.Text = richTextBoxWarning.Text;
+                        logTextBox.Text = richTextBoxWarning.Text;
                     }
-                    textBoxSuccess.Text = successnumber.ToString();
-                    textBoxError.Text = errornumber.ToString();
+                    toolStripStatusSuccessNum.Text = successnumber.ToString();
+                    toolStripStatusErrorNum.Text = errornumber.ToString();
+                    toolStripStatusCreatedNum.Text = creatednumber.ToString();
+                    toolStripStatusUpdatedNum.Text = updatednumber.ToString();
+                    toolStripStatusDeletedNum.Text = deletednumber.ToString();
+                    dataGridViewLogs.ResumeLayout();
+
+                    // Ensure that we have released the Excel spreadsheet
+                    if (xlRange != null) Marshal.ReleaseComObject(xlRange);
+                    if (xlWorkSheet != null) Marshal.ReleaseComObject(xlWorkSheet);
+                    if (xlWorkBook != null) Marshal.ReleaseComObject(xlWorkBook);
+                    if (xlApp != null) Marshal.ReleaseComObject(xlApp);
                 }
             });
         }
+
+
+        #endregion Import
     }
 }

@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Data Import++")]
-[assembly: AssemblyDescription("Create, Update, Upsert, Delete records in CRM by importing an excel file and defining KEY columns.")]
+[assembly: AssemblyDescription("Use Excel to create, update, upsert or delete records in Dynamics. Now with better logging, the ability to save and re use data maps, and faster data entry.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Joseph Merhej")]
-[assembly: AssemblyProduct("Data Import++")]
-[assembly: AssemblyCopyright("Copyright ©  2019 Joseph Merhej")]
+[assembly: AssemblyCompany("Joseph Merhej and Andrew Howes")]
+[assembly: AssemblyProduct("Data Import ++")]
+[assembly: AssemblyCopyright("GNU GPL3")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2019.2.44")]
-[assembly: AssemblyFileVersion("1.2019.2.44")]
+[assembly: AssemblyVersion("2.0.*")]
