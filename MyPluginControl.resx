@@ -124,7 +124,7 @@
   <data name="browseFileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHFSURBVHhe7dq/LgRRHMXxDZ3Qa0SNUk+lFEF4CI1nQK0Q
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAHFSURBVHhe7dq/LgRRHMXxDZ3Qa0SNUk+lFEF4CI1nQK0Q
         hcILiELDM0iUOp1OhSgkFITvKTb5ZbOX3cyf3Lt7TvJpuGbmd8TMbNyO4ziO4zhOT2awip2K1jGPorKN
         F/zU5BvnmEL2WcIn+g1S1R1mkXWO0O/i6/IIlZxtLhAv+BaXFTwgHk/esIYso4uOF6sbWZVM4xrxmPKF
         PWSXugtQJnGKeNyuE0wgmzRRQDf70G8+Hl+ukM0ToskClA28I55D9ITYhc7XBL3T6M/x3zRdgLKMJ8Tz
@@ -138,7 +138,7 @@
   <data name="processFieldsButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAASFSURBVHhe7ZtZyG5TGIB/U+bMSUQhxMGVMlwIRaTQ4QJx
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAASFSURBVHhe7ZtZyG5TGIB/U+bMSUQhxMGVMlwIRaTQ4QJx
         0jkljhs3UihkupOIMruhKFM4XBjKLCmZyVTIXGSen6e+rddqnT2cs9fe+9f31FPft8+3z1r73Wuv4d3r
         X5gzZ86cOXN6YzM8DM/Ca/EBfA4/wG9n/ol/48+z71/hG/gU3oWX46m4P66Hk2cJXoIv4e/oxfXld/gQ
         rsBtcDKsgyfiC5ireAl/xTtwHxyVvfFZzFVyCG1l1+AmODjH4w+Yq5j+hT7P3qnzcSkegnvgVjPXRdkQ
@@ -164,7 +164,7 @@
   <data name="importDataButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAM0SURBVHhe7ZrLq01RHMcvkkLJowyUxwQh5kw8BmLinUSk
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAM0SURBVHhe7ZrLq01RHMcvkkLJowyUxwQh5kw8BmLinUSk
         TMSAmWJCZCj5AzDxLCGJgTIhmYpEKDOJkLxfn6/uql+rdfe555y11l73nv2pz+Dcy12/9d1r77X2Oquv
         oaGhoaEhGuNxGe7GU3gN7+NLfN/vb/yLX/s/v8XHeBfP4zHciotwFBbPAjyMD/EnqnOx/Ig3cBdOxmIY
         gRvxAYYKT+F3PIvzsVbm4T0MFZlDjbKTOBazsxY/Y6gw+Qd1P+tKHcANuARn48R+R6IYg/o8FXUbLccd
@@ -184,7 +184,7 @@
   <data name="saveSettingsButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALjSURBVHhe7Zo5bhRRFEWbQRDAAggQY0DGtA4yxBYAR4QQ
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAALjSURBVHhe7Zo5bhRRFEWbQRDAAggQY0DGtA4yxBYAR4QQ
         swMm55YggC0whGwBCTEkSAyhEXJgMdwbID09quv++ZfFP9JJ/Orf9/26ul1drtVgMBgMBpLDcAO+gl/h
         707uwDfwPjwHm3AJfoBTG+rpLrwL98NqXIbf4dQGluITeAAWh6f9El/5KasMge953+gePA3X8Qza46/B
         XJhhM1/DT+5ntPgQ+IFnG/CDR9FiAOxxEn40P/tr0SF8gzb8FFS0GgCpPoRf0Abvg4qWAyBVh+BDQ2g9
@@ -203,7 +203,7 @@
   <data name="loadSettingsButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANFSURBVHhe7Zo5ztRAEIWHRRDAAUBCrAEZWwhXIEGACCBm
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAANFSURBVHhe7Zo5ztRAEIWHRRDAAUBCrAEZWwhXIEGACCBm
         iQjJuQCryJEggCuwZHAFJOCHBMQSsiWs70mM9FT0dHV73N3+RX/SJ1lTdpW7xva0PZ51Op1Op+OyEV6A
         j+EH+LuRP+ELeB3uhVU4CF/B0A619Du8DNfCYhyCn2FoB6biXbgOjg4P+yl+8yGLNIHnvC10De6Ci7gP
         df2TcFmYQ3M+hW/MZ3T0JvCCpwV44fGo0QDW2AFfy2dzR23CR6jJd0KPWg0gxZvwC2riNdCjZgNI0SbY
@@ -223,7 +223,7 @@
   <data name="resetButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAS6SURBVHhe7dtbyBVVGMbxr9LEUijLNM0OipiSVIJBQZBC
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAS6SURBVHhe7dtbyBVVGMbxr9LEUijLNM0OipiSVIJBQZBC
         F1lRXZSWp/BIoamISJZCeCoNLS2KiiI6XCiJkZoXiphGqRWGknkI1MrKsDQ1U1P7P9AHL4s1s2f2npk9
         q/YDP5DNzOxZ69uzZs2a16ZGGmmkqFyMm/EQJuJJPIuZmIpRuBPX4DwEn1a4Fy9iK87gXEJ/YAUmoxeC
         Sh+8jt/ga1w1vsATuASlTX+sga8BWTmM2bgcpUk3fAjfCVu6BHZBP+2FmANd+09DY8Gb2IhD8O1v6RKZ
@@ -281,7 +281,7 @@ Use this tool to import data from Excel to Dynamics.
 To get started:
 1.	Select Open Excel to select the file you want to import.
 2.	Use the sidebar to Pick the Entity you want to import to.
-3.             Choose import options.
+3.              Choose import options.
 4.	Map the rows in your input file to the Dynamics Entity.
 5.	Click Process fields to ensure all fields are correct.
 6.	Click Import data to being the import sequence.
@@ -290,8 +290,8 @@ You can save and reuse your mapping files and settings. Click Save settings and 
 
 To use a saved mapping file, first click Open Excel to specify the file you want to import, then select Load settings and choose the mapping file. NOTE: The Load settings function will not check that your Excel file matches the saved mapping, so ensure that it does match to avoid unexpected behaviour.
 
-More instructions: https://dynamics365tips.wixsite.com/home/post/xrmtoolbox-dataimport
-Source code: https://github.com/YesWeCandrew/XTBPlugins.DataImport</value>
+Learn more: https://andyhowes.co/introducing-dataimport-v2/
+Original instructions: https://dynamics365tips.wixsite.com/home/post/xrmtoolbox-dataimport</value>
   </data>
   <metadata name="ExcelColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

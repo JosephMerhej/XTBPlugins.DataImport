@@ -79,6 +79,12 @@ namespace DataImport
             this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BlankBehaviour = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewLogs = new System.Windows.Forms.DataGridView();
+            this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -97,12 +103,6 @@ namespace DataImport
             this.toolStripStatusUpdatedNum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusDeletedLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusDeletedNum = new System.Windows.Forms.ToolStripStatusLabel();
-            this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Line = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Updates = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Logs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).BeginInit();
@@ -134,9 +134,9 @@ namespace DataImport
             this.toggleInstructions});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.toolStripMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStripMenu.Size = new System.Drawing.Size(1024, 31);
+            this.toolStripMenu.Size = new System.Drawing.Size(1536, 34);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -145,7 +145,7 @@ namespace DataImport
             this.browseFileButton.Image = ((System.Drawing.Image)(resources.GetObject("browseFileButton.Image")));
             this.browseFileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.browseFileButton.Name = "browseFileButton";
-            this.browseFileButton.Size = new System.Drawing.Size(94, 28);
+            this.browseFileButton.Size = new System.Drawing.Size(127, 29);
             this.browseFileButton.Text = "Open Excel";
             this.browseFileButton.ToolTipText = "Choose the Excel file you want to import";
             this.browseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
@@ -156,7 +156,7 @@ namespace DataImport
             this.processFieldsButton.Image = ((System.Drawing.Image)(resources.GetObject("processFieldsButton.Image")));
             this.processFieldsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.processFieldsButton.Name = "processFieldsButton";
-            this.processFieldsButton.Size = new System.Drawing.Size(106, 28);
+            this.processFieldsButton.Size = new System.Drawing.Size(147, 29);
             this.processFieldsButton.Text = "Process fields";
             this.processFieldsButton.Click += new System.EventHandler(this.ProcessFieldsButton_Click);
             // 
@@ -166,14 +166,14 @@ namespace DataImport
             this.importDataButton.Image = ((System.Drawing.Image)(resources.GetObject("importDataButton.Image")));
             this.importDataButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.importDataButton.Name = "importDataButton";
-            this.importDataButton.Size = new System.Drawing.Size(97, 28);
+            this.importDataButton.Size = new System.Drawing.Size(135, 29);
             this.importDataButton.Text = "Import data";
             this.importDataButton.Click += new System.EventHandler(this.ImportDataButton_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 34);
             // 
             // saveSettingsButton
             // 
@@ -181,7 +181,7 @@ namespace DataImport
             this.saveSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("saveSettingsButton.Image")));
             this.saveSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveSettingsButton.Name = "saveSettingsButton";
-            this.saveSettingsButton.Size = new System.Drawing.Size(103, 28);
+            this.saveSettingsButton.Size = new System.Drawing.Size(144, 29);
             this.saveSettingsButton.Text = "Save settings";
             this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
             // 
@@ -191,7 +191,7 @@ namespace DataImport
             this.loadSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("loadSettingsButton.Image")));
             this.loadSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.loadSettingsButton.Name = "loadSettingsButton";
-            this.loadSettingsButton.Size = new System.Drawing.Size(105, 28);
+            this.loadSettingsButton.Size = new System.Drawing.Size(146, 29);
             this.loadSettingsButton.Text = "Load settings";
             this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
             this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
@@ -199,14 +199,14 @@ namespace DataImport
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 34);
             // 
             // resetButton
             // 
             this.resetButton.Image = ((System.Drawing.Image)(resources.GetObject("resetButton.Image")));
             this.resetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(63, 28);
+            this.resetButton.Size = new System.Drawing.Size(82, 29);
             this.resetButton.Text = "Reset";
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
@@ -214,39 +214,37 @@ namespace DataImport
             // 
             this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(64, 28);
+            this.closeButton.Size = new System.Drawing.Size(83, 29);
             this.closeButton.Text = "Close";
             this.closeButton.Click += new System.EventHandler(this.TsbClose_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 34);
             // 
             // toggleInstructions
             // 
             this.toggleInstructions.Name = "toggleInstructions";
-            this.toggleInstructions.Size = new System.Drawing.Size(97, 28);
+            this.toggleInstructions.Size = new System.Drawing.Size(145, 29);
             this.toggleInstructions.Text = "Hide instructions";
             this.toggleInstructions.Click += new System.EventHandler(this.toggleInstructions_Click);
             // 
             // labelRowsToImportEnd
             // 
             this.labelRowsToImportEnd.AutoSize = true;
-            this.labelRowsToImportEnd.Location = new System.Drawing.Point(20, 149);
-            this.labelRowsToImportEnd.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelRowsToImportEnd.Location = new System.Drawing.Point(30, 229);
             this.labelRowsToImportEnd.Name = "labelRowsToImportEnd";
-            this.labelRowsToImportEnd.Size = new System.Drawing.Size(93, 13);
+            this.labelRowsToImportEnd.Size = new System.Drawing.Size(139, 20);
             this.labelRowsToImportEnd.TabIndex = 29;
             this.labelRowsToImportEnd.Text = "Last row to import:";
             // 
             // labelRowsToImportStart
             // 
             this.labelRowsToImportStart.AutoSize = true;
-            this.labelRowsToImportStart.Location = new System.Drawing.Point(20, 121);
-            this.labelRowsToImportStart.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelRowsToImportStart.Location = new System.Drawing.Point(30, 186);
             this.labelRowsToImportStart.Name = "labelRowsToImportStart";
-            this.labelRowsToImportStart.Size = new System.Drawing.Size(92, 13);
+            this.labelRowsToImportStart.Size = new System.Drawing.Size(139, 20);
             this.labelRowsToImportStart.TabIndex = 28;
             this.labelRowsToImportStart.Text = "First row to import:";
             // 
@@ -261,11 +259,12 @@ namespace DataImport
             this.rowEndNum.Cursor = System.Windows.Forms.Cursors.Default;
             this.rowEndNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rowEndNum.ForeColor = System.Drawing.Color.Black;
-            this.rowEndNum.Location = new System.Drawing.Point(144, 146);
-            this.rowEndNum.MinimumSize = new System.Drawing.Size(107, 0);
+            this.rowEndNum.Location = new System.Drawing.Point(216, 225);
+            this.rowEndNum.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.rowEndNum.MinimumSize = new System.Drawing.Size(160, 0);
             this.rowEndNum.Name = "rowEndNum";
             this.rowEndNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.rowEndNum.Size = new System.Drawing.Size(117, 20);
+            this.rowEndNum.Size = new System.Drawing.Size(346, 26);
             this.rowEndNum.TabIndex = 27;
             this.rowEndNum.ThousandsSeparator = true;
             this.rowEndNum.Value = new decimal(new int[] {
@@ -277,10 +276,9 @@ namespace DataImport
             // labelRowsToImportDesc
             // 
             this.labelRowsToImportDesc.AutoSize = true;
-            this.labelRowsToImportDesc.Location = new System.Drawing.Point(20, 98);
-            this.labelRowsToImportDesc.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelRowsToImportDesc.Location = new System.Drawing.Point(30, 151);
             this.labelRowsToImportDesc.Name = "labelRowsToImportDesc";
-            this.labelRowsToImportDesc.Size = new System.Drawing.Size(213, 13);
+            this.labelRowsToImportDesc.Size = new System.Drawing.Size(320, 20);
             this.labelRowsToImportDesc.TabIndex = 26;
             this.labelRowsToImportDesc.Text = "3. Choose rows in the spreadsheet to import";
             // 
@@ -295,16 +293,17 @@ namespace DataImport
             this.rowStartNum.Cursor = System.Windows.Forms.Cursors.Default;
             this.rowStartNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rowStartNum.ForeColor = System.Drawing.Color.Black;
-            this.rowStartNum.Location = new System.Drawing.Point(144, 118);
+            this.rowStartNum.Location = new System.Drawing.Point(216, 182);
+            this.rowStartNum.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rowStartNum.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
-            this.rowStartNum.MinimumSize = new System.Drawing.Size(107, 0);
+            this.rowStartNum.MinimumSize = new System.Drawing.Size(160, 0);
             this.rowStartNum.Name = "rowStartNum";
             this.rowStartNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.rowStartNum.Size = new System.Drawing.Size(117, 20);
+            this.rowStartNum.Size = new System.Drawing.Size(346, 26);
             this.rowStartNum.TabIndex = 25;
             this.rowStartNum.ThousandsSeparator = true;
             this.rowStartNum.Value = new decimal(new int[] {
@@ -318,11 +317,10 @@ namespace DataImport
             // 
             this.LogToggle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.LogToggle.Location = new System.Drawing.Point(20, 354);
-            this.LogToggle.Margin = new System.Windows.Forms.Padding(2);
-            this.LogToggle.MinimumSize = new System.Drawing.Size(232, 21);
+            this.LogToggle.Location = new System.Drawing.Point(30, 545);
+            this.LogToggle.MinimumSize = new System.Drawing.Size(348, 32);
             this.LogToggle.Name = "LogToggle";
-            this.LogToggle.Size = new System.Drawing.Size(242, 21);
+            this.LogToggle.Size = new System.Drawing.Size(533, 32);
             this.LogToggle.TabIndex = 15;
             this.LogToggle.Text = "Show Logs";
             this.LogToggle.UseVisualStyleBackColor = true;
@@ -331,10 +329,9 @@ namespace DataImport
             // labelKeyFoundMultipleRecords
             // 
             this.labelKeyFoundMultipleRecords.AutoSize = true;
-            this.labelKeyFoundMultipleRecords.Location = new System.Drawing.Point(20, 175);
-            this.labelKeyFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelKeyFoundMultipleRecords.Location = new System.Drawing.Point(30, 269);
             this.labelKeyFoundMultipleRecords.Name = "labelKeyFoundMultipleRecords";
-            this.labelKeyFoundMultipleRecords.Size = new System.Drawing.Size(145, 13);
+            this.labelKeyFoundMultipleRecords.Size = new System.Drawing.Size(214, 20);
             this.labelKeyFoundMultipleRecords.TabIndex = 14;
             this.labelKeyFoundMultipleRecords.Text = "Filter on key found > 1 record";
             // 
@@ -347,11 +344,10 @@ namespace DataImport
             this.settingsKeyFoundMultipleRecords.Items.AddRange(new object[] {
             "Do action for all",
             "Ignore excel line"});
-            this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(20, 194);
-            this.settingsKeyFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsKeyFoundMultipleRecords.MinimumSize = new System.Drawing.Size(231, 0);
+            this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(30, 298);
+            this.settingsKeyFoundMultipleRecords.MinimumSize = new System.Drawing.Size(344, 0);
             this.settingsKeyFoundMultipleRecords.Name = "settingsKeyFoundMultipleRecords";
-            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(241, 21);
+            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(530, 28);
             this.settingsKeyFoundMultipleRecords.TabIndex = 13;
             this.settingsKeyFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsKeyFoundMultipleRecords_SelectedIndexChanged);
             // 
@@ -361,10 +357,11 @@ namespace DataImport
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.RefreshLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.RefreshLogs.Location = new System.Drawing.Point(200, 328);
-            this.RefreshLogs.MinimumSize = new System.Drawing.Size(50, 21);
+            this.RefreshLogs.Location = new System.Drawing.Point(300, 505);
+            this.RefreshLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.RefreshLogs.MinimumSize = new System.Drawing.Size(75, 32);
             this.RefreshLogs.Name = "RefreshLogs";
-            this.RefreshLogs.Size = new System.Drawing.Size(60, 21);
+            this.RefreshLogs.Size = new System.Drawing.Size(260, 32);
             this.RefreshLogs.TabIndex = 12;
             this.RefreshLogs.Text = "↻";
             this.RefreshLogs.UseVisualStyleBackColor = true;
@@ -373,20 +370,18 @@ namespace DataImport
             // labelFilterLogs
             // 
             this.labelFilterLogs.AutoSize = true;
-            this.labelFilterLogs.Location = new System.Drawing.Point(20, 309);
-            this.labelFilterLogs.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelFilterLogs.Location = new System.Drawing.Point(30, 475);
             this.labelFilterLogs.Name = "labelFilterLogs";
-            this.labelFilterLogs.Size = new System.Drawing.Size(51, 13);
+            this.labelFilterLogs.Size = new System.Drawing.Size(77, 20);
             this.labelFilterLogs.TabIndex = 11;
             this.labelFilterLogs.Text = "Filter logs";
             // 
             // copyText
             // 
-            this.copyText.Location = new System.Drawing.Point(145, 328);
-            this.copyText.Margin = new System.Windows.Forms.Padding(2);
-            this.copyText.MinimumSize = new System.Drawing.Size(50, 21);
+            this.copyText.Location = new System.Drawing.Point(218, 505);
+            this.copyText.MinimumSize = new System.Drawing.Size(75, 32);
             this.copyText.Name = "copyText";
-            this.copyText.Size = new System.Drawing.Size(50, 21);
+            this.copyText.Size = new System.Drawing.Size(75, 32);
             this.copyText.TabIndex = 10;
             this.copyText.Text = "Copy";
             this.copyText.UseVisualStyleBackColor = true;
@@ -403,21 +398,19 @@ namespace DataImport
             "✓ SUCCESS",
             "❌ ERRORS",
             "⚠ WARNINGS"});
-            this.textView.Location = new System.Drawing.Point(20, 328);
-            this.textView.Margin = new System.Windows.Forms.Padding(2);
-            this.textView.MinimumSize = new System.Drawing.Size(121, 0);
+            this.textView.Location = new System.Drawing.Point(30, 505);
+            this.textView.MinimumSize = new System.Drawing.Size(180, 0);
             this.textView.Name = "textView";
-            this.textView.Size = new System.Drawing.Size(121, 21);
+            this.textView.Size = new System.Drawing.Size(180, 28);
             this.textView.TabIndex = 4;
             this.textView.DropDownClosed += new System.EventHandler(this.TextView_DropDownClosed);
             // 
             // labelOptionSetValuesOrLabel
             // 
             this.labelOptionSetValuesOrLabel.AutoSize = true;
-            this.labelOptionSetValuesOrLabel.Location = new System.Drawing.Point(20, 265);
-            this.labelOptionSetValuesOrLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelOptionSetValuesOrLabel.Location = new System.Drawing.Point(30, 408);
             this.labelOptionSetValuesOrLabel.Name = "labelOptionSetValuesOrLabel";
-            this.labelOptionSetValuesOrLabel.Size = new System.Drawing.Size(108, 13);
+            this.labelOptionSetValuesOrLabel.Size = new System.Drawing.Size(164, 20);
             this.labelOptionSetValuesOrLabel.TabIndex = 6;
             this.labelOptionSetValuesOrLabel.Text = "OptionSet field format";
             this.labelOptionSetValuesOrLabel.Visible = false;
@@ -432,11 +425,10 @@ namespace DataImport
             "Map to the first record found by the lookup",
             "Skip the record and do not import it",
             "Import the record with the lookup blank"});
-            this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(20, 237);
-            this.settingsLookupFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsLookupFoundMultipleRecords.MinimumSize = new System.Drawing.Size(231, 0);
+            this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(30, 365);
+            this.settingsLookupFoundMultipleRecords.MinimumSize = new System.Drawing.Size(344, 0);
             this.settingsLookupFoundMultipleRecords.Name = "settingsLookupFoundMultipleRecords";
-            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(241, 21);
+            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(530, 28);
             this.settingsLookupFoundMultipleRecords.TabIndex = 9;
             this.settingsLookupFoundMultipleRecords.Visible = false;
             this.settingsLookupFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsLookupFoundMultipleRecords_SelectedIndexChanged);
@@ -444,10 +436,9 @@ namespace DataImport
             // labelLookupFoundMultipleRecords
             // 
             this.labelLookupFoundMultipleRecords.AutoSize = true;
-            this.labelLookupFoundMultipleRecords.Location = new System.Drawing.Point(20, 222);
-            this.labelLookupFoundMultipleRecords.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelLookupFoundMultipleRecords.Location = new System.Drawing.Point(30, 342);
             this.labelLookupFoundMultipleRecords.Name = "labelLookupFoundMultipleRecords";
-            this.labelLookupFoundMultipleRecords.Size = new System.Drawing.Size(146, 13);
+            this.labelLookupFoundMultipleRecords.Size = new System.Drawing.Size(215, 20);
             this.labelLookupFoundMultipleRecords.TabIndex = 8;
             this.labelLookupFoundMultipleRecords.Text = "Lookup field found > 1 record";
             this.labelLookupFoundMultipleRecords.Visible = false;
@@ -455,21 +446,20 @@ namespace DataImport
             // labelCrmAction
             // 
             this.labelCrmAction.AutoSize = true;
-            this.labelCrmAction.Location = new System.Drawing.Point(20, 51);
-            this.labelCrmAction.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelCrmAction.Location = new System.Drawing.Point(30, 78);
             this.labelCrmAction.Name = "labelCrmAction";
-            this.labelCrmAction.Size = new System.Drawing.Size(115, 13);
+            this.labelCrmAction.Size = new System.Drawing.Size(170, 20);
             this.labelCrmAction.TabIndex = 7;
             this.labelCrmAction.Text = "2. Choose CRM Action";
             // 
             // labelEntity
             // 
             this.labelEntity.AutoSize = true;
-            this.labelEntity.Location = new System.Drawing.Point(20, 10);
+            this.labelEntity.Location = new System.Drawing.Point(30, 15);
             this.labelEntity.Margin = new System.Windows.Forms.Padding(0);
-            this.labelEntity.MinimumSize = new System.Drawing.Size(69, 13);
+            this.labelEntity.MinimumSize = new System.Drawing.Size(104, 20);
             this.labelEntity.Name = "labelEntity";
-            this.labelEntity.Size = new System.Drawing.Size(69, 13);
+            this.labelEntity.Size = new System.Drawing.Size(104, 20);
             this.labelEntity.TabIndex = 5;
             this.labelEntity.Text = "1. Pick Entity";
             // 
@@ -482,11 +472,11 @@ namespace DataImport
             this.settingsEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsEntity.DropDownWidth = 200;
             this.settingsEntity.FormattingEnabled = true;
-            this.settingsEntity.Location = new System.Drawing.Point(20, 25);
+            this.settingsEntity.Location = new System.Drawing.Point(30, 38);
             this.settingsEntity.Margin = new System.Windows.Forms.Padding(0);
-            this.settingsEntity.MinimumSize = new System.Drawing.Size(231, 0);
+            this.settingsEntity.MinimumSize = new System.Drawing.Size(344, 0);
             this.settingsEntity.Name = "settingsEntity";
-            this.settingsEntity.Size = new System.Drawing.Size(241, 21);
+            this.settingsEntity.Size = new System.Drawing.Size(530, 28);
             this.settingsEntity.Sorted = true;
             this.settingsEntity.TabIndex = 4;
             this.settingsEntity.DropDownClosed += new System.EventHandler(this.settingsEntity_DropDownClosed);
@@ -500,11 +490,10 @@ namespace DataImport
             this.settingsOptionSetValuesOrLabel.Items.AddRange(new object[] {
             "Values",
             "Labels"});
-            this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(20, 280);
-            this.settingsOptionSetValuesOrLabel.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsOptionSetValuesOrLabel.MinimumSize = new System.Drawing.Size(231, 0);
+            this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(30, 431);
+            this.settingsOptionSetValuesOrLabel.MinimumSize = new System.Drawing.Size(344, 0);
             this.settingsOptionSetValuesOrLabel.Name = "settingsOptionSetValuesOrLabel";
-            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(241, 21);
+            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(530, 28);
             this.settingsOptionSetValuesOrLabel.TabIndex = 3;
             this.settingsOptionSetValuesOrLabel.Visible = false;
             this.settingsOptionSetValuesOrLabel.SelectedIndexChanged += new System.EventHandler(this.settingsOptionSetValuesOrLabel_SelectedIndexChanged);
@@ -522,21 +511,21 @@ namespace DataImport
             "Create",
             "Update",
             "Delete"});
-            this.settingsCrmAction.Location = new System.Drawing.Point(20, 68);
-            this.settingsCrmAction.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsCrmAction.MinimumSize = new System.Drawing.Size(231, 0);
+            this.settingsCrmAction.Location = new System.Drawing.Point(30, 105);
+            this.settingsCrmAction.MinimumSize = new System.Drawing.Size(344, 0);
             this.settingsCrmAction.Name = "settingsCrmAction";
-            this.settingsCrmAction.Size = new System.Drawing.Size(241, 21);
+            this.settingsCrmAction.Size = new System.Drawing.Size(530, 28);
             this.settingsCrmAction.TabIndex = 2;
             this.settingsCrmAction.SelectedIndexChanged += new System.EventHandler(this.settingsCrmAction_SelectedIndexChanged);
             // 
             // logTextBox
             // 
             this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logTextBox.Location = new System.Drawing.Point(3, 427);
+            this.logTextBox.Location = new System.Drawing.Point(4, 658);
+            this.logTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.ReadOnly = true;
-            this.logTextBox.Size = new System.Drawing.Size(274, 316);
+            this.logTextBox.Size = new System.Drawing.Size(412, 485);
             this.logTextBox.TabIndex = 3;
             this.logTextBox.Text = "";
             // 
@@ -544,13 +533,13 @@ namespace DataImport
             // 
             this.instructionBox.BulletIndent = 4;
             this.instructionBox.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.instructionBox.Location = new System.Drawing.Point(350, 100);
-            this.instructionBox.Margin = new System.Windows.Forms.Padding(250, 0, 250, 250);
-            this.instructionBox.MaximumSize = new System.Drawing.Size(524, 280);
-            this.instructionBox.MinimumSize = new System.Drawing.Size(524, 280);
+            this.instructionBox.Location = new System.Drawing.Point(525, 154);
+            this.instructionBox.Margin = new System.Windows.Forms.Padding(375, 0, 375, 385);
+            this.instructionBox.MaximumSize = new System.Drawing.Size(784, 429);
+            this.instructionBox.MinimumSize = new System.Drawing.Size(784, 429);
             this.instructionBox.Name = "instructionBox";
             this.instructionBox.ReadOnly = true;
-            this.instructionBox.Size = new System.Drawing.Size(524, 280);
+            this.instructionBox.Size = new System.Drawing.Size(784, 429);
             this.instructionBox.TabIndex = 3;
             this.instructionBox.Text = resources.GetString("instructionBox.Text");
             // 
@@ -573,12 +562,11 @@ namespace DataImport
             this.BlankBehaviour});
             this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMapping.Enabled = false;
-            this.dataGridViewMapping.Location = new System.Drawing.Point(282, 33);
-            this.dataGridViewMapping.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewMapping.Location = new System.Drawing.Point(423, 51);
             this.dataGridViewMapping.Name = "dataGridViewMapping";
             this.dataGridViewMapping.RowHeadersWidth = 30;
             this.dataGridViewMapping.RowTemplate.Height = 33;
-            this.dataGridViewMapping.Size = new System.Drawing.Size(740, 389);
+            this.dataGridViewMapping.Size = new System.Drawing.Size(1110, 599);
             this.dataGridViewMapping.TabIndex = 1;
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
@@ -711,188 +699,14 @@ namespace DataImport
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewLogs.Location = new System.Drawing.Point(282, 426);
-            this.dataGridViewLogs.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewLogs.Location = new System.Drawing.Point(423, 656);
             this.dataGridViewLogs.Name = "dataGridViewLogs";
             this.dataGridViewLogs.RowHeadersVisible = false;
             this.dataGridViewLogs.RowHeadersWidth = 5;
             this.dataGridViewLogs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridViewLogs.RowTemplate.Height = 20;
-            this.dataGridViewLogs.Size = new System.Drawing.Size(740, 318);
+            this.dataGridViewLogs.Size = new System.Drawing.Size(1110, 489);
             this.dataGridViewLogs.TabIndex = 4;
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.splitContainer3.Size = new System.Drawing.Size(928, 652);
-            this.splitContainer3.SplitterDistance = 326;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.RestoreDirectory = true;
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.FileName = "DataImportSettingsFile.xml";
-            this.saveFileDialog.Filter = "XML File|*.xml";
-            this.saveFileDialog.RestoreDirectory = true;
-            this.saveFileDialog.Title = "Settings File";
-            // 
-            // mainTableLayout
-            // 
-            this.mainTableLayout.ColumnCount = 2;
-            this.mainTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 280F));
-            this.mainTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mainTableLayout.Controls.Add(this.dataGridViewMapping, 1, 0);
-            this.mainTableLayout.Controls.Add(this.settingsPanel, 0, 0);
-            this.mainTableLayout.Controls.Add(this.logTextBox, 0, 1);
-            this.mainTableLayout.Controls.Add(this.dataGridViewLogs, 1, 1);
-            this.mainTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTableLayout.Location = new System.Drawing.Point(0, 0);
-            this.mainTableLayout.Margin = new System.Windows.Forms.Padding(2);
-            this.mainTableLayout.Name = "mainTableLayout";
-            this.mainTableLayout.Padding = new System.Windows.Forms.Padding(0, 31, 0, 22);
-            this.mainTableLayout.RowCount = 2;
-            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.mainTableLayout.Size = new System.Drawing.Size(1024, 768);
-            this.mainTableLayout.TabIndex = 5;
-            // 
-            // settingsPanel
-            // 
-            this.settingsPanel.AutoScroll = true;
-            this.settingsPanel.Controls.Add(this.labelEntity);
-            this.settingsPanel.Controls.Add(this.settingsEntity);
-            this.settingsPanel.Controls.Add(this.labelCrmAction);
-            this.settingsPanel.Controls.Add(this.settingsCrmAction);
-            this.settingsPanel.Controls.Add(this.labelRowsToImportDesc);
-            this.settingsPanel.Controls.Add(this.labelRowsToImportStart);
-            this.settingsPanel.Controls.Add(this.rowStartNum);
-            this.settingsPanel.Controls.Add(this.labelRowsToImportEnd);
-            this.settingsPanel.Controls.Add(this.rowEndNum);
-            this.settingsPanel.Controls.Add(this.labelKeyFoundMultipleRecords);
-            this.settingsPanel.Controls.Add(this.settingsKeyFoundMultipleRecords);
-            this.settingsPanel.Controls.Add(this.labelLookupFoundMultipleRecords);
-            this.settingsPanel.Controls.Add(this.settingsLookupFoundMultipleRecords);
-            this.settingsPanel.Controls.Add(this.labelOptionSetValuesOrLabel);
-            this.settingsPanel.Controls.Add(this.settingsOptionSetValuesOrLabel);
-            this.settingsPanel.Controls.Add(this.labelFilterLogs);
-            this.settingsPanel.Controls.Add(this.textView);
-            this.settingsPanel.Controls.Add(this.copyText);
-            this.settingsPanel.Controls.Add(this.RefreshLogs);
-            this.settingsPanel.Controls.Add(this.LogToggle);
-            this.settingsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.settingsPanel.Enabled = false;
-            this.settingsPanel.Location = new System.Drawing.Point(0, 31);
-            this.settingsPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.settingsPanel.Name = "settingsPanel";
-            this.settingsPanel.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
-            this.settingsPanel.Size = new System.Drawing.Size(280, 393);
-            this.settingsPanel.TabIndex = 25;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusRowsLabel,
-            this.toolStripStatusRowsNum,
-            this.toolStripStatusSuccessLabel,
-            this.toolStripStatusSuccessNum,
-            this.toolStripStatusErrorLabel,
-            this.toolStripStatusErrorNum,
-            this.toolStripStatusCreatedLabel,
-            this.toolStripStatusCreatedNum,
-            this.toolStripStatusUpdatedLabel,
-            this.toolStripStatusUpdatedNum,
-            this.toolStripStatusDeletedLabel,
-            this.toolStripStatusDeletedNum});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 746);
-            this.statusStrip1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1024, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusRowsLabel
-            // 
-            this.toolStripStatusRowsLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusRowsLabel.Name = "toolStripStatusRowsLabel";
-            this.toolStripStatusRowsLabel.Size = new System.Drawing.Size(40, 17);
-            this.toolStripStatusRowsLabel.Text = "Rows:";
-            // 
-            // toolStripStatusRowsNum
-            // 
-            this.toolStripStatusRowsNum.Name = "toolStripStatusRowsNum";
-            this.toolStripStatusRowsNum.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusRowsNum.Text = "0";
-            // 
-            // toolStripStatusSuccessLabel
-            // 
-            this.toolStripStatusSuccessLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusSuccessLabel.Name = "toolStripStatusSuccessLabel";
-            this.toolStripStatusSuccessLabel.Size = new System.Drawing.Size(53, 17);
-            this.toolStripStatusSuccessLabel.Text = "Success:";
-            // 
-            // toolStripStatusSuccessNum
-            // 
-            this.toolStripStatusSuccessNum.Name = "toolStripStatusSuccessNum";
-            this.toolStripStatusSuccessNum.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusSuccessNum.Text = "0";
-            // 
-            // toolStripStatusErrorLabel
-            // 
-            this.toolStripStatusErrorLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusErrorLabel.Name = "toolStripStatusErrorLabel";
-            this.toolStripStatusErrorLabel.Size = new System.Drawing.Size(38, 17);
-            this.toolStripStatusErrorLabel.Text = "Error:";
-            // 
-            // toolStripStatusErrorNum
-            // 
-            this.toolStripStatusErrorNum.Name = "toolStripStatusErrorNum";
-            this.toolStripStatusErrorNum.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusErrorNum.Text = "0";
-            // 
-            // toolStripStatusCreatedLabel
-            // 
-            this.toolStripStatusCreatedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusCreatedLabel.Name = "toolStripStatusCreatedLabel";
-            this.toolStripStatusCreatedLabel.Size = new System.Drawing.Size(54, 17);
-            this.toolStripStatusCreatedLabel.Text = "Created:";
-            // 
-            // toolStripStatusCreatedNum
-            // 
-            this.toolStripStatusCreatedNum.Name = "toolStripStatusCreatedNum";
-            this.toolStripStatusCreatedNum.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusCreatedNum.Text = "0";
-            // 
-            // toolStripStatusUpdatedLabel
-            // 
-            this.toolStripStatusUpdatedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusUpdatedLabel.Name = "toolStripStatusUpdatedLabel";
-            this.toolStripStatusUpdatedLabel.Size = new System.Drawing.Size(58, 17);
-            this.toolStripStatusUpdatedLabel.Text = "Updated:";
-            // 
-            // toolStripStatusUpdatedNum
-            // 
-            this.toolStripStatusUpdatedNum.Name = "toolStripStatusUpdatedNum";
-            this.toolStripStatusUpdatedNum.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusUpdatedNum.Text = "0";
-            // 
-            // toolStripStatusDeletedLabel
-            // 
-            this.toolStripStatusDeletedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusDeletedLabel.Name = "toolStripStatusDeletedLabel";
-            this.toolStripStatusDeletedLabel.Size = new System.Drawing.Size(55, 17);
-            this.toolStripStatusDeletedLabel.Text = "Deleted:";
-            // 
-            // toolStripStatusDeletedNum
-            // 
-            this.toolStripStatusDeletedNum.Name = "toolStripStatusDeletedNum";
-            this.toolStripStatusDeletedNum.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusDeletedNum.Text = "0";
             // 
             // Import
             // 
@@ -954,23 +768,197 @@ namespace DataImport
             this.Logs.ToolTipText = "Any log notes, errors or messages";
             this.Logs.Width = 250;
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainer3.Size = new System.Drawing.Size(928, 652);
+            this.splitContainer3.SplitterDistance = 326;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.RestoreDirectory = true;
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileName = "DataImportSettingsFile.xml";
+            this.saveFileDialog.Filter = "XML File|*.xml";
+            this.saveFileDialog.RestoreDirectory = true;
+            this.saveFileDialog.Title = "Settings File";
+            // 
+            // mainTableLayout
+            // 
+            this.mainTableLayout.ColumnCount = 2;
+            this.mainTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 420F));
+            this.mainTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mainTableLayout.Controls.Add(this.dataGridViewMapping, 1, 0);
+            this.mainTableLayout.Controls.Add(this.settingsPanel, 0, 0);
+            this.mainTableLayout.Controls.Add(this.logTextBox, 0, 1);
+            this.mainTableLayout.Controls.Add(this.dataGridViewLogs, 1, 1);
+            this.mainTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainTableLayout.Location = new System.Drawing.Point(0, 0);
+            this.mainTableLayout.Name = "mainTableLayout";
+            this.mainTableLayout.Padding = new System.Windows.Forms.Padding(0, 48, 0, 34);
+            this.mainTableLayout.RowCount = 2;
+            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
+            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.mainTableLayout.Size = new System.Drawing.Size(1536, 1182);
+            this.mainTableLayout.TabIndex = 5;
+            // 
+            // settingsPanel
+            // 
+            this.settingsPanel.AutoScroll = true;
+            this.settingsPanel.Controls.Add(this.labelEntity);
+            this.settingsPanel.Controls.Add(this.settingsEntity);
+            this.settingsPanel.Controls.Add(this.labelCrmAction);
+            this.settingsPanel.Controls.Add(this.settingsCrmAction);
+            this.settingsPanel.Controls.Add(this.labelRowsToImportDesc);
+            this.settingsPanel.Controls.Add(this.labelRowsToImportStart);
+            this.settingsPanel.Controls.Add(this.rowStartNum);
+            this.settingsPanel.Controls.Add(this.labelRowsToImportEnd);
+            this.settingsPanel.Controls.Add(this.rowEndNum);
+            this.settingsPanel.Controls.Add(this.labelKeyFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.settingsKeyFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.labelLookupFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.settingsLookupFoundMultipleRecords);
+            this.settingsPanel.Controls.Add(this.labelOptionSetValuesOrLabel);
+            this.settingsPanel.Controls.Add(this.settingsOptionSetValuesOrLabel);
+            this.settingsPanel.Controls.Add(this.labelFilterLogs);
+            this.settingsPanel.Controls.Add(this.textView);
+            this.settingsPanel.Controls.Add(this.copyText);
+            this.settingsPanel.Controls.Add(this.RefreshLogs);
+            this.settingsPanel.Controls.Add(this.LogToggle);
+            this.settingsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingsPanel.Enabled = false;
+            this.settingsPanel.Location = new System.Drawing.Point(0, 48);
+            this.settingsPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.settingsPanel.Name = "settingsPanel";
+            this.settingsPanel.Padding = new System.Windows.Forms.Padding(30, 8, 30, 8);
+            this.settingsPanel.Size = new System.Drawing.Size(420, 605);
+            this.settingsPanel.TabIndex = 25;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusRowsLabel,
+            this.toolStripStatusRowsNum,
+            this.toolStripStatusSuccessLabel,
+            this.toolStripStatusSuccessNum,
+            this.toolStripStatusErrorLabel,
+            this.toolStripStatusErrorNum,
+            this.toolStripStatusCreatedLabel,
+            this.toolStripStatusCreatedNum,
+            this.toolStripStatusUpdatedLabel,
+            this.toolStripStatusUpdatedNum,
+            this.toolStripStatusDeletedLabel,
+            this.toolStripStatusDeletedNum});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1150);
+            this.statusStrip1.Margin = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1536, 32);
+            this.statusStrip1.TabIndex = 0;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusRowsLabel
+            // 
+            this.toolStripStatusRowsLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusRowsLabel.Name = "toolStripStatusRowsLabel";
+            this.toolStripStatusRowsLabel.Size = new System.Drawing.Size(62, 25);
+            this.toolStripStatusRowsLabel.Text = "Rows:";
+            // 
+            // toolStripStatusRowsNum
+            // 
+            this.toolStripStatusRowsNum.Name = "toolStripStatusRowsNum";
+            this.toolStripStatusRowsNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusRowsNum.Text = "0";
+            // 
+            // toolStripStatusSuccessLabel
+            // 
+            this.toolStripStatusSuccessLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusSuccessLabel.Name = "toolStripStatusSuccessLabel";
+            this.toolStripStatusSuccessLabel.Size = new System.Drawing.Size(82, 25);
+            this.toolStripStatusSuccessLabel.Text = "Success:";
+            // 
+            // toolStripStatusSuccessNum
+            // 
+            this.toolStripStatusSuccessNum.Name = "toolStripStatusSuccessNum";
+            this.toolStripStatusSuccessNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusSuccessNum.Text = "0";
+            // 
+            // toolStripStatusErrorLabel
+            // 
+            this.toolStripStatusErrorLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusErrorLabel.Name = "toolStripStatusErrorLabel";
+            this.toolStripStatusErrorLabel.Size = new System.Drawing.Size(60, 25);
+            this.toolStripStatusErrorLabel.Text = "Error:";
+            // 
+            // toolStripStatusErrorNum
+            // 
+            this.toolStripStatusErrorNum.Name = "toolStripStatusErrorNum";
+            this.toolStripStatusErrorNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusErrorNum.Text = "0";
+            // 
+            // toolStripStatusCreatedLabel
+            // 
+            this.toolStripStatusCreatedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusCreatedLabel.Name = "toolStripStatusCreatedLabel";
+            this.toolStripStatusCreatedLabel.Size = new System.Drawing.Size(83, 25);
+            this.toolStripStatusCreatedLabel.Text = "Created:";
+            // 
+            // toolStripStatusCreatedNum
+            // 
+            this.toolStripStatusCreatedNum.Name = "toolStripStatusCreatedNum";
+            this.toolStripStatusCreatedNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusCreatedNum.Text = "0";
+            // 
+            // toolStripStatusUpdatedLabel
+            // 
+            this.toolStripStatusUpdatedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusUpdatedLabel.Name = "toolStripStatusUpdatedLabel";
+            this.toolStripStatusUpdatedLabel.Size = new System.Drawing.Size(90, 25);
+            this.toolStripStatusUpdatedLabel.Text = "Updated:";
+            // 
+            // toolStripStatusUpdatedNum
+            // 
+            this.toolStripStatusUpdatedNum.Name = "toolStripStatusUpdatedNum";
+            this.toolStripStatusUpdatedNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusUpdatedNum.Text = "0";
+            // 
+            // toolStripStatusDeletedLabel
+            // 
+            this.toolStripStatusDeletedLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusDeletedLabel.Name = "toolStripStatusDeletedLabel";
+            this.toolStripStatusDeletedLabel.Size = new System.Drawing.Size(83, 25);
+            this.toolStripStatusDeletedLabel.Text = "Deleted:";
+            // 
+            // toolStripStatusDeletedNum
+            // 
+            this.toolStripStatusDeletedNum.Name = "toolStripStatusDeletedNum";
+            this.toolStripStatusDeletedNum.Size = new System.Drawing.Size(22, 25);
+            this.toolStripStatusDeletedNum.Text = "0";
+            // 
             // settingsBindingSource
             // 
             this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
             // 
             // MyPluginControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.toolStripMenu);
             this.Controls.Add(this.instructionBox);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mainTableLayout);
-            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.MinimumSize = new System.Drawing.Size(1024, 500);
+            this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.MinimumSize = new System.Drawing.Size(1536, 769);
             this.Name = "MyPluginControl";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(1024, 768);
+            this.Size = new System.Drawing.Size(1536, 1182);
             this.TabIcon = global::DataImport.Properties.Resources.DataImportLogo;
             this.ToolName = "Data Import ++";
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
