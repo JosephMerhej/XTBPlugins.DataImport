@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>JosephMerhej.DataImport</id>
+    <version>2.2024.9131.26608</version>
+    <title>DataImport++</title>
+    <authors>Joseph Merhej and Andrew Howes</authors>
+    <owners>Joseph Merhej and Andrew Howes</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">GPL-3.0-only</license>
+    <readme>README.md</readme>
+    <icon>Resources\DataImport.png</icon>
+    <projectUrl>https://github.com/YesWeCandrew/XTBPlugins.DataImport</projectUrl>
+    <description>Use Excel to create, update, upsert or delete records in Dataverse. Now with better logging, the ability to save and re use data maps, and faster data entry.</description>
+    <releaseNotes>V2 of DataImport++ with a new log table, the ability to save / load data maps, smoother mapping functionality, bug fixes and UI improvements.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>XrmToolBox Plugin DataImport++ Data Import Upsert Create Delete Update Key Excel</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.8">
+        <dependency id="XrmToolBoxPackage" version="1.2023.10.67" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\DataImport.dll" target="lib\net48\Plugins\" />    
+    <file src="README.md" target="" />
+    <file src="Resources\DataImport.png" target="Resources\DataImport.png" />
+    <file src="bin\Release\Libraries\*.dll" target="lib\net48\Plugins\DataImport" />
+  </files>
+</package>
