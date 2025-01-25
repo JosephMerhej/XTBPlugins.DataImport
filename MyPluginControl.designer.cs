@@ -136,7 +136,7 @@ namespace DataImport
             this.toolStripMenu.Name = "toolStripMenu";
             this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.toolStripMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStripMenu.Size = new System.Drawing.Size(1536, 34);
+            this.toolStripMenu.Size = new System.Drawing.Size(1536, 38);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -145,7 +145,7 @@ namespace DataImport
             this.browseFileButton.Image = ((System.Drawing.Image)(resources.GetObject("browseFileButton.Image")));
             this.browseFileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.browseFileButton.Name = "browseFileButton";
-            this.browseFileButton.Size = new System.Drawing.Size(127, 29);
+            this.browseFileButton.Size = new System.Drawing.Size(127, 33);
             this.browseFileButton.Text = "Open Excel";
             this.browseFileButton.ToolTipText = "Choose the Excel file you want to import";
             this.browseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
@@ -156,7 +156,7 @@ namespace DataImport
             this.processFieldsButton.Image = ((System.Drawing.Image)(resources.GetObject("processFieldsButton.Image")));
             this.processFieldsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.processFieldsButton.Name = "processFieldsButton";
-            this.processFieldsButton.Size = new System.Drawing.Size(147, 29);
+            this.processFieldsButton.Size = new System.Drawing.Size(147, 33);
             this.processFieldsButton.Text = "Process fields";
             this.processFieldsButton.Click += new System.EventHandler(this.ProcessFieldsButton_Click);
             // 
@@ -166,14 +166,14 @@ namespace DataImport
             this.importDataButton.Image = ((System.Drawing.Image)(resources.GetObject("importDataButton.Image")));
             this.importDataButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.importDataButton.Name = "importDataButton";
-            this.importDataButton.Size = new System.Drawing.Size(135, 29);
+            this.importDataButton.Size = new System.Drawing.Size(135, 33);
             this.importDataButton.Text = "Import data";
             this.importDataButton.Click += new System.EventHandler(this.ImportDataButton_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 34);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
             // 
             // saveSettingsButton
             // 
@@ -181,7 +181,7 @@ namespace DataImport
             this.saveSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("saveSettingsButton.Image")));
             this.saveSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveSettingsButton.Name = "saveSettingsButton";
-            this.saveSettingsButton.Size = new System.Drawing.Size(144, 29);
+            this.saveSettingsButton.Size = new System.Drawing.Size(144, 33);
             this.saveSettingsButton.Text = "Save settings";
             this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
             // 
@@ -191,7 +191,7 @@ namespace DataImport
             this.loadSettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("loadSettingsButton.Image")));
             this.loadSettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.loadSettingsButton.Name = "loadSettingsButton";
-            this.loadSettingsButton.Size = new System.Drawing.Size(146, 29);
+            this.loadSettingsButton.Size = new System.Drawing.Size(146, 33);
             this.loadSettingsButton.Text = "Load settings";
             this.loadSettingsButton.ToolTipText = "Load settings. Select file to upload first.";
             this.loadSettingsButton.Click += new System.EventHandler(this.loadSettingsButton_Click);
@@ -199,14 +199,14 @@ namespace DataImport
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 34);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
             // 
             // resetButton
             // 
             this.resetButton.Image = ((System.Drawing.Image)(resources.GetObject("resetButton.Image")));
             this.resetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(82, 29);
+            this.resetButton.Size = new System.Drawing.Size(82, 33);
             this.resetButton.Text = "Reset";
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
@@ -214,19 +214,19 @@ namespace DataImport
             // 
             this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(83, 29);
+            this.closeButton.Size = new System.Drawing.Size(83, 33);
             this.closeButton.Text = "Close";
             this.closeButton.Click += new System.EventHandler(this.TsbClose_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 34);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 38);
             // 
             // toggleInstructions
             // 
             this.toggleInstructions.Name = "toggleInstructions";
-            this.toggleInstructions.Size = new System.Drawing.Size(145, 29);
+            this.toggleInstructions.Size = new System.Drawing.Size(145, 33);
             this.toggleInstructions.Text = "Hide instructions";
             this.toggleInstructions.Click += new System.EventHandler(this.toggleInstructions_Click);
             // 
@@ -253,19 +253,16 @@ namespace DataImport
             this.rowEndNum.AccessibleDescription = "The Excel line that the import should import to. By default is the last row in th" +
     "e spreadsheet.";
             this.rowEndNum.AccessibleName = "Import Excel to row number";
-            this.rowEndNum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.rowEndNum.BackColor = System.Drawing.Color.White;
             this.rowEndNum.Cursor = System.Windows.Forms.Cursors.Default;
             this.rowEndNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rowEndNum.ForeColor = System.Drawing.Color.Black;
             this.rowEndNum.Location = new System.Drawing.Point(216, 225);
-            this.rowEndNum.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.rowEndNum.MinimumSize = new System.Drawing.Size(160, 0);
+            this.rowEndNum.MinimumSize = new System.Drawing.Size(155, 0);
             this.rowEndNum.Name = "rowEndNum";
             this.rowEndNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.rowEndNum.Size = new System.Drawing.Size(346, 26);
-            this.rowEndNum.TabIndex = 27;
+            this.rowEndNum.Size = new System.Drawing.Size(155, 26);
+            this.rowEndNum.TabIndex = 4;
             this.rowEndNum.ThousandsSeparator = true;
             this.rowEndNum.Value = new decimal(new int[] {
             2,
@@ -287,24 +284,21 @@ namespace DataImport
             this.rowStartNum.AccessibleDescription = "The Excel line that the import should start from. By default is set to row 2, whi" +
     "ch excludes the header.";
             this.rowStartNum.AccessibleName = "Import Excel from row number";
-            this.rowStartNum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.rowStartNum.BackColor = System.Drawing.Color.White;
             this.rowStartNum.Cursor = System.Windows.Forms.Cursors.Default;
             this.rowStartNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rowStartNum.ForeColor = System.Drawing.Color.Black;
             this.rowStartNum.Location = new System.Drawing.Point(216, 182);
-            this.rowStartNum.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rowStartNum.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
-            this.rowStartNum.MinimumSize = new System.Drawing.Size(160, 0);
+            this.rowStartNum.MinimumSize = new System.Drawing.Size(155, 0);
             this.rowStartNum.Name = "rowStartNum";
             this.rowStartNum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.rowStartNum.Size = new System.Drawing.Size(346, 26);
-            this.rowStartNum.TabIndex = 25;
+            this.rowStartNum.Size = new System.Drawing.Size(155, 26);
+            this.rowStartNum.TabIndex = 3;
             this.rowStartNum.ThousandsSeparator = true;
             this.rowStartNum.Value = new decimal(new int[] {
             2,
@@ -318,10 +312,10 @@ namespace DataImport
             this.LogToggle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogToggle.Location = new System.Drawing.Point(30, 545);
-            this.LogToggle.MinimumSize = new System.Drawing.Size(348, 32);
+            this.LogToggle.MinimumSize = new System.Drawing.Size(340, 32);
             this.LogToggle.Name = "LogToggle";
-            this.LogToggle.Size = new System.Drawing.Size(533, 32);
-            this.LogToggle.TabIndex = 15;
+            this.LogToggle.Size = new System.Drawing.Size(340, 32);
+            this.LogToggle.TabIndex = 11;
             this.LogToggle.Text = "Show Logs";
             this.LogToggle.UseVisualStyleBackColor = true;
             this.LogToggle.Click += new System.EventHandler(this.LogToggle_Click);
@@ -345,10 +339,10 @@ namespace DataImport
             "Do action for all",
             "Ignore excel line"});
             this.settingsKeyFoundMultipleRecords.Location = new System.Drawing.Point(30, 298);
-            this.settingsKeyFoundMultipleRecords.MinimumSize = new System.Drawing.Size(344, 0);
+            this.settingsKeyFoundMultipleRecords.MinimumSize = new System.Drawing.Size(340, 0);
             this.settingsKeyFoundMultipleRecords.Name = "settingsKeyFoundMultipleRecords";
-            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(530, 28);
-            this.settingsKeyFoundMultipleRecords.TabIndex = 13;
+            this.settingsKeyFoundMultipleRecords.Size = new System.Drawing.Size(340, 28);
+            this.settingsKeyFoundMultipleRecords.TabIndex = 5;
             this.settingsKeyFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsKeyFoundMultipleRecords_SelectedIndexChanged);
             // 
             // RefreshLogs
@@ -357,12 +351,11 @@ namespace DataImport
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RefreshLogs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.RefreshLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.RefreshLogs.Location = new System.Drawing.Point(300, 505);
-            this.RefreshLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.RefreshLogs.Location = new System.Drawing.Point(296, 503);
             this.RefreshLogs.MinimumSize = new System.Drawing.Size(75, 32);
             this.RefreshLogs.Name = "RefreshLogs";
-            this.RefreshLogs.Size = new System.Drawing.Size(260, 32);
-            this.RefreshLogs.TabIndex = 12;
+            this.RefreshLogs.Size = new System.Drawing.Size(75, 32);
+            this.RefreshLogs.TabIndex = 10;
             this.RefreshLogs.Text = "↻";
             this.RefreshLogs.UseVisualStyleBackColor = true;
             this.RefreshLogs.Click += new System.EventHandler(this.RefreshLogs_Click_2);
@@ -378,11 +371,11 @@ namespace DataImport
             // 
             // copyText
             // 
-            this.copyText.Location = new System.Drawing.Point(218, 505);
+            this.copyText.Location = new System.Drawing.Point(215, 504);
             this.copyText.MinimumSize = new System.Drawing.Size(75, 32);
             this.copyText.Name = "copyText";
             this.copyText.Size = new System.Drawing.Size(75, 32);
-            this.copyText.TabIndex = 10;
+            this.copyText.TabIndex = 9;
             this.copyText.Text = "Copy";
             this.copyText.UseVisualStyleBackColor = true;
             this.copyText.Click += new System.EventHandler(this.CopyText_Click);
@@ -402,7 +395,7 @@ namespace DataImport
             this.textView.MinimumSize = new System.Drawing.Size(180, 0);
             this.textView.Name = "textView";
             this.textView.Size = new System.Drawing.Size(180, 28);
-            this.textView.TabIndex = 4;
+            this.textView.TabIndex = 8;
             this.textView.DropDownClosed += new System.EventHandler(this.TextView_DropDownClosed);
             // 
             // labelOptionSetValuesOrLabel
@@ -426,10 +419,10 @@ namespace DataImport
             "Skip the record and do not import it",
             "Import the record with the lookup blank"});
             this.settingsLookupFoundMultipleRecords.Location = new System.Drawing.Point(30, 365);
-            this.settingsLookupFoundMultipleRecords.MinimumSize = new System.Drawing.Size(344, 0);
+            this.settingsLookupFoundMultipleRecords.MinimumSize = new System.Drawing.Size(340, 0);
             this.settingsLookupFoundMultipleRecords.Name = "settingsLookupFoundMultipleRecords";
-            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(530, 28);
-            this.settingsLookupFoundMultipleRecords.TabIndex = 9;
+            this.settingsLookupFoundMultipleRecords.Size = new System.Drawing.Size(340, 28);
+            this.settingsLookupFoundMultipleRecords.TabIndex = 6;
             this.settingsLookupFoundMultipleRecords.Visible = false;
             this.settingsLookupFoundMultipleRecords.SelectedIndexChanged += new System.EventHandler(this.settingsLookupFoundMultipleRecords_SelectedIndexChanged);
             // 
@@ -473,12 +466,11 @@ namespace DataImport
             this.settingsEntity.DropDownWidth = 200;
             this.settingsEntity.FormattingEnabled = true;
             this.settingsEntity.Location = new System.Drawing.Point(30, 38);
-            this.settingsEntity.Margin = new System.Windows.Forms.Padding(0);
-            this.settingsEntity.MinimumSize = new System.Drawing.Size(344, 0);
+            this.settingsEntity.MinimumSize = new System.Drawing.Size(340, 0);
             this.settingsEntity.Name = "settingsEntity";
-            this.settingsEntity.Size = new System.Drawing.Size(530, 28);
+            this.settingsEntity.Size = new System.Drawing.Size(340, 28);
             this.settingsEntity.Sorted = true;
-            this.settingsEntity.TabIndex = 4;
+            this.settingsEntity.TabIndex = 1;
             this.settingsEntity.DropDownClosed += new System.EventHandler(this.settingsEntity_DropDownClosed);
             // 
             // settingsOptionSetValuesOrLabel
@@ -491,10 +483,10 @@ namespace DataImport
             "Values",
             "Labels"});
             this.settingsOptionSetValuesOrLabel.Location = new System.Drawing.Point(30, 431);
-            this.settingsOptionSetValuesOrLabel.MinimumSize = new System.Drawing.Size(344, 0);
+            this.settingsOptionSetValuesOrLabel.MinimumSize = new System.Drawing.Size(340, 0);
             this.settingsOptionSetValuesOrLabel.Name = "settingsOptionSetValuesOrLabel";
-            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(530, 28);
-            this.settingsOptionSetValuesOrLabel.TabIndex = 3;
+            this.settingsOptionSetValuesOrLabel.Size = new System.Drawing.Size(340, 28);
+            this.settingsOptionSetValuesOrLabel.TabIndex = 7;
             this.settingsOptionSetValuesOrLabel.Visible = false;
             this.settingsOptionSetValuesOrLabel.SelectedIndexChanged += new System.EventHandler(this.settingsOptionSetValuesOrLabel_SelectedIndexChanged);
             // 
@@ -512,20 +504,20 @@ namespace DataImport
             "Update",
             "Delete"});
             this.settingsCrmAction.Location = new System.Drawing.Point(30, 105);
-            this.settingsCrmAction.MinimumSize = new System.Drawing.Size(344, 0);
+            this.settingsCrmAction.MinimumSize = new System.Drawing.Size(340, 0);
             this.settingsCrmAction.Name = "settingsCrmAction";
-            this.settingsCrmAction.Size = new System.Drawing.Size(530, 28);
+            this.settingsCrmAction.Size = new System.Drawing.Size(340, 28);
             this.settingsCrmAction.TabIndex = 2;
             this.settingsCrmAction.SelectedIndexChanged += new System.EventHandler(this.settingsCrmAction_SelectedIndexChanged);
             // 
             // logTextBox
             // 
             this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logTextBox.Location = new System.Drawing.Point(4, 658);
+            this.logTextBox.Location = new System.Drawing.Point(4, 768);
             this.logTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.ReadOnly = true;
-            this.logTextBox.Size = new System.Drawing.Size(412, 485);
+            this.logTextBox.Size = new System.Drawing.Size(412, 375);
             this.logTextBox.TabIndex = 3;
             this.logTextBox.Text = "";
             // 
@@ -566,7 +558,7 @@ namespace DataImport
             this.dataGridViewMapping.Name = "dataGridViewMapping";
             this.dataGridViewMapping.RowHeadersWidth = 30;
             this.dataGridViewMapping.RowTemplate.Height = 33;
-            this.dataGridViewMapping.Size = new System.Drawing.Size(1110, 599);
+            this.dataGridViewMapping.Size = new System.Drawing.Size(1110, 709);
             this.dataGridViewMapping.TabIndex = 1;
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
@@ -681,7 +673,7 @@ namespace DataImport
             this.dataGridViewLogs.AllowUserToAddRows = false;
             this.dataGridViewLogs.AllowUserToDeleteRows = false;
             this.dataGridViewLogs.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGridViewLogs.ColumnHeadersHeight = 22;
+            this.dataGridViewLogs.ColumnHeadersHeight = 35;
             this.dataGridViewLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewLogs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Import,
@@ -699,13 +691,13 @@ namespace DataImport
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewLogs.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewLogs.Location = new System.Drawing.Point(423, 656);
+            this.dataGridViewLogs.Location = new System.Drawing.Point(423, 766);
             this.dataGridViewLogs.Name = "dataGridViewLogs";
             this.dataGridViewLogs.RowHeadersVisible = false;
             this.dataGridViewLogs.RowHeadersWidth = 5;
             this.dataGridViewLogs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridViewLogs.RowTemplate.Height = 20;
-            this.dataGridViewLogs.Size = new System.Drawing.Size(1110, 489);
+            this.dataGridViewLogs.Size = new System.Drawing.Size(1110, 379);
             this.dataGridViewLogs.TabIndex = 4;
             // 
             // Import
@@ -803,8 +795,8 @@ namespace DataImport
             this.mainTableLayout.Name = "mainTableLayout";
             this.mainTableLayout.Padding = new System.Windows.Forms.Padding(0, 48, 0, 34);
             this.mainTableLayout.RowCount = 2;
-            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.mainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.mainTableLayout.Size = new System.Drawing.Size(1536, 1182);
             this.mainTableLayout.TabIndex = 5;
             // 
@@ -837,7 +829,7 @@ namespace DataImport
             this.settingsPanel.Margin = new System.Windows.Forms.Padding(0);
             this.settingsPanel.Name = "settingsPanel";
             this.settingsPanel.Padding = new System.Windows.Forms.Padding(30, 8, 30, 8);
-            this.settingsPanel.Size = new System.Drawing.Size(420, 605);
+            this.settingsPanel.Size = new System.Drawing.Size(420, 715);
             this.settingsPanel.TabIndex = 25;
             // 
             // statusStrip1
