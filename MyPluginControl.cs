@@ -224,7 +224,7 @@ namespace DataImport
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
 
-                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
+                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
                         }
                         
@@ -664,7 +664,7 @@ namespace DataImport
                             {
                                 processBoolean(e.RowIndex);
                             }
-                            if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
+                            if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status")
                             {
                                 processChoice();
                             }
@@ -800,7 +800,7 @@ namespace DataImport
                         {
                             processBoolean(dRow);
                         }
-                        if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State")
+                        if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status")
                         {
                             processChoice();
                         }
@@ -1116,7 +1116,7 @@ namespace DataImport
                                     {
                                         record[logicalnm[iCol - 1]] = "";
                                     }
-                                    else if (myfieldtype == "Picklist" || myfieldtype == "DateTime" || myfieldtype == "Customer" || myfieldtype == "Lookup" || myfieldtype == "State")
+                                    else if (myfieldtype == "Picklist" || myfieldtype == "DateTime" || myfieldtype == "Customer" || myfieldtype == "Lookup" || myfieldtype == "State" || myfieldtype == "Status")
                                     {
                                         record[logicalnm[iCol - 1]] = null;
                                     }
@@ -1163,7 +1163,67 @@ namespace DataImport
                                     if (a.LogicalName.ToString() == myfieldlabel)
                                     {
                                         myfieldtype = a.AttributeType.ToString();
-                                        if (myfieldtype == "Picklist")
+										if (myfieldtype == "Status")
+										{
+                                            //// StatusAttribute LABELS
+                                            if (settings.OptionSetValuesOrLabel == "Labels")
+                                            {
+
+                                                var statusAttributeMetadata = (StatusAttributeMetadata)resultsaved.Attributes.FirstOrDefault(myattribute => String.Equals(myattribute.LogicalName, a.LogicalName, StringComparison.OrdinalIgnoreCase));
+                                                var options = (from o in statusAttributeMetadata.OptionSet.Options
+                                                               select new { Value = o.Value, Text = o.Label.UserLocalizedLabel.Label }).ToList();
+                                                try
+                                                {
+                                                    string xlvalue;
+                                                    if (cellValue.Equals(typeof(String)))
+                                                        xlvalue = cellValue;
+                                                    else
+                                                        xlvalue = cellValue.ToString();
+                                                    int activeValue = (int)options.Where(o => o.Text == xlvalue).Select(o => o.Value).FirstOrDefault();
+                                                    record[logicalnm[iCol - 1]] = new OptionSetValue(activeValue);
+                                                }
+                                                catch (InvalidOperationException ex)
+                                                {
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ Couldnt match StatusAttribute Label : " + ((Excel.Range)xlRange.Cells[iRow, iCol]).Value2 + " - " + ex.Message.ToString());
+                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match StatusAttribute Label : " + cellValue + " - " + ex.Message.ToString();
+                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - Couldnt match StatusAttribute Label : " + cellValue + " - " + ex.Message.ToString();
+                                                    //SetTextBox1();
+                                                }
+
+
+
+                                            }
+                                            else //StatusAttribute VALUES
+                                            {
+                                                if (cellValue is String)
+                                                {
+                                                    int intvaluecell = 0;
+                                                    try
+                                                    {
+                                                        intvaluecell = System.Convert.ToInt32(cellValue);
+                                                        record[logicalnm[iCol - 1]] = new OptionSetValue(intvaluecell);
+                                                    }
+                                                    catch (FormatException)
+                                                    {
+                                                        // Update Logs
+                                                        AddToLogRow(row, "❌ Couldnt match cell to Option Set value: " + cellValue);
+                                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
+                                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
+                                                    }
+                                                    
+                                                }
+                                                else
+                                                {
+
+                                                    int avalue = (int)cellValue;
+                                                    record[logicalnm[iCol - 1]] = new OptionSetValue(avalue);
+                                                }
+                                            }
+
+                                            ////END StatusAttribute
+                                        }
+                                        else if (myfieldtype == "Picklist")
                                         {
                                             //// OPTIONSET LABELS
                                             if (settings.OptionSetValuesOrLabel == "Labels")
@@ -1211,7 +1271,7 @@ namespace DataImport
                                                         richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
                                                         richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Couldnt match cell to Option Set value: " + cellValue;
                                                     }
-                                                    record[logicalnm[iCol - 1]] = new OptionSetValue();
+
                                                 }
                                                 else
                                                 {
