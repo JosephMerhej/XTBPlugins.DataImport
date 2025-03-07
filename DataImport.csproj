@@ -342,7 +342,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF NOT EXIST $(SolutionDir)bin\$(ConfigurationName)\Plugins mkdir $(SolutionDir)bin\$(ConfigurationName)\Plugins
-
 copy /Y $(TargetFileName) $(SolutionDir)bin\$(ConfigurationName)\Plugins</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
