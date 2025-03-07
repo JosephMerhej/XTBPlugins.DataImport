@@ -3,7 +3,7 @@
   <Entity>contact</Entity>
   <CrmAction>Upsert</CrmAction>
   <OptionSetValuesOrLabel>Labels</OptionSetValuesOrLabel>
-  <LookupFoundMultipleRecords>Map to the first record found by the lookup</LookupFoundMultipleRecords>
+  <LookupFoundMultipleRecords>Import the record with the lookup blank</LookupFoundMultipleRecords>
   <KeyFoundMultipleRecords>Ignore excel line</KeyFoundMultipleRecords>
   <XMLTableMapping>
     <Table>
@@ -33,42 +33,42 @@
       </xs:schema>
       <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
         <DocumentElement>
-          <TableMapping diffgr:id="TableMapping1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping23" msdata:rowOrder="0" diffgr:hasChanges="inserted">
             <ExcelColumn>First Name</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>firstname</CRMField>
             <IsLookup>False</IsLookup>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping24" msdata:rowOrder="1" diffgr:hasChanges="inserted">
             <ExcelColumn>Last Name</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>lastname</CRMField>
             <IsLookup>False</IsLookup>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping3" msdata:rowOrder="2" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping25" msdata:rowOrder="2" diffgr:hasChanges="inserted">
             <ExcelColumn>Email</ExcelColumn>
             <isKey>true</isKey>
             <CRMField>emailaddress1</CRMField>
             <IsLookup>False</IsLookup>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping4" msdata:rowOrder="3" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping26" msdata:rowOrder="3" diffgr:hasChanges="inserted">
             <ExcelColumn>Phone</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>mobilephone</CRMField>
             <IsLookup>False</IsLookup>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping5" msdata:rowOrder="4" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping27" msdata:rowOrder="4" diffgr:hasChanges="inserted">
             <ExcelColumn>Date of birth</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>birthdate</CRMField>
             <IsLookup>False</IsLookup>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping6" msdata:rowOrder="5" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping28" msdata:rowOrder="5" diffgr:hasChanges="inserted">
             <ExcelColumn>Account Name</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>accountid</CRMField>
@@ -77,34 +77,41 @@
             <lkpTargetfield>name</lkpTargetfield>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping7" msdata:rowOrder="6" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping29" msdata:rowOrder="6" diffgr:hasChanges="inserted">
             <ExcelColumn>Back Office?</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>isbackofficecustomer</CRMField>
             <IsLookup>False</IsLookup>
             <Truevalue>Yes</Truevalue>
             <Falsevalue>No</Falsevalue>
-            <DefaultValue>Yes</DefaultValue>
+            <DefaultValue>No</DefaultValue>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping8" msdata:rowOrder="7" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping30" msdata:rowOrder="7" diffgr:hasChanges="inserted">
             <ExcelColumn>PostCode</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>address1_postofficebox</CRMField>
             <IsLookup>False</IsLookup>
-            <BlankBehaviour>Clears CRM value</BlankBehaviour>
+            <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping9" msdata:rowOrder="8" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping31" msdata:rowOrder="8" diffgr:hasChanges="inserted">
             <ExcelColumn>Address Line 1</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>address1_line1</CRMField>
             <IsLookup>False</IsLookup>
-            <BlankBehaviour>Clears CRM value</BlankBehaviour>
+            <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>
-          <TableMapping diffgr:id="TableMapping10" msdata:rowOrder="9" diffgr:hasChanges="inserted">
+          <TableMapping diffgr:id="TableMapping32" msdata:rowOrder="9" diffgr:hasChanges="inserted">
             <ExcelColumn>Country</ExcelColumn>
             <isKey>false</isKey>
             <CRMField>address1_country</CRMField>
+            <IsLookup>False</IsLookup>
+            <BlankBehaviour>Keeps CRM value</BlankBehaviour>
+          </TableMapping>
+          <TableMapping diffgr:id="TableMapping33" msdata:rowOrder="10" diffgr:hasChanges="inserted">
+            <ExcelColumn>Statuscode</ExcelColumn>
+            <isKey>false</isKey>
+            <CRMField>statuscode</CRMField>
             <IsLookup>False</IsLookup>
             <BlankBehaviour>Keeps CRM value</BlankBehaviour>
           </TableMapping>

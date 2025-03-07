@@ -1,5 +1,5 @@
-# Data Import ++
-Data Import ++ is a tool that allows you to create, update, upsert and delete records in Dynamics 365 / Dataverse, using an Excel spreadsheet as an input.
+# Data Import++
+Data Import++ is a tool that allows you to create, update, upsert and delete records in Dynamics 365 / Dataverse, using an Excel spreadsheet as an input.
 
 Original guide : [https://dynamics365tips.wixsite.com/home/post/xrmtoolbox-dataimport](https://dynamics365tips.wixsite.com/home/post/xrmtoolbox-dataimport)
 V2 Release notes: [https://andyhowes.co/introducing-dataimport-v2/](https://andyhowes.co/introducing-dataimport-v2/)
@@ -20,7 +20,7 @@ V2 Release notes: [https://andyhowes.co/introducing-dataimport-v2/](https://andy
 9. You can save your mappings to the XRM Toolbox Settings folder for re-use later, by clicking **Save**. You can later Load these settings by clicking **Load**.
 
 ## Authors:
-Data Import ++ was created by Joseph Merhej and further developed by [Andrew Howes](https://andyhowes.co)
+Data Import++ was created by Joseph Merhej and further developed by [Andrew Howes](https://andyhowes.co)
 
 ## Issues, Contributing and Ideas:
-Use Github issues to raise bugs, problems and ideas. Contributions are welcome - check out [Developing.MD](developing.md) to get started.
+Use Github issues to raise bugs, problems and ideas. Contributions are welcome - check out [Developing.MD](/DEVELOPING.md) to get started.
