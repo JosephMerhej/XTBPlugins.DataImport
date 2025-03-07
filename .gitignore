@@ -10,3 +10,4 @@
 /DataImport.csproj.user
 *.nupkg
 /ILLink
+/nuget.exe
