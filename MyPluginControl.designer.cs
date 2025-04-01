@@ -51,6 +51,7 @@ namespace DataImport
             this.labelRowsToImportDesc = new System.Windows.Forms.Label();
             this.rowStartNum = new System.Windows.Forms.NumericUpDown();
             this.LogToggle = new System.Windows.Forms.Button();
+            this.completeRecords = new System.Windows.Forms.CheckBox();
             this.labelKeyFoundMultipleRecords = new System.Windows.Forms.Label();
             this.settingsKeyFoundMultipleRecords = new System.Windows.Forms.ComboBox();
             this.RefreshLogs = new System.Windows.Forms.Button();
@@ -77,6 +78,7 @@ namespace DataImport
             this.Truevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Falsevalue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BlankBehaviour = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewLogs = new System.Windows.Forms.DataGridView();
             this.Import = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -306,6 +308,16 @@ namespace DataImport
             0,
             0});
             this.rowStartNum.ValueChanged += new System.EventHandler(this.rowStartNum_ValueChanged);
+            //
+            // Complete Records
+            //
+            this.completeRecords.Location = new System.Drawing.Point(36, 300);
+            this.completeRecords.Name = "CompleteRecords";
+            this.completeRecords.Text = "Complete Records";
+            this.completeRecords.Size = new System.Drawing.Size(120, 32);
+            this.completeRecords.MinimumSize = new System.Drawing.Size(340, 32);
+            this.completeRecords.UseVisualStyleBackColor = true;
+            this.completeRecords.CheckedChanged += new System.EventHandler(this.settingscompleteRecords_SelectionChanged);
             // 
             // LogToggle
             // 
@@ -551,7 +563,8 @@ namespace DataImport
             this.Truevalue,
             this.Falsevalue,
             this.DefaultValue,
-            this.BlankBehaviour});
+            this.BlankBehaviour,
+            this.DataType});
             this.dataGridViewMapping.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMapping.Enabled = false;
             this.dataGridViewMapping.Location = new System.Drawing.Point(423, 51);
@@ -667,6 +680,15 @@ namespace DataImport
             this.BlankBehaviour.MinimumWidth = 9;
             this.BlankBehaviour.Name = "BlankBehaviour";
             this.BlankBehaviour.Width = 150;
+            // 
+            // DataType
+            // 
+            this.DataType.DataPropertyName = "DataType";
+            this.DataType.HeaderText = "Data Type";
+            this.DataType.MinimumWidth = 9;
+            this.DataType.Name = "DataType";
+            this.DataType.Width = 150;
+            this.DataType.Visible = false;
             // 
             // dataGridViewLogs
             // 
@@ -823,6 +845,7 @@ namespace DataImport
             this.settingsPanel.Controls.Add(this.copyText);
             this.settingsPanel.Controls.Add(this.RefreshLogs);
             this.settingsPanel.Controls.Add(this.LogToggle);
+            this.settingsPanel.Controls.Add(this.completeRecords);
             this.settingsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsPanel.Enabled = false;
             this.settingsPanel.Location = new System.Drawing.Point(0, 48);
@@ -1001,6 +1024,7 @@ namespace DataImport
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.DataGridView dataGridViewLogs;
         private System.Windows.Forms.Button LogToggle;
+        private System.Windows.Forms.CheckBox completeRecords;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton saveSettingsButton;
         private System.Windows.Forms.ToolStripButton loadSettingsButton;
@@ -1021,6 +1045,7 @@ namespace DataImport
         private DataGridViewTextBoxColumn Falsevalue;
         private DataGridViewTextBoxColumn DefaultValue;
         private DataGridViewComboBoxColumn BlankBehaviour;
+        private DataGridViewTextBoxColumn DataType;
         private RichTextBox instructionBox;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripLabel toggleInstructions;

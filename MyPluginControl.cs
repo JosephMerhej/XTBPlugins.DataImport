@@ -18,6 +18,8 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 using McTools.Xrm.Connection;
 using XrmToolBox.Extensibility.Interfaces;
+using Microsoft.Crm.Sdk.Messages;
+using System.Web.Services.Description;
 
 namespace DataImport
 {
@@ -78,6 +80,7 @@ namespace DataImport
             textView.SelectedIndex = 0;
             settingsOptionSetValuesOrLabel.SelectedIndex = 0;
             settingsKeyFoundMultipleRecords.SelectedIndex = 0;
+            completeRecords.Checked = false;
             ExecuteMethod(InitEntities);
 
             // Initialise the table logs
@@ -103,6 +106,7 @@ namespace DataImport
             tableMapping.Columns.Add("Falsevalue");
             tableMapping.Columns.Add("DefaultValue");
             tableMapping.Columns.Add("BlankBehaviour");
+            tableMapping.Columns.Add("DataType");
 
             this.dataGridViewMapping.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMapping_CellValueChanged);
         }
@@ -224,7 +228,7 @@ namespace DataImport
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
 
-                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
+                            if (a.AttributeType.ToString() == "DateTime" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status" || a.AttributeType.ToString() == "Memo" || a.AttributeType.ToString() == "String" || (a.AttributeType.ToString() == "Virtual" && a.SourceType == 0) || a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "Boolean" || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money" || a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "PartyList" || a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "Owner")
                                 CRMField.Items.Add(a.LogicalName.ToString());
                         }
                         
@@ -276,7 +280,7 @@ namespace DataImport
                         foreach (object attribute in lkpresultsaved.Attributes)
                         {
                             AttributeMetadata a = (AttributeMetadata)attribute;
-                            if (a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "String" /*|| a.AttributeType.ToString() == "DateTime"  || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money"*/)
+                            if (a.AttributeType.ToString() == "Uniqueidentifier" || a.AttributeType.ToString() == "String" || a.AttributeType.ToString() == "State" /*|| a.AttributeType.ToString() == "DateTime"  || a.AttributeType.ToString() == "Integer" || a.AttributeType.ToString() == "Decimal" || a.AttributeType.ToString() == "Money"*/)
                             {
                                 stateCell.Items.Add(a.LogicalName.ToString());
                             }
@@ -538,6 +542,7 @@ namespace DataImport
             settingsLookupFoundMultipleRecords.SelectedIndex = 0;
             settingsOptionSetValuesOrLabel.SelectedIndex = 0;
             settingsKeyFoundMultipleRecords.SelectedIndex = 0;
+            completeRecords.Checked = false;
             settings.Reset();
 
             labelOptionSetValuesOrLabel.Visible = false;
@@ -610,12 +615,22 @@ namespace DataImport
                 settingsKeyFoundMultipleRecords.Visible = false;
                 labelKeyFoundMultipleRecords.Visible = false;
                 dataGridViewMapping.Columns[1].Visible = false;
+
+                if(settings.Entity == "activity" || settings.Entity == "letter" || settings.Entity == "task")
+                {
+                    completeRecords.Visible = true;
+                }
+                else
+                {
+                    completeRecords.Visible = false;
+                }
             }
             else
             {
                 settingsKeyFoundMultipleRecords.Visible = true;
                 labelKeyFoundMultipleRecords.Visible = true;
                 dataGridViewMapping.Columns[1].Visible = true;
+                completeRecords.Visible = false;
             }
         }
 
@@ -632,6 +647,11 @@ namespace DataImport
         private void settingsLookupFoundMultipleRecords_SelectedIndexChanged(object sender, EventArgs e)
         {
             settings.LookupFoundMultipleRecords = settingsLookupFoundMultipleRecords.SelectedItem.ToString();
+        }
+
+        private void settingscompleteRecords_SelectionChanged(object sender, EventArgs e)
+        {
+            settings.CompleteRecordsPostAction = completeRecords.Checked;
         }
 
 
@@ -652,21 +672,21 @@ namespace DataImport
                         AttributeMetadata a = (AttributeMetadata)attribute;
                         if (a.LogicalName.ToString() == dataGridViewMapping.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString())  //Find the CRM field between the metadata
                         {
-                            if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
+                            if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "PartyList" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
                             {
-                                processLookupEntity(e.RowIndex);
+                                processLookupEntity(e.RowIndex, a.AttributeType.ToString());
                             }
                             else
                             {
-                                processNonLookupEntity(e.RowIndex);
+                                processNonLookupEntity(e.RowIndex, a.AttributeType.ToString());
                             }
                             if (a.AttributeType.ToString() == "Boolean")
                             {
-                                processBoolean(e.RowIndex);
+                                processBoolean(e.RowIndex, a.AttributeType.ToString());
                             }
                             if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status")
                             {
-                                processChoice();
+                                processChoice(e.RowIndex, a.AttributeType.ToString());
                             }
                         }
                     }
@@ -678,7 +698,7 @@ namespace DataImport
                     break;
             }
         }
-        private void processLookupEntity(int row)
+        private void processLookupEntity(int row, string dataType)
         {
             // make the lookup columns visible
             dataGridViewMapping.Columns["lkpTargetEntity"].Visible = true;
@@ -697,6 +717,11 @@ namespace DataImport
             DataGridViewComboBoxCell data2 = dataGridViewMapping.Rows[row].Cells[5] as DataGridViewComboBoxCell;
             data2.ReadOnly = false;
             data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+            //Set Data Type
+            DataGridViewCell data3 = dataGridViewMapping.Rows[row].Cells["DataType"] as DataGridViewCell;
+            data3.ReadOnly = true;
+            data3.Style.BackColor = Color.LightGray;
+            data3.Value = dataType;
         }
         private void processLookupField(int row)
         {
@@ -704,7 +729,7 @@ namespace DataImport
             InitLookupFields(lkpentityname, row);
         }
 
-        private void processNonLookupEntity(int row)
+        private void processNonLookupEntity(int row, string dataType)
         {
             // set is Lookup to false
             dataGridViewMapping.Rows[row].Cells["IsLookup"].Value = false;
@@ -718,9 +743,14 @@ namespace DataImport
             data2.ReadOnly = true;
             data2.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
             data2.Value = null;
+            //Set Data Type
+            DataGridViewCell data3 = dataGridViewMapping.Rows[row].Cells["DataType"] as DataGridViewCell;
+            data3.ReadOnly = true;
+            data3.Style.BackColor = Color.LightGray;
+            data3.Value = dataType;
         }
 
-        private void processBoolean(int row)
+        private void processBoolean(int row, string dataType)
         {
             dataGridViewMapping.Columns["Truevalue"].Visible = true;
             dataGridViewMapping.Columns["Falsevalue"].Visible = true;
@@ -734,6 +764,11 @@ namespace DataImport
             DataGridViewCell databooldefault = dataGridViewMapping.Rows[row].Cells["DefaultValue"] as DataGridViewCell;
             databooldefault.ReadOnly = false;
             databooldefault.Style.BackColor = Color.LightGray;
+            //Set Data Type
+            DataGridViewCell data3 = dataGridViewMapping.Rows[row].Cells["DataType"] as DataGridViewCell;
+            data3.ReadOnly = true;
+            data3.Style.BackColor = Color.LightGray;
+            data3.Value = dataType;
 
             //fetch for true and false boolean values
             RetrieveAttributeRequest retrieveAttributeRequest = new RetrieveAttributeRequest
@@ -759,10 +794,16 @@ namespace DataImport
             dataGridViewMapping.Rows[row].Cells["DefaultValue"].Value = boolTextDefault;
         }
 
-        private void processChoice()
+        private void processChoice(int row, string dataType)
         {
             labelOptionSetValuesOrLabel.Visible = true;
             settingsOptionSetValuesOrLabel.Visible = true;
+
+            //Set Data Type
+            DataGridViewCell data3 = dataGridViewMapping.Rows[row].Cells["DataType"] as DataGridViewCell;
+            data3.ReadOnly = true;
+            data3.Style.BackColor = Color.LightGray;
+            data3.Value = dataType;
         }
 
         private void ProcessFields()
@@ -787,22 +828,22 @@ namespace DataImport
                     AttributeMetadata a = (AttributeMetadata)attribute;
                     if (a.LogicalName.ToString() == acrmfield)  //Find the CRM field between the metadata
                     {
-                        if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
+                        if (a.AttributeType.ToString() == "Lookup" || a.AttributeType.ToString() == "Customer" || a.AttributeType.ToString() == "PartyList" || a.AttributeType.ToString() == "Owner") // check if the CRM field is of type Lookup
                         {
-                            processLookupEntity(dRow);
+                            processLookupEntity(dRow, a.AttributeType.ToString());
                             processLookupField(dRow);
                         }
                         else
                         {
-                            processNonLookupEntity(dRow);
+                            processNonLookupEntity(dRow, a.AttributeType.ToString());
                         }
                         if (a.AttributeType.ToString() == "Boolean")
                         {
-                            processBoolean(dRow);
+                            processBoolean(dRow, a.AttributeType.ToString());
                         }
                         if (a.AttributeType.ToString() == "Picklist" || a.AttributeType.ToString() == "State" || a.AttributeType.ToString() == "Status")
                         {
-                            processChoice();
+                            processChoice(dRow, a.AttributeType.ToString());
                         }
                     }
                 }
@@ -910,8 +951,8 @@ namespace DataImport
                         settingsKeyFoundMultipleRecords.SelectedItem = settings.KeyFoundMultipleRecords;
                         settingsLookupFoundMultipleRecords.SelectedItem = settings.LookupFoundMultipleRecords;
                         settingsOptionSetValuesOrLabel.SelectedItem = settings.OptionSetValuesOrLabel;
+                        completeRecords.Checked = settings.CompleteRecordsPostAction;
                         dataGridViewMapping.Rows.Clear();
-                        
 
                         // Add rows
                         foreach (DataRow row in settings.XMLTableMapping.Table.Rows)
@@ -1116,7 +1157,7 @@ namespace DataImport
                                     {
                                         record[logicalnm[iCol - 1]] = "";
                                     }
-                                    else if (myfieldtype == "Picklist" || myfieldtype == "DateTime" || myfieldtype == "Customer" || myfieldtype == "Lookup" || myfieldtype == "State" || myfieldtype == "Status")
+                                    else if (myfieldtype == "Picklist" || myfieldtype == "DateTime" || myfieldtype == "Customer" || myfieldtype == "PartyList" || myfieldtype == "Lookup" || myfieldtype == "State" || myfieldtype == "Status")
                                     {
                                         record[logicalnm[iCol - 1]] = null;
                                     }
@@ -1457,7 +1498,7 @@ namespace DataImport
                                         record[logicalnm[iCol - 1]] = d;
                                     }
                                 }
-                                else if (myfieldtype == "Lookup" || myfieldtype == "Customer" || myfieldtype == "Owner")
+                                else if (myfieldtype == "Lookup" || myfieldtype == "Customer" || myfieldtype == "PartyList" || myfieldtype == "Owner")
                                 {
                                     flaglookup = true;
                                 }
@@ -1531,7 +1572,7 @@ namespace DataImport
                                         }
                                         qe.Criteria.AddCondition(new ConditionExpression(logicalnm[iCol - 1], ConditionOperator.In, intValue));
                                     }
-                                    else if (myfieldtype == "Lookup" || myfieldtype == "Customer" || myfieldtype == "Owner")
+                                    else if (myfieldtype == "Lookup" || myfieldtype == "Customer" || myfieldtype == "PartyList" || myfieldtype == "Owner")
                                     {
 
                                     }
@@ -1552,122 +1593,156 @@ namespace DataImport
                             }
                         }
                         //START/////////////////////////////////////////////////////////////////////////////////////////////
-                        if (flaglookup && settings.CrmAction != "Delete")
+                        try
                         {
-                            QueryExpression lookupquery = new QueryExpression();
-                            lookupquery.ColumnSet = new ColumnSet();
-                            string lookuplglname;
-                            string lkpnamefield;
-                            string[] vec = new string[lookupscount];
-                            int veccnt = 0;
-                            bool boollkp;
-                            for (int q = 0; q < dt.Rows.Count; q++) //All Rows of data grid, search for IS LOOKUPS
+                            if (flaglookup && settings.CrmAction != "Delete")
                             {
-                                boollkp = Convert.ToBoolean((dt.Rows[q][3])); // IS LOOKUP?
-                                if (boollkp == true) // IS Lookup = YES
+                                QueryExpression lookupquery = new QueryExpression();
+                                lookupquery.ColumnSet = new ColumnSet();
+                                string lookuplglname;
+                                string lkpnamefield;
+                                string crmDataType = String.Empty;
+                                string[] vec = new string[lookupscount];
+                                int veccnt = 0;
+                                bool boollkp;
+                                for (int q = 0; q < dt.Rows.Count; q++) //All Rows of data grid, search for IS LOOKUPS
                                 {
-                                    lkpnamefield = Convert.ToString((dt.Rows[q][2]).ToString());
-
-                                    vec[veccnt] = lkpnamefield;
-                                    veccnt++;
-                                }
-                            }
-                            string[] distcVec = vec.Distinct().ToArray(); //Contains only unique names of lookup fields
-                            bool[] distcKeyVec = new bool[distcVec.Length];
-                            for (int m = 0; m < distcVec.Length; m++) // foreach unique lookupname
-                            {
-                                lookupquery.Criteria.Conditions.Clear();
-                                for (int n = 0; n < dt.Rows.Count; n++) // Go search for all the lines in the table containing that lookup field
-                                {
-                                    if (distcVec[m] == Convert.ToString((dt.Rows[n][2]).ToString())) // When we find that the name of the lookup is the same as the distinct lookup value
+                                    boollkp = Convert.ToBoolean((dt.Rows[q][3])); // IS LOOKUP?
+                                    if (boollkp == true) // IS Lookup = YES
                                     {
-                                        distcKeyVec[m] = Convert.ToBoolean((dt.Rows[n][1]));
-                                        lookuplglname = Convert.ToString((dt.Rows[n][4]).ToString());
-                                        lookupquery.EntityName = lookuplglname;
-                                        lookupquery.Criteria.AddCondition(Convert.ToString((dt.Rows[n][5]).ToString()), ConditionOperator.Equal, xlRange.Cells[iRow, n + 1].value);
+                                        lkpnamefield = Convert.ToString((dt.Rows[q][2]).ToString());
+
+                                        vec[veccnt] = lkpnamefield;
+                                        veccnt++;
                                     }
                                 }
-                                //FETCH FOR THE RECORD
-                                try
+                                string[] distcVec = vec.Distinct().ToArray(); //Contains only unique names of lookup fields
+                                bool[] distcKeyVec = new bool[distcVec.Length];
+                                for (int m = 0; m < distcVec.Length; m++) // foreach unique lookupname
                                 {
-                                    EntityCollection mycollect = Service.RetrieveMultiple(lookupquery);
-                                
-
-
-                                    if (mycollect.Entities.Count > 0)
+                                    lookupquery.Criteria.Conditions.Clear();
+                                    for (int n = 0; n < dt.Rows.Count; n++) // Go search for all the lines in the table containing that lookup field
                                     {
-                                        if (mycollect.Entities.Count > 1)
+                                        if (distcVec[m] == Convert.ToString((dt.Rows[n][2]).ToString())) // When we find that the name of the lookup is the same as the distinct lookup value
                                         {
+                                            crmDataType = Convert.ToString((dt.Rows[n]["DataType"]).ToString());
+                                            distcKeyVec[m] = Convert.ToBoolean((dt.Rows[n][1]));
+                                            lookuplglname = Convert.ToString((dt.Rows[n][4]).ToString());
+                                            lookupquery.EntityName = lookuplglname;
+                                            lookupquery.Criteria.AddCondition(Convert.ToString((dt.Rows[n][5]).ToString()), ConditionOperator.Equal, xlRange.Cells[iRow, n + 1].value);
+                                        }
+                                    }
+                                    //FETCH FOR THE RECORD
+                                    try
+                                    {
+                                        EntityCollection mycollect = Service.RetrieveMultiple(lookupquery);
+
+
+                                        if (mycollect.Entities.Count > 0)
+                                        {
+                                            if (mycollect.Entities.Count > 1)
+                                            {
+                                                if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
+                                                {
+                                                    record[distcVec[m]] = null;
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
+                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
+                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
+                                                }
+                                                else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
+                                                {
+                                                    if(crmDataType == "PartyList")
+                                                    {
+                                                        Entity party = new Entity("activityparty");
+                                                        party["partyid"] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
+                                                        EntityCollection partyList = new EntityCollection();
+                                                        partyList.Entities.Add(party);
+
+                                                        record[distcVec[m]] = partyList;
+                                                    }
+                                                    else
+                                                    {
+                                                        record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
+                                                        // Update Logs
+                                                        AddToLogRow(row, "⚠ LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.");
+                                                        richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
+                                                        richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
+                                                        if (distcKeyVec[m])
+                                                            qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
+                                                    }
+                                                }
+                                                else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
+                                                {
+                                                    istoimport = false;
+                                                    // Update Logs
+                                                    AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
+                                                    richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
+                                                    richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
+                                                }
+                                            }
+                                            else // Count==1 found entity
+                                            {
+                                                if (crmDataType == "PartyList")
+                                                {
+                                                    Entity party = new Entity("activityparty");
+                                                    party["partyid"] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
+                                                    EntityCollection partyList = new EntityCollection();
+                                                    partyList.Entities.Add(party);
+
+                                                    record[distcVec[m]] = partyList;
+                                                }
+                                                else
+                                                {
+                                                    record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
+                                                    if (distcKeyVec[m])
+                                                        qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
+                                                }
+                                            }
+                                        }
+                                        else // Didn't find a match
+                                        {
+                                            record[distcVec[m]] = null;
                                             if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
                                             {
-                                                record[distcVec[m]] = null;
                                                 // Update Logs
-                                                AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
-                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
-                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
+                                                AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
+                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
+                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             }
                                             else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
                                             {
-                                                record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
                                                 // Update Logs
-                                                AddToLogRow(row, "⚠ LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.");
-                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
-                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LOOKUP ID: " + distcVec[m].ToString() + " = " + mycollect[0].Id.ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup and mapped the first one.";
-                                                if (distcKeyVec[m])
-                                                    qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
+                                                AddToLogRow(row, "⚠ CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
+                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
+                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             }
                                             else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
                                             {
                                                 istoimport = false;
                                                 // Update Logs
-                                                AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.");
-                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
-                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Found " + mycollect.Entities.Count.ToString() + " records to insert in lookup.";
+                                                AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.", null, "Not Imported");
+                                                richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
+                                                richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
                                             }
                                         }
-                                        else // Count==1 found entity
-                                        {
-                                            record[distcVec[m]] = new EntityReference(mycollect[0].LogicalName, mycollect[0].Id);
-                                            if (distcKeyVec[m])
-                                                qe.Criteria.AddCondition(distcVec[m], ConditionOperator.Equal, mycollect[0].Id);
-                                        }
                                     }
-                                    else // Didn't find a match
+                                    catch (FaultException<OrganizationServiceFault> ex)
                                     {
-                                        record[distcVec[m]] = null;
-                                        if (settings.LookupFoundMultipleRecords == "Import the record with the lookup blank")
-                                        {
-                                            // Update Logs
-                                            AddToLogRow(row, "⚠ BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
-                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
-                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - BLANK LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
-                                        }
-                                        else if (settings.LookupFoundMultipleRecords == "Map to the first record found by the lookup")
-                                        {
-                                            // Update Logs
-                                            AddToLogRow(row, "⚠ CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.");
-                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
-                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - CLEARED LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
-                                        }
-                                        else if (settings.LookupFoundMultipleRecords == "Skip the record and do not import it")
-                                        {
-                                            istoimport = false;
-                                            // Update Logs
-                                            AddToLogRow(row, "⚠ LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.", null, "Not Imported");
-                                            richTextBoxWarning.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
-                                            richTextBoxAll.Text += Environment.NewLine + "⚠LINE" + iRow + " - LINE WILL NOT BE IMPORTED because of LOOKUP: " + distcVec[m].ToString() + " - REASON: Didn't find any record to insert in lookup.";
-                                        }
+                                        // Update Logs
+                                        AddToLogRow(row, "❌ Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
+                                        richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message;
+                                        richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message;
+                                        istoimport = false;
                                     }
-                                }
-                                catch (FaultException<OrganizationServiceFault> ex)
-                                {
-                                    // Update Logs
-                                    AddToLogRow(row, "❌ Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message, null, "Failed");
-                                    richTextBoxErrors.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString()+".  Record will not be imported.  EXCEPTION MESSAGE: "+ ex.Message;
-                                    richTextBoxAll.Text += Environment.NewLine + "❌LINE" + iRow + " - Something went wrong while fetching record for lookup: " + distcVec[m].ToString() + ".  Record will not be imported.  EXCEPTION MESSAGE: " + ex.Message;
-                                    istoimport = false;
                                 }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            AddToLogRow(row, "Exception: " + ex.Message);
+                            richTextBoxWarning.Text += Environment.NewLine + "Exception: " + ex.Message;
+                            richTextBoxAll.Text += Environment.NewLine + "Exception: " + ex.Message;
                         }
                         ////END/////////////////////////////////////////////////////////////     
 
@@ -1686,6 +1761,33 @@ namespace DataImport
                                     richTextBoxAll.Text += Environment.NewLine + "✓LINE" + iRow + " - CREATED: " + _recordId.ToString();
                                     successnumber++;
                                     creatednumber++;
+
+                                    // Update the statecode and statuscode to Completed for Letter & Task
+                                    // Letter - Status = Completed(1); Status Reason Sent(4)
+                                    // Task - Status = Completed(1); Status Reason Completed(5)
+                                    if(settings.CompleteRecordsPostAction == true)
+                                    {
+                                        if (settings.Entity == "letter")
+                                        {
+                                            SetStateRequest setStateRequest = new SetStateRequest
+                                            {
+                                                EntityMoniker = new EntityReference(settings.Entity, _recordId),
+                                                State = new OptionSetValue(1),
+                                                Status = new OptionSetValue(4)
+                                            };
+                                            Service.Execute(setStateRequest);
+                                        }
+                                        else if (settings.Entity == "task")
+                                        {
+                                            SetStateRequest setStateRequest = new SetStateRequest
+                                            {
+                                                EntityMoniker = new EntityReference(settings.Entity, _recordId),
+                                                State = new OptionSetValue(1),
+                                                Status = new OptionSetValue(5)
+                                            };
+                                            Service.Execute(setStateRequest);
+                                        }
+                                    }
                                 }
                                 catch (FaultException<OrganizationServiceFault> ex)
                                 {
