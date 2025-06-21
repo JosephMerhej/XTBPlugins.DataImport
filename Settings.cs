@@ -37,6 +37,7 @@ namespace DataImport
         public string OptionSetValuesOrLabel { get; set; } // Whether option sets are values or labels
         public string LookupFoundMultipleRecords { get; set; } // What to do if multiple records are found in a lookup
         public string KeyFoundMultipleRecords { get; set; } // What to do if multiple records are found for the updated or deleted record
+        public bool CompleteRecordsPostAction { get; set; } // Allows support for completing records as part of record creation
         public SerializableDataTable XMLTableMapping { get; set; } // An XML serializable version of the mapping table between the source and the destination
         public void LoadSettingsFromXML(string filePath)
         {
@@ -52,6 +53,7 @@ namespace DataImport
                 Instance.OptionSetValuesOrLabel = tempSettings.OptionSetValuesOrLabel;
                 Instance.LookupFoundMultipleRecords = tempSettings.LookupFoundMultipleRecords;
                 Instance.KeyFoundMultipleRecords = tempSettings.KeyFoundMultipleRecords;
+                Instance.CompleteRecordsPostAction = tempSettings.CompleteRecordsPostAction;
                 Instance.XMLTableMapping = tempSettings.XMLTableMapping;
             }
             catch (Exception innerException)
@@ -80,6 +82,7 @@ namespace DataImport
             OptionSetValuesOrLabel = null;
             LookupFoundMultipleRecords = null;
             KeyFoundMultipleRecords = null;
+            CompleteRecordsPostAction = false;
         }
 
     }
