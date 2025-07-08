@@ -900,6 +900,11 @@ namespace DataImport
                 MessageBox.Show($"Error in column '{column.Name}' at row {e.RowIndex + 1}. Value '{value}' is not valid.");
             }
         }
+        private void dataGridViewMapping_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (new[] { 2, 4, 5 }.Contains(dataGridViewMapping.CurrentCell.ColumnIndex) && e.Control is ComboBox combo)
+                combo.DropDownStyle = ComboBoxStyle.DropDown;
+        }
 
         #endregion Data Grid
 

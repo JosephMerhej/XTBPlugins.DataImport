@@ -227,6 +227,7 @@ namespace DataImport
             // 
             // toggleInstructions
             // 
+            this.toggleInstructions.BackColor = System.Drawing.Color.NavajoWhite;
             this.toggleInstructions.Name = "toggleInstructions";
             this.toggleInstructions.Size = new System.Drawing.Size(145, 33);
             this.toggleInstructions.Text = "Hide instructions";
@@ -484,6 +485,7 @@ namespace DataImport
             this.settingsEntity.Sorted = true;
             this.settingsEntity.TabIndex = 1;
             this.settingsEntity.DropDownClosed += new System.EventHandler(this.settingsEntity_DropDownClosed);
+            this.settingsEntity.DropDownStyle = ComboBoxStyle.DropDown;
             // 
             // settingsOptionSetValuesOrLabel
             // 
@@ -574,6 +576,7 @@ namespace DataImport
             this.dataGridViewMapping.Size = new System.Drawing.Size(1110, 709);
             this.dataGridViewMapping.TabIndex = 1;
             this.dataGridViewMapping.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
+            this.dataGridViewMapping.EditingControlShowing += dataGridViewMapping_EditingControlShowing;
             // 
             // ExcelColumn
             // 
