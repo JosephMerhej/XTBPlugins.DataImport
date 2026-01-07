@@ -106,7 +106,9 @@ namespace DataImport
             this.toolStripStatusDeletedLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusDeletedNum = new System.Windows.Forms.ToolStripStatusLabel();
             this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.toolStripMenu.SuspendLayout();
+			this.textbox_DELAY = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rowEndNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rowStartNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMapping)).BeginInit();
@@ -825,7 +827,9 @@ namespace DataImport
             // settingsPanel
             // 
             this.settingsPanel.AutoScroll = true;
-            this.settingsPanel.Controls.Add(this.labelEntity);
+			this.settingsPanel.Controls.Add(this.label1);
+			this.settingsPanel.Controls.Add(this.textbox_DELAY);
+			this.settingsPanel.Controls.Add(this.labelEntity);
             this.settingsPanel.Controls.Add(this.settingsEntity);
             this.settingsPanel.Controls.Add(this.labelCrmAction);
             this.settingsPanel.Controls.Add(this.settingsCrmAction);
@@ -960,10 +964,26 @@ namespace DataImport
             // settingsBindingSource
             // 
             this.settingsBindingSource.DataSource = typeof(DataImport.Settings);
-            // 
-            // MyPluginControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+			// textbox_DELAY
+			// 
+			this.textbox_DELAY.Location = new System.Drawing.Point(23, 405);
+			this.textbox_DELAY.Name = "textbox_DELAY";
+			this.textbox_DELAY.Size = new System.Drawing.Size(224, 20);
+			this.textbox_DELAY.TabIndex = 31;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(22, 389);
+			this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(34, 13);
+			this.label1.TabIndex = 32;
+			this.label1.Text = "Delay";
+			// 
+			// MyPluginControl
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.toolStripMenu);
             this.Controls.Add(this.instructionBox);
@@ -1070,5 +1090,7 @@ namespace DataImport
         private DataGridViewTextBoxColumn Updates;
         private DataGridViewTextBoxColumn GUID;
         private DataGridViewTextBoxColumn Logs;
-    }
+		private Label label1;
+		private TextBox textbox_DELAY;
+	}
 }

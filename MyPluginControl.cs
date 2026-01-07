@@ -20,6 +20,7 @@ using McTools.Xrm.Connection;
 using XrmToolBox.Extensibility.Interfaces;
 using Microsoft.Crm.Sdk.Messages;
 using System.Web.Services.Description;
+using System.Threading.Tasks;
 
 namespace DataImport
 {
@@ -1068,7 +1069,8 @@ namespace DataImport
             settings.OptionSetValuesOrLabel = settingsOptionSetValuesOrLabel.SelectedItem.ToString();
             settings.KeyFoundMultipleRecords = settingsKeyFoundMultipleRecords.SelectedItem.ToString();
 
-            successnumber = 0;
+			var i = 1;
+			successnumber = 0;
             errornumber = 0;
             creatednumber = 0;
             updatednumber = 0;
@@ -1109,7 +1111,16 @@ namespace DataImport
                             break;
                         }
 
-                        Entity record = null;
+						if (i != 1)
+						{
+							if (int.TryParse(textbox_DELAY.Text, out int delay))
+							{
+								Task.Delay(delay).Wait();
+							}
+						}
+						i++;
+
+						Entity record = null;
                         record = new Entity(settings.Entity);
                         istoimport = true;
                         flaglookup = false;
